@@ -8,7 +8,7 @@ import { API } from '../services/api';
 import toast from 'react-hot-toast';
 
 export default function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState<'approvals' | 'screenshots' | 'withdrawals' | 'rewards'>('approvals');
+  const [activeTab, setActiveTab] = useState<'approvals' | 'screenshots' | 'withdrawals' | 'rewards' | 'settings'>('approvals');
   const [users, setUsers] = useState<any[]>([]);
   const [payments, setPayments] = useState<any[]>([]);
   const [withdrawals, setWithdrawals] = useState<any[]>([]);
@@ -31,6 +31,29 @@ export default function AdminDashboard() {
   });
   const [rewardImage, setRewardImage] = useState<File | null>(null);
   const [uploadingReward, setUploadingReward] = useState(false);
+
+  // Admin Settings State
+  const [newPassword, setNewPassword] = useState("");
+  const [changingPassword, setChangingPassword] = useState(false);
+
+  const handleAdminPasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newPassword) return toast.error("Please enter a new password");
+
+    const toastId = toast.loading("Updating password...");
+    setChangingPassword(true);
+    try {
+      await API.put("/admin/change-password", { newPassword });
+      toast.dismiss(toastId);
+      toast.success("Password updated successfully!");
+      setNewPassword("");
+    } catch {
+      toast.dismiss(toastId);
+      toast.error("Failed to update password");
+    } finally {
+      setChangingPassword(false);
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -354,6 +377,16 @@ export default function AdminDashboard() {
                 >
                   Upload Reward
                 </button>
+                <button
+                  onClick={() => setActiveTab('settings')}
+                  className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-all ${
+                    activeTab === 'settings'
+                      ? 'bg-gradient-to-r from-cyan-500 to-violet-600 text-white shadow-lg'
+                      : 'hover:bg-white/20 dark:hover:bg-slate-800/20'
+                  }`}
+                >
+                  Settings
+                </button>
               </div>
             </GlassCard>
           </motion.div>
@@ -481,6 +514,14 @@ export default function AdminDashboard() {
                                       Upload: OFF
                                     </>
                                   )}
+                                </button>
+                                <button
+                                  onClick={() => handleRejectUser(user._id)}
+                                  className="px-4 py-2 rounded-xl bg-red-500 text-white hover:bg-red-600 transition-colors flex items-center gap-2"
+                                  title="Delete User"
+                                >
+                                  <X className="w-4 h-4" />
+                                  Delete
                                 </button>
                               </div>
                             </div>
@@ -689,6 +730,35 @@ export default function AdminDashboard() {
                       {uploadingReward ? "Uploading..." : "Upload Reward"}
                     </button>
                   </form>
+                </div>
+              )}
+
+              {activeTab === 'settings' && (
+                <div className="max-w-2xl mx-auto">
+                  <h2 className="text-2xl font-bold mb-6">Admin Settings</h2>
+                  <GlassCard className="p-6">
+                    <h3 className="text-xl font-bold mb-4">Change Admin Password</h3>
+                    <form onSubmit={handleAdminPasswordChange} className="space-y-6">
+                      <div>
+                        <label className="block text-sm font-semibold mb-2">New Password</label>
+                        <input
+                          type="password"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          placeholder="Enter strong new password"
+                          required
+                          className="w-full px-4 py-3 rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50 outline-none"
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        disabled={changingPassword}
+                        className="w-full py-3 rounded-2xl shadow-lg font-bold text-white bg-gradient-to-r from-red-500 to-orange-600 hover:scale-[1.02] transition-transform disabled:opacity-70 disabled:hover:scale-100"
+                      >
+                        {changingPassword ? "Updating..." : "Update Password"}
+                      </button>
+                    </form>
+                  </GlassCard>
                 </div>
               )}
             </GlassCard>

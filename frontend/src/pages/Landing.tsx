@@ -11,6 +11,10 @@ import {
   Users,
   ChevronDown,
   CheckCircle,
+  Mail,
+  MapPin,
+  Phone,
+  Send,
 } from 'lucide-react';
 import Header from '../components/Header';
 import GlassCard from '../components/GlassCard';
@@ -72,13 +76,30 @@ export default function Landing() {
 
   const plans = [
   {
-    name: "6 Months",
+    name: "3 Months",
     price: "₹99",
     period: "/plan",
-    duration: 6,
+    duration: 3,
     uploads: "3 bills/day",
     razorpayLink: "https://rzp.io/rzp/JJ11TXZ",
     color: "from-cyan-400 to-blue-600",
+    features: [
+      "3 uploads per day",
+      "Scratch cards enabled",
+      "Coin rewards",
+      "Valid for 3 months",
+    ],
+  },
+  {
+    name: "6 Months",
+    icon: Zap,
+    price: "₹159",
+    period: "/plan",
+    duration: 6,
+    uploads: "3 bills/day",
+    razorpayLink: "https://rzp.io/rzp/OoBrREt",
+    color: "from-yellow-400 to-orange-500",
+    popular: true,
     features: [
       "3 uploads per day",
       "Scratch cards enabled",
@@ -88,26 +109,9 @@ export default function Landing() {
   },
   {
     name: "12 Months",
-    icon: Zap,
-    price: "₹159",
-    period: "/plan",
-    duration: 12,
-    uploads: "3 bills/day",
-    razorpayLink: "https://rzp.io/rzp/OoBrREt",
-    color: "from-yellow-400 to-orange-500",
-    popular: true,
-    features: [
-      "3 uploads per day",
-      "Scratch cards enabled",
-      "Coin rewards",
-      "Valid for 12 months",
-    ],
-  },
-  {
-    name: "20 Months",
     price: "₹199",
     period: "/plan",
-    duration: 20,
+    duration: 12,
     uploads: "3 bills/day",
     razorpayLink: "https://rzp.io/rzp/mUmctex",
     color: "from-purple-400 to-pink-600",
@@ -115,7 +119,7 @@ export default function Landing() {
       "3 uploads per day",
       "Scratch cards enabled",
       "Coin rewards",
-      "Valid for 20 months",
+      "Valid for 12 months",
     ],
   },
 ];
@@ -504,6 +508,101 @@ export default function Landing() {
                 </GlassCard>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="py-20 px-6">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Get In Touch</h2>
+            <p className="text-xl text-slate-600 dark:text-slate-400">Let's discuss your next project or opportunity</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Contact Info */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <GlassCard className="p-8 h-full">
+                <h3 className="text-2xl font-bold mb-8">Contact Information</h3>
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-slate-800/50 flex items-center justify-center border border-white/10 dark:border-slate-700/50">
+                      <Mail className="w-6 h-6 text-blue-500" />
+                    </div>
+                    <div>
+                      <div className="text-sm text-slate-500">Email</div>
+                      <div className="font-medium text-slate-800 dark:text-slate-200">support@drawboxs.com</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-slate-800/50 flex items-center justify-center border border-white/10 dark:border-slate-700/50">
+                      <MapPin className="w-6 h-6 text-cyan-500" />
+                    </div>
+                    <div>
+                      <div className="text-sm text-slate-500">Location</div>
+                      <div className="font-medium text-slate-800 dark:text-slate-200">Hyderabad, India</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-slate-800/50 flex items-center justify-center border border-white/10 dark:border-slate-700/50">
+                      <Phone className="w-6 h-6 text-green-500" />
+                    </div>
+                    <div>
+                      <div className="text-sm text-slate-500">Phone</div>
+                      <div className="font-medium text-slate-800 dark:text-slate-200">Available on request</div>
+                    </div>
+                  </div>
+                </div>
+              </GlassCard>
+            </motion.div>
+
+            {/* Contact Form */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <GlassCard className="p-8">
+                <form className="space-y-4">
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    className="w-full px-4 py-3 rounded-xl backdrop-blur-xl bg-white/5 dark:bg-black/20 border border-slate-300 dark:border-white/10 outline-none focus:border-cyan-500 transition-colors placeholder:text-slate-500"
+                  />
+                  <input
+                    type="email"
+                    placeholder="Your Email"
+                    className="w-full px-4 py-3 rounded-xl backdrop-blur-xl bg-white/5 dark:bg-black/20 border border-slate-300 dark:border-white/10 outline-none focus:border-cyan-500 transition-colors placeholder:text-slate-500"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Subject"
+                    className="w-full px-4 py-3 rounded-xl backdrop-blur-xl bg-white/5 dark:bg-black/20 border border-slate-300 dark:border-white/10 outline-none focus:border-cyan-500 transition-colors placeholder:text-slate-500"
+                  />
+                  <textarea
+                    placeholder="Your Message"
+                    rows={4}
+                    className="w-full px-4 py-3 rounded-xl backdrop-blur-xl bg-white/5 dark:bg-black/20 border border-slate-300 dark:border-white/10 outline-none focus:border-cyan-500 transition-colors placeholder:text-slate-500 resize-none"
+                  ></textarea>
+                  <button type="button" className="w-full py-3 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-semibold transition-colors flex items-center justify-center gap-2">
+                    <Send className="w-4 h-4" />
+                    Send Message
+                  </button>
+                </form>
+              </GlassCard>
+            </motion.div>
           </div>
         </div>
       </section>

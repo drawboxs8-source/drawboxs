@@ -12,40 +12,40 @@ import { Eye, EyeOff } from "lucide-react";
 
 export default function Register() {
   const [showApproval, setShowApproval] = useState(false);
-const [formData, setFormData] = useState({
-  name: "",
-  email: "",
-  phone: "",
-  password: "",
-  referralCode: new URLSearchParams(window.location.search).get("ref") || ""
-});
-const handleChange = (e: any) => {
-  setFormData({
-    ...formData,
-    [e.target.name]: e.target.value
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    referralCode: new URLSearchParams(window.location.search).get("ref") || ""
   });
-};
-const [showPassword, setShowPassword] = useState(false);
+  const handleChange = (e: any) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+  const [showPassword, setShowPassword] = useState(false);
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  try {
-    await API.post("/auth/register", formData);
+    try {
+      await API.post("/auth/register", formData);
 
-    setShowApproval(true);
+      setShowApproval(true);
 
-  } catch (error) {
-    console.log(error);
-    alert("Registration Failed");
-  }
-};
+    } catch (error) {
+      console.log(error);
+      alert("Registration Failed");
+    }
+  };
 
 
   return (
     <div className="min-h-screen">
       <Header />
-      
+
       <div className="pt-32 pb-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -102,13 +102,13 @@ const handleSubmit = async (e: React.FormEvent) => {
                       <label className="block text-sm font-semibold mb-2">Full Name</label>
                       <div className="relative">
                         <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                     <input
-  type="text"
-  name="name"
-  onChange={handleChange}
-  placeholder="Enter your Name"
-  className="w-full pl-12 pr-4 py-3 rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50"
-/>
+                        <input
+                          type="text"
+                          name="name"
+                          onChange={handleChange}
+                          placeholder="Enter your Name"
+                          className="w-full pl-12 pr-4 py-3 rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50"
+                        />
 
                       </div>
                     </div>
@@ -137,7 +137,6 @@ const handleSubmit = async (e: React.FormEvent) => {
                           type="tel"
                           name="phone"
                           onChange={handleChange}
-                          placeholder="+91 9876543210"
                           className="w-full pl-12 pr-4 py-3 rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50 focus:ring-2 focus:ring-cyan-500 dark:focus:ring-violet-500 outline-none transition-all"
                           required
                         />
@@ -146,67 +145,67 @@ const handleSubmit = async (e: React.FormEvent) => {
 
                     {/* Password */}
                     <div>
-  <label className="block text-sm font-semibold mb-2">
-    Password
-  </label>
+                      <label className="block text-sm font-semibold mb-2">
+                        Password
+                      </label>
 
-  <div className="relative">
+                      <div className="relative">
 
-  <Lock
-  className="
+                        <Lock
+                          className="
     absolute left-4 top-1/2 -translate-y-1/2
     w-5 h-5
     text-black dark:text-white
   "
-/>
+                        />
 
-    {/* INPUT */}
-    <input
-      type={showPassword ? "text" : "password"}
-      name="password"
-      onChange={handleChange}
-      placeholder="••••••••"
-      className="w-full pl-12 pr-12 py-3 rounded-2xl
+                        {/* INPUT */}
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          name="password"
+                          onChange={handleChange}
+                          placeholder="••••••••"
+                          className="w-full pl-12 pr-12 py-3 rounded-2xl
       backdrop-blur-xl bg-white/60 dark:bg-slate-800/60
       border border-white/20 dark:border-slate-700/50
       focus:ring-2 focus:ring-cyan-500 dark:focus:ring-violet-500
       outline-none transition-all"
-      required
-    />
+                          required
+                        />
 
-    {/* SHOW / HIDE ICON */}
-    <button
-      type="button"
-      onClick={() => setShowPassword(!showPassword)}
-      className="absolute right-4 top-1/2 -translate-y-1/2"
-    >
-      {showPassword ? (
-        <EyeOff className="w-5 h-5 text-black dark:text-white" />
-      ) : (
-        <Eye className="w-5 h-5 text-black dark:text-white" />
-      )}
-    </button>
+                        {/* SHOW / HIDE ICON */}
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2"
+                        >
+                          {showPassword ? (
+                            <EyeOff className="w-5 h-5 text-black dark:text-white" />
+                          ) : (
+                            <Eye className="w-5 h-5 text-black dark:text-white" />
+                          )}
+                        </button>
 
-  </div>
-</div>
+                      </div>
+                    </div>
 
-{/* Referral Code (Optional) */}
-<div>
-  <label className="block text-sm font-semibold mb-2">
-    Referral Code (Optional)
-  </label>
-  <div className="relative">
-    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-    <input
-      type="text"
-      name="referralCode"
-      onChange={handleChange}
-      value={formData.referralCode}
-      placeholder="Referral Code (if you have one)"
-      className="w-full pl-12 pr-4 py-3 rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50 focus:ring-2 focus:ring-cyan-500 dark:focus:ring-violet-500 outline-none transition-all"
-    />
-  </div>
-</div>
+                    {/* Referral Code (Optional) */}
+                    <div>
+                      <label className="block text-sm font-semibold mb-2">
+                        Referral Code (Optional)
+                      </label>
+                      <div className="relative">
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                        <input
+                          type="text"
+                          name="referralCode"
+                          onChange={handleChange}
+                          value={formData.referralCode}
+                          placeholder="Referral Code (if you have one)"
+                          className="w-full pl-12 pr-4 py-3 rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50 focus:ring-2 focus:ring-cyan-500 dark:focus:ring-violet-500 outline-none transition-all"
+                        />
+                      </div>
+                    </div>
 
 
                     <label className="flex items-start gap-2 cursor-pointer text-sm">
@@ -252,7 +251,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">
                     Join thousands of users earning daily with Drawboxs
                   </p>
-                  
+
                   <div className="space-y-6">
                     {[
                       { value: '50,000+', label: 'Active Users' },

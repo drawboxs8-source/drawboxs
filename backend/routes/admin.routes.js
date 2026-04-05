@@ -292,4 +292,26 @@ res.status(500).json("Stats failed");
 }
 );
 
+const Admin = require("../models/Admin.model");
+const bcrypt = require("bcryptjs");
+
+router.put(
+  "/change-password",
+  async (req, res) => {
+    try {
+      const { newPassword } = req.body;
+      const hash = await bcrypt.hash(newPassword, 10);
+      await Admin.findOneAndUpdate(
+        { email: "admin@drawboxs.com" },
+        { password: hash },
+        { upsert: true }
+      );
+      res.json("Password updated successfully");
+    } catch (err) {
+      console.log(err);
+      res.status(500).json("Failed to update password");
+    }
+  }
+);
+
 module.exports = router;

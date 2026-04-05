@@ -8,14 +8,31 @@ import GlowButton from '../components/GlowButton';
 export default function Pricing() {
   const plans = [
   {
-    name: "6 Months",
+    name: "3 Months",
     icon: Star,
     price: "₹99",
     period: "/plan",
-    duration: 6,
+    duration: 3,
     uploads: "3 bills/day",
     razorpayLink: "https://rzp.io/rzp/JJ11TXZ",
     color: "from-cyan-400 to-blue-600",
+    features: [
+      "3 uploads per day",
+      "Scratch cards enabled",
+      "Coin rewards",
+      "Valid for 3 months",
+    ],
+  },
+  {
+    name: "6 Months",
+    icon: Zap,
+    price: "₹159",
+    period: "/plan",
+    duration: 6,
+    uploads: "3 bills/day",
+    razorpayLink: "https://rzp.io/rzp/OoBrREt",
+    color: "from-yellow-400 to-orange-500",
+    popular: true,
     features: [
       "3 uploads per day",
       "Scratch cards enabled",
@@ -25,27 +42,10 @@ export default function Pricing() {
   },
   {
     name: "12 Months",
-    icon: Zap,
-    price: "₹159",
-    period: "/plan",
-    duration: 12,
-    uploads: "3 bills/day",
-    razorpayLink: "https://rzp.io/rzp/OoBrREt",
-    color: "from-yellow-400 to-orange-500",
-    popular: true,
-    features: [
-      "3 uploads per day",
-      "Scratch cards enabled",
-      "Coin rewards",
-      "Valid for 12 months",
-    ],
-  },
-  {
-    name: "20 Months",
     icon: Crown,
     price: "₹199",
     period: "/plan",
-    duration: 20,
+    duration: 12,
     uploads: "3 bills/day",
     razorpayLink: "https://rzp.io/rzp/mUmctex",
     color: "from-purple-400 to-pink-600",
@@ -53,7 +53,7 @@ export default function Pricing() {
       "3 uploads per day",
       "Scratch cards enabled",
       "Coin rewards",
-      "Valid for 20 months",
+      "Valid for 12 months",
     ],
   },
 ];
@@ -190,13 +190,13 @@ export default function Pricing() {
               Feature
             </th>
             <th className="text-center py-4 px-6 font-semibold">
+              3 Months
+            </th>
+            <th className="text-center py-4 px-6 font-semibold">
               6 Months
             </th>
             <th className="text-center py-4 px-6 font-semibold">
               12 Months
-            </th>
-            <th className="text-center py-4 px-6 font-semibold">
-              20 Months
             </th>
           </tr>
         </thead>
@@ -226,13 +226,13 @@ export default function Pricing() {
               Plan Validity
             </td>
             <td className="text-center py-4 px-6">
+              3 Months
+            </td>
+            <td className="text-center py-4 px-6">
               6 Months
             </td>
             <td className="text-center py-4 px-6">
               12 Months
-            </td>
-            <td className="text-center py-4 px-6">
-              20 Months
             </td>
           </tr>
 

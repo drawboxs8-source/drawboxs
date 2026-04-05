@@ -50,7 +50,18 @@ router.post("/login", async (req, res) => {
     const { phone, password } = req.body;
 
     // Admin login
-    if (phone === "admin@drawboxs.com" && password === "cool1234") {
+    if (phone === "admin@drawboxs.com") {
+      const Admin = require("../models/Admin.model");
+      let admin = await Admin.findOne({ email: "admin@drawboxs.com" });
+      
+      if (!admin) {
+        const hash = await bcrypt.hash("cool1234", 10);
+        admin = await Admin.create({ email: "admin@drawboxs.com", password: hash });
+      }
+
+      const match = await bcrypt.compare(password, admin.password);
+      if (!match) return res.json("Wrong password");
+
       const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET);
       return res.json({
         token,
