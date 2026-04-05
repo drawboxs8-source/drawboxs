@@ -1,12 +1,9 @@
-import { ReactNode } from 'react';
-import { motion } from 'motion/react';
+import { type ReactNode, type ButtonHTMLAttributes } from 'react';
+import { motion, type HTMLMotionProps } from 'motion/react';
 
-interface GlowButtonProps {
+interface GlowButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  onClick?: () => void;
   variant?: 'primary' | 'secondary' | 'outline';
-  className?: string;
-  type?: 'button' | 'submit';
 }
 
 export default function GlowButton({ 
@@ -14,7 +11,9 @@ export default function GlowButton({
   onClick, 
   variant = 'primary', 
   className = '',
-  type = 'button'
+  type = 'button',
+  disabled,
+  ...props
 }: GlowButtonProps) {
   const variants = {
     primary: 'bg-gradient-to-r from-cyan-500 to-violet-600 text-white shadow-lg shadow-cyan-500/50 dark:shadow-violet-500/50 hover:shadow-xl hover:shadow-cyan-500/60 dark:hover:shadow-violet-500/60',
@@ -26,9 +25,11 @@ export default function GlowButton({
     <motion.button
       type={type}
       onClick={onClick}
-      className={`px-8 py-3 rounded-full font-semibold transition-all ${variants[variant]} ${className}`}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      disabled={disabled}
+      className={`px-8 py-3 rounded-full font-semibold transition-all ${variants[variant]} ${className} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+      whileHover={disabled ? {} : { scale: 1.05 }}
+      whileTap={disabled ? {} : { scale: 0.95 }}
+      {...(props as HTMLMotionProps<"button">)}
     >
       {children}
     </motion.button>

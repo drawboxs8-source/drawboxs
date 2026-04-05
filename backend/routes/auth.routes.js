@@ -47,10 +47,10 @@ router.post("/register", async (req, res) => {
 /// =========================
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { phone, password } = req.body;
 
     // Admin login
-    if (email === "admin@drawboxs.com" && password === "cool1234") {
+    if (phone === "admin@drawboxs.com" && password === "cool1234") {
       const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET);
       return res.json({
         token,
@@ -59,7 +59,7 @@ router.post("/login", async (req, res) => {
     }
 
     // User login
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ phone });
     if (!user) return res.json("User not found");
     if (!user.isApproved) return res.json("Admin approval pending");
 

@@ -18,7 +18,7 @@ const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-  email: "",
+  phone: "",
   password: ""
   });
 
@@ -175,17 +175,16 @@ if (res.data.token) {
                   <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Social Login */}
 
-                    {/* Email */}
+                    {/* Phone/Admin Login */}
                     <div>
-                      <label className="block text-sm font-semibold mb-2">Email</label>
+                      <label className="block text-sm font-semibold mb-2">Phone Number</label>
                       <div className="relative">
-                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                         <input
-                          type="email"
-                          name="email"
+                          type="text"
+                          name="phone"
                           onChange={handleChange}
-                          placeholder="your@email.com"
-                          className="w-full pl-12 pr-4 py-3 rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50 focus:ring-2 focus:ring-cyan-500 dark:focus:ring-violet-500 outline-none transition-all"
+                          placeholder="Enter your phone number"
+                          className="w-full pl-4 pr-4 py-3 rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50 focus:ring-2 focus:ring-cyan-500 dark:focus:ring-violet-500 outline-none transition-all"
                           required
                         />
                       </div>

@@ -370,7 +370,7 @@ export default function Landing() {
         className="flex gap-8 w-max"
         animate={{ x: ["0%", "-50%"] }}
         transition={{
-          duration: 20,
+          duration: 10,
           ease: "linear",
           repeat: Infinity,
         }}
