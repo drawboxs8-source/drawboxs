@@ -122,7 +122,6 @@ const handleSubmit = async (e: React.FormEvent) => {
                           type="email"
                           name="email"
                           onChange={handleChange}
-                          placeholder="your@email.com"
                           className="w-full pl-12 pr-4 py-3 rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50 focus:ring-2 focus:ring-cyan-500 dark:focus:ring-violet-500 outline-none transition-all"
                           required
                         />
