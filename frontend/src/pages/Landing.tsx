@@ -19,10 +19,42 @@ import {
 import Header from '../components/Header';
 import GlassCard from '../components/GlassCard';
 import GlowButton from '../components/GlowButton';
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
+import toast from 'react-hot-toast';
+import { API } from '../services/api';
 
 export default function Landing() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  const [contactData, setContactData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [sendingMessage, setSendingMessage] = useState(false);
+
+  const handleContactSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!contactData.name || !contactData.email || !contactData.message) {
+      toast.error("Please fill in the required fields");
+      return;
+    }
+
+    setSendingMessage(true);
+    const toastId = toast.loading("Sending message...");
+    try {
+      await API.post("/contact/submit", contactData);
+      toast.dismiss(toastId);
+      toast.success("Message sent successfully!");
+      setContactData({ name: '', email: '', subject: '', message: '' });
+    } catch {
+      toast.dismiss(toastId);
+      toast.error("Failed to send message. Please try again later.");
+    } finally {
+      setSendingMessage(false);
+    }
+  };
 
   const features = [
     {
@@ -575,30 +607,41 @@ export default function Landing() {
               viewport={{ once: true }}
             >
               <GlassCard className="p-8">
-                <form className="space-y-4">
+                <form onSubmit={handleContactSubmit} className="space-y-4">
                   <input
                     type="text"
+                    required
+                    value={contactData.name}
+                    onChange={(e) => setContactData({ ...contactData, name: e.target.value })}
                     placeholder="Your Name"
                     className="w-full px-4 py-3 rounded-xl backdrop-blur-xl bg-white/5 dark:bg-black/20 border border-slate-300 dark:border-white/10 outline-none focus:border-cyan-500 transition-colors placeholder:text-slate-500"
                   />
                   <input
                     type="email"
+                    required
+                    value={contactData.email}
+                    onChange={(e) => setContactData({ ...contactData, email: e.target.value })}
                     placeholder="Your Email"
                     className="w-full px-4 py-3 rounded-xl backdrop-blur-xl bg-white/5 dark:bg-black/20 border border-slate-300 dark:border-white/10 outline-none focus:border-cyan-500 transition-colors placeholder:text-slate-500"
                   />
                   <input
                     type="text"
+                    value={contactData.subject}
+                    onChange={(e) => setContactData({ ...contactData, subject: e.target.value })}
                     placeholder="Subject"
                     className="w-full px-4 py-3 rounded-xl backdrop-blur-xl bg-white/5 dark:bg-black/20 border border-slate-300 dark:border-white/10 outline-none focus:border-cyan-500 transition-colors placeholder:text-slate-500"
                   />
                   <textarea
+                    required
+                    value={contactData.message}
+                    onChange={(e) => setContactData({ ...contactData, message: e.target.value })}
                     placeholder="Your Message"
                     rows={4}
                     className="w-full px-4 py-3 rounded-xl backdrop-blur-xl bg-white/5 dark:bg-black/20 border border-slate-300 dark:border-white/10 outline-none focus:border-cyan-500 transition-colors placeholder:text-slate-500 resize-none"
                   ></textarea>
-                  <button type="button" className="w-full py-3 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-semibold transition-colors flex items-center justify-center gap-2">
+                  <button type="submit" disabled={sendingMessage} className="w-full py-3 rounded-xl bg-blue-500 hover:bg-blue-600 disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold transition-colors flex items-center justify-center gap-2">
                     <Send className="w-4 h-4" />
-                    Send Message
+                    {sendingMessage ? 'Sending...' : 'Send Message'}
                   </button>
                 </form>
               </GlassCard>

@@ -41,9 +41,9 @@ const handleLogout = () => {
               </span>
             </Link>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               {isLanding && (
-                <>
+                <div className="hidden sm:flex items-center gap-4">
                   <Link
                     to="/login"
                     className="px-6 py-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
@@ -56,7 +56,7 @@ const handleLogout = () => {
                   >
                     Get Started
                   </Link>
-                </>
+                </div>
               )}
               <button
                 onClick={toggleTheme}
@@ -65,8 +65,44 @@ const handleLogout = () => {
               >
                 {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
               </button>
+              
+              {isLanding && (
+                <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="sm:hidden p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                >
+                  {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                </button>
+              )}
             </div>
           </div>
+          
+          {/* Mobile Navigation for Landing */}
+          <AnimatePresence>
+            {mobileMenuOpen && isLanding && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="sm:hidden mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 flex flex-col gap-3"
+              >
+                <Link
+                  to="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-4 py-2 w-full text-center rounded-xl bg-slate-100 dark:bg-slate-800 transition-colors"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-4 py-2 w-full text-center rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 text-white shadow-lg transition-all"
+                >
+                  Get Started
+                </Link>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </nav>
       </header>
     );
@@ -110,12 +146,12 @@ const handleLogout = () => {
             >
               {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
             </button>
-<button
-  onClick={handleLogout}
-  className="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 text-white hover:opacity-90 transition-all shadow-lg"
->
-  Logout
-</button>
+            <button
+              onClick={handleLogout}
+              className="hidden lg:block px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 text-white hover:opacity-90 transition-all shadow-lg"
+            >
+              Logout
+            </button>
             
             {/* Mobile menu button */}
             <button
@@ -151,6 +187,12 @@ const handleLogout = () => {
                     {link.label}
                   </Link>
                 ))}
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 mt-2 w-full text-left rounded-xl bg-gradient-to-r from-red-500 to-orange-600 text-white shadow-lg transition-all"
+                >
+                  Logout
+                </button>
               </div>
             </motion.div>
           )}

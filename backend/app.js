@@ -22,6 +22,7 @@ app.use(
 );
 app.use("/api/rewards", require("./routes/reward.routes"));
 app.use("/api/admin/rewards", require("./routes/admin.rewards"));
+app.use("/api/contact", require("./routes/contact.routes"));
 
 app.get("/api/user/me", auth, async (req, res) => {
   try {
