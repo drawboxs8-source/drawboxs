@@ -149,40 +149,33 @@ export default function Register() {
                         Password
                       </label>
 
-                      <div className="relative">
+                      <div className="flex items-center w-full rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50 focus-within:ring-2 focus-within:ring-cyan-500 dark:focus-within:ring-violet-500 transition-all overflow-hidden">
+                        
+                        {/* LOCK ICON */}
+                        <div className="pl-4 pr-2 text-slate-700 dark:text-slate-300 flex items-center justify-center">
+                          <Lock className="w-5 h-5" />
+                        </div>
 
-                        <Lock
-                          className="
-    absolute left-4 top-1/2 -translate-y-1/2
-    w-5 h-5
-    text-black dark:text-white
-  "
-                        />
-
-                        {/* INPUT */}
+                        {/* PASSWORD INPUT */}
                         <input
                           type={showPassword ? "text" : "password"}
                           name="password"
                           onChange={handleChange}
                           placeholder="••••••••"
-                          className="w-full pl-12 pr-12 py-3 rounded-2xl
-      backdrop-blur-xl bg-white/60 dark:bg-slate-800/60
-      border border-white/20 dark:border-slate-700/50
-      focus:ring-2 focus:ring-cyan-500 dark:focus:ring-violet-500
-      outline-none transition-all"
+                          className="w-full py-3 bg-transparent outline-none [&::-ms-reveal]:hidden [&::-webkit-reveal]:hidden"
                           required
                         />
 
-                        {/* SHOW / HIDE ICON */}
+                        {/* EYE ICON */}
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2"
+                          className="px-4 h-full flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-violet-400 transition-colors outline-none"
                         >
                           {showPassword ? (
-                            <EyeOff className="w-5 h-5 text-black dark:text-white" />
+                            <EyeOff className="w-5 h-5" />
                           ) : (
-                            <Eye className="w-5 h-5 text-black dark:text-white" />
+                            <Eye className="w-5 h-5" />
                           )}
                         </button>
 
