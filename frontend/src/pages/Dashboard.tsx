@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { Coins, Upload, TrendingUp, Wallet, Clock, Users } from 'lucide-react';
+import { Coins, Upload, TrendingUp, Wallet, Clock, Users, X } from 'lucide-react';
 import { Link } from 'react-router';
 import Header from '../components/Header';
 import GlassCard from '../components/GlassCard';
@@ -577,7 +577,14 @@ if (percentage > 40 && !isRevealed) {
         exit={{ scale: 0.8, y: 50 }}
         className="relative max-w-md w-full"
       >
-        <GlassCard className="p-8">
+        <GlassCard className="p-8 relative">
+          <button 
+            onClick={onComplete}
+            className="absolute top-4 right-4 p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-colors z-10"
+            title="Close"
+          >
+            <X className="w-6 h-6" />
+          </button>
           <div className="text-center mb-6">
             <motion.div
               animate={{ rotate: [0, 10, -10, 0] }}
