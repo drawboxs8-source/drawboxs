@@ -35,6 +35,24 @@ app.get("/api/user/me", auth, async (req, res) => {
     }
 
     const user = await User.findById(req.user.id).select('-password');
+    
+    if (user) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const lastDate = user.lastUploadDate ? new Date(user.lastUploadDate) : null;
+
+      if (!lastDate || (lastDate.setHours(0, 0, 0, 0) !== today.getTime())) {
+        if (user.billsUploadedToday > 0 || user.coinsEarnedToday > 0) {
+          user.billsUploadedToday = 0;
+          user.coinsEarnedToday = 0;
+          await User.updateOne(
+            { _id: user._id },
+            { $set: { billsUploadedToday: 0, coinsEarnedToday: 0 } }
+          );
+        }
+      }
+    }
+
     res.json(user);
 
   } catch (err) {
