@@ -152,7 +152,7 @@ export default function Register() {
                       <div className="flex items-center w-full rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50 focus-within:ring-2 focus-within:ring-cyan-500 dark:focus-within:ring-violet-500 transition-all overflow-hidden">
                         
                         {/* LOCK ICON */}
-                        <div className="pl-4 pr-2 text-slate-700 dark:text-slate-300 flex items-center justify-center">
+                        <div className="pl-4 text-slate-400 flex items-center justify-center">
                           <Lock className="w-5 h-5" />
                         </div>
 
@@ -162,7 +162,7 @@ export default function Register() {
                           name="password"
                           onChange={handleChange}
                           placeholder="••••••••"
-                          className="w-full py-3 bg-transparent outline-none [&::-ms-reveal]:hidden [&::-webkit-reveal]:hidden"
+                          className="w-full pl-3 py-3 bg-transparent outline-none [&::-ms-reveal]:hidden [&::-webkit-reveal]:hidden"
                           required
                         />
 
