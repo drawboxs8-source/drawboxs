@@ -335,11 +335,11 @@ export default function AdminDashboard() {
             transition={{ delay: 0.4 }}
             className="mb-8"
           >
-            <GlassCard className="p-2">
-              <div className="flex gap-2">
+            <GlassCard className="p-2 overflow-hidden">
+              <div className="flex gap-2 overflow-x-auto pb-2 -mb-2">
                 <button
                   onClick={() => setActiveTab('approvals')}
-                  className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-all ${
+                  className={`flex-1 shrink-0 whitespace-nowrap px-6 py-3 rounded-xl font-semibold transition-all ${
                     activeTab === 'approvals'
                       ? 'bg-gradient-to-r from-cyan-500 to-violet-600 text-white shadow-lg'
                       : 'hover:bg-white/20 dark:hover:bg-slate-800/20'
@@ -349,7 +349,7 @@ export default function AdminDashboard() {
                 </button>
                 <button
                   onClick={() => setActiveTab('screenshots')}
-                  className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-all ${
+                  className={`flex-1 shrink-0 whitespace-nowrap px-6 py-3 rounded-xl font-semibold transition-all ${
                     activeTab === 'screenshots'
                       ? 'bg-gradient-to-r from-cyan-500 to-violet-600 text-white shadow-lg'
                       : 'hover:bg-white/20 dark:hover:bg-slate-800/20'
@@ -359,7 +359,7 @@ export default function AdminDashboard() {
                 </button>
                 <button
                   onClick={() => setActiveTab('withdrawals')}
-                  className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-all ${
+                  className={`flex-1 shrink-0 whitespace-nowrap px-6 py-3 rounded-xl font-semibold transition-all ${
                     activeTab === 'withdrawals'
                       ? 'bg-gradient-to-r from-cyan-500 to-violet-600 text-white shadow-lg'
                       : 'hover:bg-white/20 dark:hover:bg-slate-800/20'
@@ -369,7 +369,7 @@ export default function AdminDashboard() {
                 </button>
                 <button
                   onClick={() => setActiveTab('rewards')}
-                  className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-all ${
+                  className={`flex-1 shrink-0 whitespace-nowrap px-6 py-3 rounded-xl font-semibold transition-all ${
                     activeTab === 'rewards'
                       ? 'bg-gradient-to-r from-cyan-500 to-violet-600 text-white shadow-lg'
                       : 'hover:bg-white/20 dark:hover:bg-slate-800/20'
@@ -379,7 +379,7 @@ export default function AdminDashboard() {
                 </button>
                 <button
                   onClick={() => setActiveTab('settings')}
-                  className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-all ${
+                  className={`flex-1 shrink-0 whitespace-nowrap px-6 py-3 rounded-xl font-semibold transition-all ${
                     activeTab === 'settings'
                       ? 'bg-gradient-to-r from-cyan-500 to-violet-600 text-white shadow-lg'
                       : 'hover:bg-white/20 dark:hover:bg-slate-800/20'

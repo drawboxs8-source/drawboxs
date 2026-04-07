@@ -639,10 +639,10 @@ export default function Landing() {
                     rows={4}
                     className="w-full px-4 py-3 rounded-xl backdrop-blur-xl bg-white/5 dark:bg-black/20 border border-slate-300 dark:border-white/10 outline-none focus:border-cyan-500 transition-colors placeholder:text-slate-500 resize-none"
                   ></textarea>
-                  <button type="submit" disabled={sendingMessage} className="w-full py-3 rounded-xl bg-blue-500 hover:bg-blue-600 disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold transition-colors flex items-center justify-center gap-2">
+                  <GlowButton type="submit" disabled={sendingMessage} className="w-full flex items-center justify-center gap-2">
                     <Send className="w-4 h-4" />
                     {sendingMessage ? 'Sending...' : 'Send Message'}
-                  </button>
+                  </GlowButton>
                 </form>
               </GlassCard>
             </motion.div>
