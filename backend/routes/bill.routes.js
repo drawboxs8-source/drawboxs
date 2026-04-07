@@ -154,9 +154,12 @@ router.post(
         ? new Date(user.lastUploadDate)
         : null;
 
+      let needsResetSave = false;
+
       if (!lastDate) {
         user.billsUploadedToday = 0;
         user.coinsEarnedToday = 0;  // ✅ RESET COINS TOO
+        needsResetSave = true;
       }
       else {
         lastDate.setHours(0, 0, 0, 0);
@@ -164,7 +167,12 @@ router.post(
         if (lastDate.getTime() !== today.getTime()) {
           user.billsUploadedToday = 0;
           user.coinsEarnedToday = 0;  // ✅ RESET COINS TOO
+          needsResetSave = true;
         }
+      }
+
+      if (needsResetSave) {
+        await user.save();
       }
 
       /// 🔥 STREAM UPLOAD TO CLOUDINARY
