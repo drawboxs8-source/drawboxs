@@ -152,8 +152,8 @@ export default function Register() {
                       <div className="flex items-center w-full rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50 focus-within:ring-2 focus-within:ring-cyan-500 dark:focus-within:ring-violet-500 transition-all overflow-hidden">
                         
                         {/* LOCK ICON */}
-                        <div className="pl-4 text-slate-400 flex items-center justify-center">
-                          <Lock className="w-5 h-5" />
+                        <div className="pl-4 shrink-0 text-slate-400 flex items-center justify-center">
+                          <Lock className="w-5 h-5 shrink-0" />
                         </div>
 
                         {/* PASSWORD INPUT */}
@@ -170,12 +170,12 @@ export default function Register() {
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="px-4 h-full flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-violet-400 transition-colors outline-none"
+                          className="px-4 h-full shrink-0 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-violet-400 transition-colors outline-none"
                         >
                           {showPassword ? (
-                            <EyeOff className="w-5 h-5" />
+                            <EyeOff className="w-5 h-5 shrink-0" />
                           ) : (
-                            <Eye className="w-5 h-5" />
+                            <Eye className="w-5 h-5 shrink-0" />
                           )}
                         </button>
 
