@@ -144,7 +144,7 @@ useEffect(() => {
 
               <div className="overflow-x-auto">
 
-                <table className="w-full">
+                <table className="w-full min-w-[800px]">
 
                   <thead>
                     <tr className="border-b">
@@ -170,7 +170,7 @@ useEffect(() => {
                       </th>
 
                       <th className="text-center py-3">
-                        Actions
+                        Delete
                       </th>
 
                     </tr>
@@ -263,14 +263,14 @@ useEffect(() => {
 
                           </td>
 
-                          {/* Actions */}
+                          {/* Delete Action */}
                           <td className="py-4 text-center">
                             <button
                               onClick={() => handleDelete(t.type, t.id)}
-                              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                              className="px-4 py-2 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition-colors font-semibold text-sm"
                               title="Delete from history"
                             >
-                              <Trash2 className="w-5 h-5 mx-auto" />
+                              Delete
                             </button>
                           </td>
 
