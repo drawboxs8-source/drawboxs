@@ -267,7 +267,7 @@ useEffect(() => {
                           <td className="py-4 text-center">
                             <button
                               onClick={() => handleDelete(t.type, t.id)}
-                              className="px-4 py-2 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition-colors font-semibold text-sm"
+                              className="px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-lg transition-colors font-semibold text-sm shadow-md"
                               title="Delete from history"
                             >
                               Delete
