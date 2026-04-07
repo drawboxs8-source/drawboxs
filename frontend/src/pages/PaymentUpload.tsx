@@ -9,6 +9,7 @@ import GlassCard from '../components/GlassCard';
 import GlowButton from '../components/GlowButton';
 
 import { useState } from 'react';
+import { useSearchParams } from 'react-router';
 import { API } from "../services/api";
 import toast from "react-hot-toast";
 
@@ -20,10 +21,12 @@ export default function PaymentUpload() {
   const [status, setStatus] =
     useState<'idle' | 'pending'>('idle');
 
-  // 👉 PLAN DETAILS (Pricing page nundi pass cheyyachu later)
-  const planName = "Starter";
-  const planDuration = 1;
-  const amount = 199;
+  const [searchParams] = useSearchParams();
+
+  // 👉 PLAN DETAILS
+  const planName = searchParams.get('plan') || "Starter";
+  const planDuration = Number(searchParams.get('duration')) || 1;
+  const amount = Number(searchParams.get('amount')) || 199;
 
   // FILE CHANGE
   const handleFileChange = (

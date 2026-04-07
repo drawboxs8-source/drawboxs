@@ -139,6 +139,13 @@ router.post(
       if (!user.planPurchased)
         return res.json({ message: "Buy plan first" });
 
+      if (user.planExpiry && new Date(user.planExpiry) < new Date()) {
+        user.planPurchased = false;
+        user.canUploadBills = false;
+        await user.save();
+        return res.json({ message: "Your plan has expired. Please buy a new plan." });
+      }
+
       /// Daily reset FIX
       const today = new Date();
       today.setHours(0, 0, 0, 0);

@@ -154,7 +154,7 @@ export default function Pricing() {
 </a>
 
 {/* Upload Screenshot Button */}
-<Link to="/payment-upload">
+<Link to={`/payment-upload?plan=${encodeURIComponent(plan.name)}&duration=${plan.duration}&amount=${plan.price.replace('₹', '')}`}>
   <GlowButton
     variant="outline"
     className="w-full border-dashed"

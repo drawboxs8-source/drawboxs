@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { Coins, Upload, TrendingUp, Wallet, Clock, Users } from 'lucide-react';
+import { Link } from 'react-router';
 import Header from '../components/Header';
 import GlassCard from '../components/GlassCard';
 import { useEffect, useRef, useState } from "react";
@@ -39,8 +40,8 @@ const [billId, setBillId] = useState("");
     {
       icon: Wallet,
       label: "Withdrawable",
-      value: `₹${Math.floor((user?.coins ?? 0) / 100)}`,
-      change: user?.coins >= 100 ? "Ready" : "Min 5000 coins",
+      value: `₹${((user?.coins ?? 0) * 0.2).toFixed(1).replace(/\.0$/, '')}`,
+      change: (user?.coins ?? 0) >= 5000 ? "Ready" : "Min 5000 coins",
       color: "from-green-400 to-emerald-500",
     },
   ];
@@ -396,22 +397,22 @@ const handleScratchComplete = async () => {
     <div className="space-y-3">
 
       {/* View History */}
-      <a
-        href="/coins-history"
+      <Link
+        to="/coins-history"
         className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20 dark:hover:bg-slate-800/20 transition-colors"
       >
         <Coins className="w-5 h-5 text-cyan-600 dark:text-violet-400" />
         <span className="font-semibold">View History</span>
-      </a>
+      </Link>
 
       {/* Withdraw */}
-      <a
-        href="/withdrawal"
+      <Link
+        to="/withdrawal"
         className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20 dark:hover:bg-slate-800/20 transition-colors"
       >
         <Wallet className="w-5 h-5 text-cyan-600 dark:text-violet-400" />
         <span className="font-semibold">Withdraw Coins</span>
-      </a>
+      </Link>
 
     </div>
 
