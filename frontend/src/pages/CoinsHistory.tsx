@@ -3,8 +3,11 @@ import {
   Coins,
   Filter,
   TrendingUp,
-  Download
+  Download,
+  Trash2
 } from "lucide-react";
+
+import toast from "react-hot-toast";
 
 import Header from "../components/Header";
 import GlassCard from "../components/GlassCard";
@@ -45,6 +48,17 @@ useEffect(() => {
         return true;
       return t.type === filter;
     });
+
+  const handleDelete = async (type: string, id: string) => {
+    try {
+      await API.delete(`/history/coins-history/${type}/${id}`);
+      setTransactions(transactions.filter(t => t.id !== id));
+      toast.success("History entry removed");
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to remove entry");
+    }
+  };
 
   return (
     <div className="min-h-screen pb-20">
@@ -155,6 +169,10 @@ useEffect(() => {
                         Status
                       </th>
 
+                      <th className="text-center py-3">
+                        Actions
+                      </th>
+
                     </tr>
                   </thead>
 
@@ -243,6 +261,17 @@ useEffect(() => {
                               {t.status}
                             </span>
 
+                          </td>
+
+                          {/* Actions */}
+                          <td className="py-4 text-center">
+                            <button
+                              onClick={() => handleDelete(t.type, t.id)}
+                              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                              title="Delete from history"
+                            >
+                              <Trash2 className="w-5 h-5 mx-auto" />
+                            </button>
                           </td>
 
                         </motion.tr>

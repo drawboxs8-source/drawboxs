@@ -15,6 +15,11 @@ const billSchema =
     scratched: {
       type: Boolean,
       default: false
+    },
+
+    hiddenHistory: {
+      type: Boolean,
+      default: false
     }
 
   },

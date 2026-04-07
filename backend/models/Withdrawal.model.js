@@ -24,6 +24,10 @@ const withdrawalSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  hiddenHistory: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true

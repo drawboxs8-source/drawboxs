@@ -14,85 +14,85 @@ import toast from "react-hot-toast";
 
 export default function Login() {
   const [showApproval, setShowApproval] = useState(false);
-const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-  phone: "",
-  password: ""
+    phone: "",
+    password: ""
   });
 
   const handleChange = (e: any) => {
-  setFormData({
-    ...formData,
-    [e.target.name]: e.target.value
-  });
-};
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
 
 
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  try {
-    const res = await API.post(
-      "/auth/login",
-      formData
-    );
+    try {
+      const res = await API.post(
+        "/auth/login",
+        formData
+      );
 
-    /// If backend returned string → error case
-    if (typeof res.data === "string") {
+      /// If backend returned string → error case
+      if (typeof res.data === "string") {
 
-      if (res.data === "User not found") {
-        toast.error("User not registered");
-        return;
+        if (res.data === "User not found") {
+          toast.error("User not registered");
+          return;
+        }
+
+        if (res.data === "Wrong password") {
+          toast.error("Incorrect password");
+          return;
+        }
+
+        if (res.data === "Admin approval pending") {
+          setShowApproval(true);
+          return;
+        }
       }
 
-      if (res.data === "Wrong password") {
-        toast.error("Incorrect password");
-        return;
+      /// Success case → token exists
+      if (res.data.token) {
+
+        // Save token
+        localStorage.setItem(
+          "token",
+          res.data.token
+        );
+
+        // Save role
+        localStorage.setItem(
+          "role",
+          res.data.user.role
+        );
+
+        // Redirect based on role
+        if (res.data.user.role === "admin") {
+          navigate("/admin");        // 👈 your admin route
+        } else {
+          navigate("/dashboard");
+        }
       }
 
-      if (res.data === "Admin approval pending") {
-        setShowApproval(true);
-        return;
-      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Login Failed");
     }
-
-    /// Success case → token exists
-if (res.data.token) {
-
-  // Save token
-  localStorage.setItem(
-    "token",
-    res.data.token
-  );
-
-  // Save role
-  localStorage.setItem(
-    "role",
-    res.data.user.role
-  );
-
-  // Redirect based on role
-  if (res.data.user.role === "admin") {
-    navigate("/admin");        // 👈 your admin route
-  } else {
-    navigate("/dashboard");
-  }
-}
-
-  } catch (error) {
-    console.log(error);
-    toast.error("Login Failed");
-  }
-};
+  };
 
 
   return (
     <div className="min-h-screen">
       <Header />
-      
+
       <div className="pt-32 pb-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -117,7 +117,7 @@ if (res.data.token) {
                   <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">
                     Continue your journey with Drawboxs and keep earning coins
                   </p>
-                  
+
                   <div className="space-y-4">
                     {[
                       { icon: LogIn, text: 'Secure login' },
@@ -183,7 +183,7 @@ if (res.data.token) {
                           type="text"
                           name="phone"
                           onChange={handleChange}
-                          placeholder="Enter your phone number"
+                          placeholder=" Enter your phone number"
                           className="w-full pl-4 pr-4 py-3 rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50 focus:ring-2 focus:ring-cyan-500 dark:focus:ring-violet-500 outline-none transition-all"
                           required
                         />
@@ -191,29 +191,29 @@ if (res.data.token) {
                     </div>
 
                     {/* Password */}
-<div>
-  <label className="block text-sm font-semibold mb-2">
-    Password
-  </label>
+                    <div>
+                      <label className="block text-sm font-semibold mb-2">
+                        Password
+                      </label>
 
-  <div className="relative">
+                      <div className="relative">
 
-    {/* LOCK ICON */}
-    <Lock
-      className="
+                        {/* LOCK ICON */}
+                        <Lock
+                          className="
         absolute left-4 top-1/2 -translate-y-1/2
         w-5 h-5
         text-slate-700 dark:text-slate-300
       "
-    />
+                        />
 
-    {/* PASSWORD INPUT */}
-    <input
-      type={showPassword ? "text" : "password"}
-      name="password"
-      onChange={handleChange}
-      placeholder="••••••••"
-      className="
+                        {/* PASSWORD INPUT */}
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          name="password"
+                          onChange={handleChange}
+                          placeholder="••••••••"
+                          className="
         w-full pl-12 pr-12 py-3 rounded-2xl
         backdrop-blur-xl
         bg-white/60 dark:bg-slate-800/60
@@ -221,29 +221,29 @@ if (res.data.token) {
         focus:ring-2 focus:ring-cyan-500 dark:focus:ring-violet-500
         outline-none transition-all
       "
-      required
-    />
+                          required
+                        />
 
-    {/* EYE ICON */}
-    <button
-      type="button"
-      onClick={() => setShowPassword(!showPassword)}
-      className="
+                        {/* EYE ICON */}
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="
         absolute right-4 top-1/2 -translate-y-1/2
         text-slate-600 dark:text-slate-300
         hover:text-cyan-500 dark:hover:text-violet-400
         transition-colors
       "
-    >
-      {showPassword ? (
-        <EyeOff className="w-5 h-5" />
-      ) : (
-        <Eye className="w-5 h-5" />
-      )}
-    </button>
+                        >
+                          {showPassword ? (
+                            <EyeOff className="w-5 h-5" />
+                          ) : (
+                            <Eye className="w-5 h-5" />
+                          )}
+                        </button>
 
-  </div>
-</div>
+                      </div>
+                    </div>
 
 
                     <div className="flex items-center justify-between text-sm">

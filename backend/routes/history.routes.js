@@ -13,7 +13,8 @@ router.get("/coins-history", auth, async (req, res) => {
     const earnings =
       await Bill.find({
         userId: req.user.id,
-        scratched: true
+        scratched: true,
+        hiddenHistory: { $ne: true }
       });
 
     const earnTx =
@@ -30,11 +31,13 @@ router.get("/coins-history", auth, async (req, res) => {
     /// Withdrawals
     const withdrawals =
       await Withdrawal.find({
-        userId: req.user.id
+        userId: req.user.id,
+        hiddenHistory: { $ne: true }
       });
 
     const withdrawTx =
       withdrawals.map(w => ({
+        id: w._id,
         type: "withdraw",
         description: "Withdrawal",
         coins: `-${w.coins}`,
@@ -58,6 +61,29 @@ router.get("/coins-history", auth, async (req, res) => {
     res.status(500).json("Error");
   }
 
+});
+
+router.delete("/coins-history/:type/:id", auth, async (req, res) => {
+  try {
+    const { type, id } = req.params;
+    
+    if (type === "earn") {
+      await Bill.findOneAndUpdate(
+        { _id: id, userId: req.user.id },
+        { hiddenHistory: true }
+      );
+    } else if (type === "withdraw") {
+      await Withdrawal.findOneAndUpdate(
+        { _id: id, userId: req.user.id },
+        { hiddenHistory: true }
+      );
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json("Error deleting history");
+  }
 });
 
 module.exports = router;
