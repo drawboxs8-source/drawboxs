@@ -300,8 +300,8 @@ export default function Dashboard() {
                     onClick={handleUpload}
                     disabled={!selectedFile || uploading}
                     className={`w-full py-4 rounded-2xl font-bold text-lg transition-all ${selectedFile && !uploading
-                        ? "bg-gradient-to-r from-cyan-500 to-violet-600 text-white hover:shadow-2xl hover:scale-105"
-                        : "bg-slate-300 dark:bg-slate-700 text-slate-500 cursor-not-allowed"
+                      ? "bg-gradient-to-r from-cyan-500 to-violet-600 text-white hover:shadow-2xl hover:scale-105"
+                      : "bg-slate-300 dark:bg-slate-700 text-slate-500 cursor-not-allowed"
                       }`}
                   >
                     {uploading ? (
@@ -576,7 +576,7 @@ function ScratchCardOverlay({ coinsEarned, onComplete }: { coinsEarned: number; 
             <p className="text-white/70">Scratch to reveal your reward</p>
           </div>
 
-          <div 
+          <div
             className="relative mx-auto rounded-3xl overflow-hidden shadow-2xl mb-6"
             style={{ width: '300px', height: '300px' }}
           >
@@ -595,7 +595,7 @@ function ScratchCardOverlay({ coinsEarned, onComplete }: { coinsEarned: number; 
                   {coinsEarned} Coins
                 </div>
                 <div className="text-2xl text-black/90 font-semibold mb-4">Added</div>
-                <div className="inline-block px-6 py-2 bg-white text-green-600 font-bold rounded-full shadow-lg hover:scale-105 transition-transform cursor-pointer">
+                <div className="inline-block px-6 py-2 bg-white text-white-600 font-bold rounded-full shadow-lg hover:scale-105 transition-transform cursor-pointer">
                   See Rewards 🎁
                 </div>
               </motion.div>
