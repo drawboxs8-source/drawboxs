@@ -420,19 +420,22 @@ export default function Dashboard() {
                       <span className="font-semibold text-orange-500">Refer & Earn 100 Coins</span>
                     </div>
                     <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
-                      Share this link with your friends.
+                      Share this referral code with your friends.
                     </p>
                     <div className="flex items-center gap-2">
                       <input
                         type="text"
                         readOnly
-                        value={`${window.location.origin}/register?ref=${user?.referralCode || ''}`}
-                        className="flex-1 bg-white/50 dark:bg-slate-800/50 rounded-lg px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 outline-none"
+                        value={user?.referralCode || ''}
+                        className="flex-1 bg-white/50 dark:bg-slate-800/50 rounded-lg px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 outline-none font-mono font-bold tracking-widest text-center"
                       />
                       <button
                         onClick={() => {
-                          navigator.clipboard.writeText(`${window.location.origin}/register?ref=${user?.referralCode || ''}`);
-                          toast.success("Referral link copied!");
+                          const code = user?.referralCode || '';
+                          if (code) {
+                            navigator.clipboard.writeText(code);
+                            toast.success("Referral code copied!");
+                          }
                         }}
                         className="px-3 py-2 bg-gradient-to-r from-orange-400 to-yellow-500 text-white rounded-lg text-sm font-semibold hover:shadow-lg transition-all"
                       >
