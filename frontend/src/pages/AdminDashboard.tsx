@@ -27,6 +27,7 @@ export default function AdminDashboard() {
     title: "",
     description: "",
     couponCode: "",
+    couponLink: "",
     expiryDays: 7
   });
   const [rewardImage, setRewardImage] = useState<File | null>(null);
@@ -222,6 +223,7 @@ export default function AdminDashboard() {
       formData.append("title", rewardData.title);
       formData.append("description", rewardData.description);
       formData.append("couponCode", rewardData.couponCode);
+      formData.append("couponLink", rewardData.couponLink);
       formData.append("expiryDays", rewardData.expiryDays.toString());
       formData.append("image", rewardImage);
 
@@ -231,7 +233,7 @@ export default function AdminDashboard() {
 
       toast.dismiss(toastId);
       toast.success("Reward uploaded successfully!");
-      setRewardData({ title: "", description: "", couponCode: "", expiryDays: 7 });
+      setRewardData({ title: "", description: "", couponCode: "", couponLink: "", expiryDays: 7 });
       setRewardImage(null);
     } catch {
       toast.dismiss(toastId);
@@ -686,7 +688,16 @@ export default function AdminDashboard() {
                           value={rewardData.couponCode}
                           onChange={(e) => setRewardData({ ...rewardData, couponCode: e.target.value })}
                           placeholder="SWIGGY50"
-                          required
+                          className="w-full px-4 py-3 rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50 outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold mb-2">Reward URL/Link</label>
+                        <input
+                          type="url"
+                          value={rewardData.couponLink}
+                          onChange={(e) => setRewardData({ ...rewardData, couponLink: e.target.value })}
+                          placeholder="https://..."
                           className="w-full px-4 py-3 rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50 outline-none"
                         />
                       </div>

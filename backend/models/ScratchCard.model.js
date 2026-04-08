@@ -16,6 +16,8 @@ const scratchCardSchema =
 
   couponCode: String,
 
+  couponLink: String,
+
   brand: String, // Amazon, Zomato etc
 
   image: String,

@@ -13,6 +13,12 @@ const userRewardSchema =
    ref: "ScratchCard"
   },
 
+  title: String,
+  image: String,
+  coins: Number,
+  couponCode: String,
+  couponLink: String,
+
   isUsed: {
    type: Boolean,
    default: false
