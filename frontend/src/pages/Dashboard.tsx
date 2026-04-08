@@ -13,7 +13,7 @@ export default function Dashboard() {
   const [uploading, setUploading] = useState(false);
   const [showScratchCard, setShowScratchCard] = useState(false);
   const [coinsEarned, setCoinsEarned] = useState(0);
-const [billId, setBillId] = useState("");
+  const [billId, setBillId] = useState("");
 
   const stats = [
     {
@@ -60,7 +60,7 @@ const [billId, setBillId] = useState("");
     try {
       const res = await API.get("/user/me");
       console.log("User Data:", res.data);
-      
+
       // Check if user is approved
       if (!res.data.isApproved) {
         toast.error("Your account is pending admin approval");
@@ -68,7 +68,7 @@ const [billId, setBillId] = useState("");
         window.location.href = "/login";
         return;
       }
-      
+
       setUser(res.data);
     } catch (err) {
       console.log("Error:", err);
@@ -81,7 +81,7 @@ const [billId, setBillId] = useState("");
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      
+
       // Validate file size (5MB)
       if (file.size > 5 * 1024 * 1024) {
         toast.error("File size must be less than 5MB");
@@ -152,17 +152,17 @@ const [billId, setBillId] = useState("");
       }
 
       // ✅ GET COINS FROM RESPONSE
-const earned = res.data.coinsRewarded || 3;
+      const earned = res.data.coinsRewarded || 3;
 
-setCoinsEarned(earned);
-setBillId(res.data.billId);   // ✅ ADD THIS
+      setCoinsEarned(earned);
+      setBillId(res.data.billId);   // ✅ ADD THIS
 
-await API.put(`/bill/scratch/${res.data.billId}`);
+      await API.put(`/bill/scratch/${res.data.billId}`);
 
-toast.success("Bill uploaded successfully!");
-setShowScratchCard(true);
+      toast.success("Bill uploaded successfully!");
+      setShowScratchCard(true);
       setSelectedFile(null);
-      
+
       // Clear file input
       const fileInput = document.getElementById('file-upload') as HTMLInputElement;
       if (fileInput) fileInput.value = '';
@@ -180,18 +180,18 @@ setShowScratchCard(true);
     setUploading(false);
   };
 
-const handleScratchComplete = async () => {
+  const handleScratchComplete = async () => {
 
- /// Close overlay
- setShowScratchCard(false);
+    /// Close overlay
+    setShowScratchCard(false);
 
- /// Refresh wallet
- await fetchUserData();
+    /// Refresh wallet
+    await fetchUserData();
 
- toast.success(
-  `+${coinsEarned} coins added!`
- );
-};
+    toast.success(
+      `+${coinsEarned} coins added!`
+    );
+  };
 
 
   return (
@@ -199,15 +199,15 @@ const handleScratchComplete = async () => {
       <Header />
 
       {/* Scratch Card Overlay */}
-<AnimatePresence>
- {showScratchCard && (
-  <ScratchCardOverlay
-   key={billId}
-   coinsEarned={coinsEarned}
-   onComplete={handleScratchComplete}
-  />
- )}
-</AnimatePresence>
+      <AnimatePresence>
+        {showScratchCard && (
+          <ScratchCardOverlay
+            key={billId}
+            coinsEarned={coinsEarned}
+            onComplete={handleScratchComplete}
+          />
+        )}
+      </AnimatePresence>
 
       <div className="pt-8 px-6">
         <div className="max-w-7xl mx-auto">
@@ -218,7 +218,7 @@ const handleScratchComplete = async () => {
             className="mb-8"
           >
             <h1 className="text-4xl font-bold mb-2">
-              Welcome back, {user?.name || "User"}!
+              Hi, {user?.name || "User"}
             </h1>
             <p className="text-slate-600 dark:text-slate-400">Here's your earnings overview</p>
           </motion.div>
@@ -301,11 +301,10 @@ const handleScratchComplete = async () => {
                   <button
                     onClick={handleUpload}
                     disabled={!selectedFile || uploading}
-                    className={`w-full py-4 rounded-2xl font-bold text-lg transition-all ${
-                      selectedFile && !uploading
+                    className={`w-full py-4 rounded-2xl font-bold text-lg transition-all ${selectedFile && !uploading
                         ? "bg-gradient-to-r from-cyan-500 to-violet-600 text-white hover:shadow-2xl hover:scale-105"
                         : "bg-slate-300 dark:bg-slate-700 text-slate-500 cursor-not-allowed"
-                    }`}
+                      }`}
                   >
                     {uploading ? (
                       <span className="flex items-center justify-center gap-2">
@@ -383,67 +382,67 @@ const handleScratchComplete = async () => {
                   </motion.a>
                 </GlassCard>
               </motion.div>
-{/* Quick Actions */}
-<motion.div
-  initial={{ opacity: 0, x: 30 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{ delay: 0.6 }}
->
-  <GlassCard className="p-6">
-    <h3 className="text-xl font-bold mb-4">Quick Actions</h3>
+              {/* Quick Actions */}
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6 }}
+              >
+                <GlassCard className="p-6">
+                  <h3 className="text-xl font-bold mb-4">Quick Actions</h3>
 
-    <div className="space-y-3">
+                  <div className="space-y-3">
 
-      {/* View History */}
-      <Link
-        to="/coins-history"
-        className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20 dark:hover:bg-slate-800/20 transition-colors"
-      >
-        <Coins className="w-5 h-5 text-cyan-600 dark:text-violet-400" />
-        <span className="font-semibold">View History</span>
-      </Link>
+                    {/* View History */}
+                    <Link
+                      to="/coins-history"
+                      className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20 dark:hover:bg-slate-800/20 transition-colors"
+                    >
+                      <Coins className="w-5 h-5 text-cyan-600 dark:text-violet-400" />
+                      <span className="font-semibold">View History</span>
+                    </Link>
 
-      {/* Withdraw */}
-      <Link
-        to="/withdrawal"
-        className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20 dark:hover:bg-slate-800/20 transition-colors"
-      >
-        <Wallet className="w-5 h-5 text-cyan-600 dark:text-violet-400" />
-        <span className="font-semibold">Withdraw Coins</span>
-      </Link>
+                    {/* Withdraw */}
+                    <Link
+                      to="/withdrawal"
+                      className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20 dark:hover:bg-slate-800/20 transition-colors"
+                    >
+                      <Wallet className="w-5 h-5 text-cyan-600 dark:text-violet-400" />
+                      <span className="font-semibold">Withdraw Coins</span>
+                    </Link>
 
-    </div>
+                  </div>
 
-    {/* Referral Link */}
-    <div className="mt-6 p-4 rounded-xl bg-gradient-to-br from-yellow-400/10 to-orange-500/10 border border-yellow-500/20">
-      <div className="flex items-center gap-2 mb-2">
-        <Users className="w-5 h-5 text-orange-500" />
-        <span className="font-semibold text-orange-500">Refer & Earn 100 Coins</span>
-      </div>
-      <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
-        Share this link with your friends.
-      </p>
-      <div className="flex items-center gap-2">
-        <input 
-          type="text" 
-          readOnly 
-          value={`${window.location.origin}/register?ref=${user?.referralCode || ''}`}
-          className="flex-1 bg-white/50 dark:bg-slate-800/50 rounded-lg px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 outline-none" 
-        />
-        <button 
-          onClick={() => {
-            navigator.clipboard.writeText(`${window.location.origin}/register?ref=${user?.referralCode || ''}`);
-            toast.success("Referral link copied!");
-          }}
-          className="px-3 py-2 bg-gradient-to-r from-orange-400 to-yellow-500 text-white rounded-lg text-sm font-semibold hover:shadow-lg transition-all"
-        >
-          Copy
-        </button>
-      </div>
-    </div>
+                  {/* Referral Link */}
+                  <div className="mt-6 p-4 rounded-xl bg-gradient-to-br from-yellow-400/10 to-orange-500/10 border border-yellow-500/20">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Users className="w-5 h-5 text-orange-500" />
+                      <span className="font-semibold text-orange-500">Refer & Earn 100 Coins</span>
+                    </div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
+                      Share this link with your friends.
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        readOnly
+                        value={`${window.location.origin}/register?ref=${user?.referralCode || ''}`}
+                        className="flex-1 bg-white/50 dark:bg-slate-800/50 rounded-lg px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 outline-none"
+                      />
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(`${window.location.origin}/register?ref=${user?.referralCode || ''}`);
+                          toast.success("Referral link copied!");
+                        }}
+                        className="px-3 py-2 bg-gradient-to-r from-orange-400 to-yellow-500 text-white rounded-lg text-sm font-semibold hover:shadow-lg transition-all"
+                      >
+                        Copy
+                      </button>
+                    </div>
+                  </div>
 
-  </GlassCard>
-</motion.div>
+                </GlassCard>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -466,10 +465,10 @@ function ScratchCardOverlay({ coinsEarned, onComplete }: { coinsEarned: number; 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-const rect = canvas.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
 
-canvas.width = rect.width;
-canvas.height = rect.height;
+    canvas.width = rect.width;
+    canvas.height = rect.height;
 
     const gradient = ctx.createLinearGradient(0, 0, 300, 300);
     gradient.addColorStop(0, '#94a3b8');
@@ -517,7 +516,7 @@ canvas.height = rect.height;
 
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const pixels = imageData.data;
-    
+
     let transparentPixels = 0;
     for (let i = 3; i < pixels.length; i += 4) {
       if (pixels[i] < 128) {
@@ -528,17 +527,17 @@ canvas.height = rect.height;
     const percentage = (transparentPixels / (pixels.length / 4)) * 100;
     setScratchPercentage(percentage);
 
-if (percentage > 40 && !isRevealed) {
+    if (percentage > 40 && !isRevealed) {
 
- setIsRevealed(true);
+      setIsRevealed(true);
 
- /// Wait reveal animation
- setTimeout(() => {
+      /// Wait reveal animation
+      setTimeout(() => {
 
-  onComplete();
+        onComplete();
 
- }, 1800); // longer
-}
+      }, 1800); // longer
+    }
 
   };
 
@@ -547,7 +546,7 @@ if (percentage > 40 && !isRevealed) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-     className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-6 pointer-events-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-6 pointer-events-auto"
 
     >
       <motion.div
@@ -557,7 +556,7 @@ if (percentage > 40 && !isRevealed) {
         className="relative max-w-md w-full"
       >
         <GlassCard className="p-8 relative">
-          <button 
+          <button
             onClick={onComplete}
             className="absolute top-4 right-4 p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-colors z-10"
             title="Close"
