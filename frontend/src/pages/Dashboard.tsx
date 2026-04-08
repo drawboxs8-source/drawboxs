@@ -155,9 +155,7 @@ export default function Dashboard() {
       const earned = res.data.coinsRewarded || 3;
 
       setCoinsEarned(earned);
-      setBillId(res.data.billId);   // ✅ ADD THIS
-
-      await API.put(`/bill/scratch/${res.data.billId}`);
+      setBillId(res.data.billId);
 
       toast.success("Bill uploaded successfully!");
       setShowScratchCard(true);
@@ -589,17 +587,13 @@ function ScratchCardOverlay({ coinsEarned, onComplete }: { coinsEarned: number; 
                 className="text-center cursor-pointer select-none"
                 onClick={() => window.location.href = '/rewards'}
               >
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-                  className="text-8xl mb-4"
-                >
+                <div className="text-8xl mb-4">
                   🪙
-                </motion.div>
-                <div className="text-6xl font-bold text-white mb-2">
-                  +{coinsEarned}
                 </div>
-                <div className="text-2xl text-black/90 font-semibold mb-4">Coins Earned!</div>
+                <div className="text-6xl font-bold text-white mb-2">
+                  {coinsEarned} Coins
+                </div>
+                <div className="text-2xl text-black/90 font-semibold mb-4">Added</div>
                 <div className="inline-block px-6 py-2 bg-white text-green-600 font-bold rounded-full shadow-lg hover:scale-105 transition-transform cursor-pointer">
                   See Rewards 🎁
                 </div>

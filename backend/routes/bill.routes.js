@@ -196,8 +196,10 @@ router.post(
 
       const result = await streamUpload();
 
-      /// ✅ FIXED REWARD: 3 COINS
-      const coinsRewarded = 3;
+      /// ✅ FETCH ADMIN PREDEFINED REWARD
+      const Admin = require("../models/Admin.model");
+      const adminSetting = await Admin.findOne({ email: "admin@drawboxs.com" });
+      const coinsRewarded = adminSetting ? adminSetting.defaultRewardPerBill : 3;
 
       /// Save bill
       const bill = await Bill.create({
