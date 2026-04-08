@@ -466,10 +466,8 @@ function ScratchCardOverlay({ coinsEarned, onComplete }: { coinsEarned: number; 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const rect = canvas.getBoundingClientRect();
-
-    canvas.width = rect.width;
-    canvas.height = rect.height;
+    canvas.width = 300;
+    canvas.height = 300;
 
     const gradient = ctx.createLinearGradient(0, 0, 300, 300);
     gradient.addColorStop(0, '#94a3b8');
