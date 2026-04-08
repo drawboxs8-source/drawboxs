@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { Coins, Upload, TrendingUp, Wallet, Clock, Users, X } from 'lucide-react';
+import { Coins, Upload, Wallet, Clock, Users, X } from 'lucide-react';
 import { Link } from 'react-router';
 import Header from '../components/Header';
 import GlassCard from '../components/GlassCard';
@@ -45,8 +45,6 @@ const [billId, setBillId] = useState("");
       color: "from-green-400 to-emerald-500",
     },
   ];
-
-  const recentActivity = user?.activity || [];
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -544,25 +542,6 @@ if (percentage > 40 && !isRevealed) {
 
   };
 
-  const handleMouseDown = () => setIsScratching(true);
-  const handleMouseUp = () => setIsScratching(false);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (isScratching) {
-      scratch(e.clientX, e.clientY);
-    }
-  };
-
-  const handleTouchStart = () => setIsScratching(true);
-  const handleTouchEnd = () => setIsScratching(false);
-
-  const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
-    if (isScratching && e.touches[0]) {
-      e.preventDefault();
-      scratch(e.touches[0].clientX, e.touches[0].clientY);
-    }
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -605,11 +584,12 @@ if (percentage > 40 && !isRevealed) {
                 initial={{ scale: 0 }}
                 animate={isRevealed ? { scale: 1 } : { scale: 0 }}
                 transition={{ type: 'spring', stiffness: 200 }}
-                className="text-center"
+                className="text-center cursor-pointer select-none"
+                onClick={() => window.location.href = '/rewards'}
               >
                 <motion.div
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+                  transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
                   className="text-8xl mb-4"
                 >
                   🪙
@@ -617,26 +597,51 @@ if (percentage > 40 && !isRevealed) {
                 <div className="text-6xl font-bold text-white mb-2">
                   +{coinsEarned}
                 </div>
-                <div className="text-2xl text-black/90 font-semibold">Coins</div>
+                <div className="text-2xl text-black/90 font-semibold mb-4">Coins Earned!</div>
+                <div className="inline-block px-6 py-2 bg-white text-green-600 font-bold rounded-full shadow-lg hover:scale-105 transition-transform cursor-pointer">
+                  See Rewards 🎁
+                </div>
               </motion.div>
             </div>
 
-            <canvas
-  ref={canvasRef}
-  className="absolute inset-0 cursor-crosshair"
-  style={{ touchAction: "none" }}
-  onPointerDown={(e) => {
-    setIsScratching(true);
-    scratch(e.clientX, e.clientY);
-  }}
-  onPointerUp={() => setIsScratching(false)}
-  onPointerLeave={() => setIsScratching(false)}
-  onPointerMove={(e) => {
-    if (isScratching) {
-      scratch(e.clientX, e.clientY);
-    }
-  }}
-/>
+            {!isRevealed && (
+              <canvas
+                ref={canvasRef}
+                className="absolute inset-0 cursor-crosshair"
+                style={{ touchAction: "none" }}
+                onPointerDown={(e) => {
+                  setIsScratching(true);
+                  scratch(e.clientX, e.clientY);
+                }}
+                onPointerUp={() => setIsScratching(false)}
+                onPointerLeave={() => setIsScratching(false)}
+                onPointerMove={(e) => {
+                  if (isScratching) {
+                    scratch(e.clientX, e.clientY);
+                  }
+                }}
+                onMouseDown={(e) => {
+                  setIsScratching(true);
+                  scratch(e.clientX, e.clientY);
+                }}
+                onMouseUp={() => setIsScratching(false)}
+                onMouseLeave={() => setIsScratching(false)}
+                onMouseMove={(e) => {
+                  if (isScratching) scratch(e.clientX, e.clientY);
+                }}
+                onTouchStart={(e) => {
+                  setIsScratching(true);
+                  if (e.touches[0]) scratch(e.touches[0].clientX, e.touches[0].clientY);
+                }}
+                onTouchEnd={() => setIsScratching(false)}
+                onTouchMove={(e) => {
+                  if (isScratching && e.touches[0]) {
+                    e.preventDefault();
+                    scratch(e.touches[0].clientX, e.touches[0].clientY);
+                  }
+                }}
+              />
+            )}
           </div>
 
           {!isRevealed && scratchPercentage > 5 && (
@@ -657,7 +662,7 @@ if (percentage > 40 && !isRevealed) {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-center text-green-400 font-semibold"
+              className="text-center text-green-400 font-semibold mb-2"
             >
               ✓ Coins will be added to your wallet!
             </motion.div>
