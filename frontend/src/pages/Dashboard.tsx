@@ -576,7 +576,10 @@ function ScratchCardOverlay({ coinsEarned, onComplete }: { coinsEarned: number; 
             <p className="text-white/70">Scratch to reveal your reward</p>
           </div>
 
-          <div className="relative w-[300px] h-[300px] mx-auto rounded-3xl overflow-hidden shadow-2xl mb-6">
+          <div 
+            className="relative mx-auto rounded-3xl overflow-hidden shadow-2xl mb-6"
+            style={{ width: '300px', height: '300px' }}
+          >
             <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center">
               <motion.div
                 initial={{ scale: 0 }}
