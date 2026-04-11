@@ -3,33 +3,12 @@ const auth = require("../middleware/auth.middleware");
 const ScratchCard = require("../models/ScratchCard.model");
 const UserReward = require("../models/UserReward.model");
 
-// GET /api/rewards/my-cards - Auto-assigns new cards and returns user's cards
+// GET /api/rewards/my-cards - Returns user's cards
 router.get("/my-cards", auth, async (req, res) => {
   try {
     const userId = req.user.id;
 
-    // 1. Fetch all currently active global ScratchCards
-    const activeCards = await ScratchCard.find({ isActive: true });
-
-    // 2. Auto-assign them to the user if they don't have them
-    for (const card of activeCards) {
-      const existing = await UserReward.findOne({ userId, scratchCardId: card._id });
-      if (!existing) {
-        // Create an assignment
-        const expiresAt = new Date();
-        expiresAt.setDate(expiresAt.getDate() + (card.expiryDays || 7));
-
-        await UserReward.create({
-          userId,
-          scratchCardId: card._id,
-          isUsed: false,
-          assignedAt: new Date(),
-          expiresAt
-        });
-      }
-    }
-
-    // 3. Fetch all rewards for the user
+    // Fetch all rewards for the user
     // We populate the scratchCard details so frontend can display them.
     const userRewards = await UserReward.find({ userId }).populate("scratchCardId").sort({ assignedAt: -1 });
 

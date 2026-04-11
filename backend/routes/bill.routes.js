@@ -210,6 +210,29 @@ router.post(
       const adminSetting = await Admin.findOne({ email: "admin@drawboxs.com" });
       const coinsRewarded = adminSetting ? adminSetting.defaultRewardPerBill : 3;
 
+      // 💳 ASSIGN SEQUENTIAL SCRATCH CARD REWARD
+      const ScratchCard = require("../models/ScratchCard.model");
+      const UserReward = require("../models/UserReward.model");
+      
+      const adminCards = await ScratchCard.find({ isActive: true }).sort({ createdAt: 1 });
+      let assignedCard = null;
+      if (adminCards.length > 0) {
+        const prevUploads = user.totalBillsUploaded || 0;
+        const rewardIndex = prevUploads % adminCards.length;
+        assignedCard = adminCards[rewardIndex];
+
+        const expiresAt = new Date();
+        expiresAt.setDate(expiresAt.getDate() + (assignedCard.expiryDays || 7));
+
+        await UserReward.create({
+          userId: user._id,
+          scratchCardId: assignedCard._id,
+          isUsed: false,
+          assignedAt: new Date(),
+          expiresAt
+        });
+      }
+
       /// Save bill
       const bill = await Bill.create({
         userId: user._id,
@@ -218,24 +241,25 @@ router.post(
         coinsRewarded
       });
 
-await User.findByIdAndUpdate(
-  user._id,
-  {
-    $inc: {
-      billsUploadedToday: 1,
-      totalBillsUploaded: 1,
-      coins: coinsRewarded,
-      coinsEarnedToday: coinsRewarded
-    },
-    lastUploadDate: new Date()
-  }
-);
+      await User.findByIdAndUpdate(
+        user._id,
+        {
+          $inc: {
+            billsUploadedToday: 1,
+            totalBillsUploaded: 1,
+            coins: coinsRewarded,
+            coinsEarnedToday: coinsRewarded
+          },
+          lastUploadDate: new Date()
+        }
+      );
 
       res.json({
         msg: "Bill Uploaded",
         billId: bill._id,
         coinsRewarded,
-        totalCoins: user.coins
+        totalCoins: user.coins + coinsRewarded,
+        reward: assignedCard
       });
 
     } catch (err) {

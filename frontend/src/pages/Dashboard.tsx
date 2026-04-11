@@ -13,6 +13,7 @@ export default function Dashboard() {
   const [uploading, setUploading] = useState(false);
   const [showScratchCard, setShowScratchCard] = useState(false);
   const [coinsEarned, setCoinsEarned] = useState(0);
+  const [assignedReward, setAssignedReward] = useState<any>(null);
   const [billId, setBillId] = useState("");
 
   const stats = [
@@ -156,6 +157,7 @@ export default function Dashboard() {
 
       setCoinsEarned(earned);
       setBillId(res.data.billId);
+      setAssignedReward(res.data.reward);
 
       toast.success("Bill uploaded successfully!");
       setShowScratchCard(true);
@@ -202,6 +204,7 @@ export default function Dashboard() {
           <ScratchCardOverlay
             key={billId}
             coinsEarned={coinsEarned}
+            assignedReward={assignedReward}
             onComplete={handleScratchComplete}
           />
         )}
@@ -453,7 +456,7 @@ export default function Dashboard() {
 }
 
 // Scratch Card Overlay Component
-function ScratchCardOverlay({ coinsEarned, onComplete }: { coinsEarned: number; onComplete: () => void }) {
+function ScratchCardOverlay({ coinsEarned, assignedReward, onComplete }: { coinsEarned: number; assignedReward: any; onComplete: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isScratching, setIsScratching] = useState(false);
   const [scratchPercentage, setScratchPercentage] = useState(0);
@@ -585,17 +588,23 @@ function ScratchCardOverlay({ coinsEarned, onComplete }: { coinsEarned: number; 
                 initial={{ scale: 0 }}
                 animate={isRevealed ? { scale: 1 } : { scale: 0 }}
                 transition={{ type: 'spring', stiffness: 200 }}
-                className="text-center cursor-pointer select-none"
+                className="text-center cursor-pointer select-none px-4"
                 onClick={() => window.location.href = '/rewards'}
               >
-                <div className="text-8xl mb-4">
-                  🪙
-                </div>
-                <div className="text-6xl font-bold text-white mb-2">
-                  {coinsEarned} Coins
-                </div>
-                <div className="text-2xl text-black/90 font-semibold mb-4">Added</div>
-                <div className="inline-block px-6 py-2 bg-white text-white-600 font-bold rounded-full shadow-lg hover:scale-105 transition-transform cursor-pointer">
+                {assignedReward ? (
+                  <>
+                    {assignedReward.image && <img src={assignedReward.image} alt={assignedReward.title} className="w-20 h-20 mx-auto object-contain mb-2 drop-shadow-md rounded-xl" />}
+                    <div className="text-xl font-bold text-white mb-1 leading-tight">{assignedReward.title}</div>
+                    {coinsEarned > 0 && <div className="text-md text-white/90 mb-2 font-semibold">+{coinsEarned} Coins</div>}
+                  </>
+                ) : (
+                  <>
+                    <div className="text-6xl mb-2">🪙</div>
+                    <div className="text-4xl font-bold text-white mb-2">{coinsEarned} Coins</div>
+                    <div className="text-xl text-black/90 font-semibold mb-2">Added</div>
+                  </>
+                )}
+                <div className="inline-block px-4 py-2 mt-2 bg-white text-emerald-600 text-sm font-bold rounded-full shadow-lg hover:scale-105 transition-transform cursor-pointer">
                   See Rewards 🎁
                 </div>
               </motion.div>
