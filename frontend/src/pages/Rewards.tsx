@@ -90,12 +90,19 @@ export default function Rewards() {
                     <GlassCard className={`p-6 relative overflow-hidden h-full flex flex-col ${isExpired ? 'opacity-60 grayscale' : ''}`}>
                       
                       {/* Image Thumbnail */}
-                      <div className="mb-4 h-40 bg-slate-200 dark:bg-slate-700 rounded-xl overflow-hidden flex items-center justify-center relative">
+                      <div 
+                        className={`mb-4 h-40 bg-white dark:bg-slate-800 rounded-xl overflow-hidden flex items-center justify-center relative border border-slate-100 dark:border-slate-700 ${isUsed && card.couponLink ? 'cursor-pointer hover:shadow-md transition-all scale-95 hover:scale-100' : ''}`}
+                        onClick={() => {
+                          if (isUsed && card.couponLink) {
+                            window.open(card.couponLink, '_blank');
+                          }
+                        }}
+                      >
                         {isUsed || isExpired ? (
                           <img 
                             src={card.image} 
                             alt={card.title} 
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-contain p-2"
                           />
                         ) : (
                           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500 to-violet-600 flex items-center justify-center">
