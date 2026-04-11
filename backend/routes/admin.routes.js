@@ -51,7 +51,7 @@ router.get(
   await Payment.find()
     .populate(
       "userId",
-      "name email"
+      "name phone"
     )
     .sort({ createdAt: -1 });
       res.json(payments);
@@ -174,7 +174,7 @@ router.get(
   async (req, res) => {
     try {
       const withdrawals = await Withdrawal.find()
-        .populate('userId', 'name email')
+        .populate('userId', 'name phone')
         .sort({ createdAt: -1 });
 
       res.json(withdrawals);

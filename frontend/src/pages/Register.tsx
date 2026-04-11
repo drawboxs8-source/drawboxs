@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router';
-import { Mail, Lock, User, Phone } from 'lucide-react';
+import { Lock, User, Phone } from 'lucide-react';
 import Header from '../components/Header';
 import GlassCard from '../components/GlassCard';
 import GlowButton from '../components/GlowButton';
@@ -14,7 +14,6 @@ export default function Register() {
   const [showApproval, setShowApproval] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     phone: "",
     password: "",
     referralCode: new URLSearchParams(window.location.search).get("ref") || ""
@@ -87,7 +86,7 @@ export default function Register() {
                     </div>
                     <h3 className="text-2xl font-bold mb-4">Registration Successful!</h3>
                     <p className="text-slate-600 dark:text-slate-400 mb-6">
-                      Your account is pending admin approval. You'll receive an email notification once your account is activated.
+                      Your account is pending admin approval. You will be notified once your account is activated.
                     </p>
                     <Link to="/">
                       <GlowButton variant="primary">Back to Home</GlowButton>
@@ -110,21 +109,6 @@ export default function Register() {
                           className="w-full pl-12 pr-4 py-3 rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50"
                         />
 
-                      </div>
-                    </div>
-
-                    {/* Email */}
-                    <div>
-                      <label className="block text-sm font-semibold mb-2">Email</label>
-                      <div className="relative">
-                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                        <input
-                          type="email"
-                          name="email"
-                          onChange={handleChange}
-                          className="w-full pl-12 pr-4 py-3 rounded-2xl backdrop-blur-xl bg-white/60 dark:bg-slate-800/60 border border-white/20 dark:border-slate-700/50 focus:ring-2 focus:ring-cyan-500 dark:focus:ring-violet-500 outline-none transition-all"
-                          required
-                        />
                       </div>
                     </div>
 

@@ -425,7 +425,7 @@ export default function AdminDashboard() {
                               </div>
                               <div>
                                 <div className="font-bold text-lg">{user.name || 'N/A'}</div>
-                                <div className="text-sm text-slate-600 dark:text-slate-400">{user.email || 'N/A'}</div>
+                                <div className="text-sm text-slate-600 dark:text-slate-400">{user.phone || 'N/A'}</div>
                                 <div className="text-sm text-slate-500">{user.phone || 'N/A'}</div>
                               </div>
                             </div>
@@ -490,7 +490,7 @@ export default function AdminDashboard() {
                                       </span>
                                     )}
                                   </div>
-                                  <div className="text-sm text-slate-600 dark:text-slate-400">{user.email || 'N/A'}</div>
+                                  <div className="text-sm text-slate-600 dark:text-slate-400">{user.phone || 'N/A'}</div>
                                   <div className="text-sm text-slate-500">
                                     Coins: {user.coins || 0} | Bills: {user.totalBillsUploaded || 0}
                                   </div>

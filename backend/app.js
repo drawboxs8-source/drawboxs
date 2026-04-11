@@ -64,6 +64,12 @@ app.get("/api/test", (req, res) => {
   res.json("Backend Connected");
 });
 
-
+app.use((err, req, res, next) => {
+  console.error("Global Error:", err);
+  if (err.name === 'MulterError') {
+    return res.status(400).json({ message: err.message, type: "MulterError" });
+  }
+  res.status(500).json({ message: err.message || "Internal Server Error" });
+});
 
 module.exports = app;

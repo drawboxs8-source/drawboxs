@@ -9,7 +9,14 @@ const nodemailer = require("nodemailer");
 /// =========================
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, phone, password, referralCode } = req.body;
+    const { name, phone, password, referralCode } = req.body;
+
+    // ✅ CHECK FOR DUPLICATE PHONE NUMBER
+    const existingUser = await User.findOne({ phone });
+    if (existingUser) {
+      return res.status(400).json({ message: "User with this phone number already exists" });
+    }
+
     const hash = await bcrypt.hash(password, 10);
     const newReferralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
 
@@ -27,7 +34,6 @@ router.post("/register", async (req, res) => {
 
     const user = await User.create({
       name,
-      email,
       phone,
       password: hash,
       referralCode: newReferralCode,

@@ -175,6 +175,11 @@ router.post(
         await user.save();
       }
 
+      // ✅ CHECK DAILY UPLOAD LIMIT
+      if (user.billsUploadedToday >= user.dailyLimit) {
+        return res.json({ message: "Daily upload limit reached. Try again tomorrow!" });
+      }
+
       /// 🔥 STREAM UPLOAD TO CLOUDINARY
       const streamUpload = () => {
         return new Promise((resolve, reject) => {
@@ -188,9 +193,13 @@ router.post(
               }
             );
 
-          streamifier
-            .createReadStream(req.file.buffer)
-            .pipe(stream);
+          // Catch stream errors to prevent Node process from crashing
+          stream.on('error', (err) => reject(err));
+
+          const readStream = streamifier.createReadStream(req.file.buffer);
+          readStream.on('error', (err) => reject(err));
+
+          readStream.pipe(stream);
         });
       };
 

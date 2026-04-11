@@ -333,7 +333,7 @@ export default function Dashboard() {
                   </div>
                   <h3 className="text-xl font-bold mb-1">{user?.name}</h3>
                   <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-                    {user?.email}
+                    {user?.phone}
                   </p>
                   <div className="px-4 py-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-600 text-white text-sm font-semibold inline-block">
                     {user?.planPurchased ? "Premium Member" : "Free Member"}
