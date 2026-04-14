@@ -115,19 +115,19 @@ export default function Rewards() {
                     transition={{ delay: index * 0.05 }}
                   >
                     <div 
-                      className={`relative w-full aspect-square rounded-[20px] overflow-hidden flex flex-col group cursor-pointer shadow-sm hover:shadow-lg transition-all dark:bg-[#1a1a1e] bg-white border border-slate-100 dark:border-slate-800 ${isExpired ? 'opacity-60 grayscale' : ''}`}
+                      className={`relative w-full aspect-square rounded-[16px] overflow-hidden flex flex-col group cursor-pointer shadow border border-[#27272a] bg-[#18181b] ${isExpired ? 'opacity-60 grayscale' : ''}`}
                       onClick={() => setSelectedReward(reward)}
                     >
                       {/* Image Area - takes up exactly 60% of the square */}
-                      <div className="h-[60%] w-full relative bg-slate-100 dark:bg-slate-900 shrink-0">
+                      <div className="h-[65%] w-full relative bg-white shrink-0 p-2 border-b border-[#27272a]">
                         {isUsed || isExpired ? (
                           <img 
                             src={card.image} 
                             alt={card.title} 
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-contain"
                           />
                         ) : (
-                          <div className="absolute inset-0 bg-gradient-to-br from-cyan-600 to-violet-700 flex flex-col items-center justify-center gap-2">
+                          <div className="absolute inset-0 bg-gradient-to-br from-[#8B5CF6] to-[#7C3AED] flex flex-col items-center justify-center gap-2">
                             <Sparkles className="w-8 h-8 text-white/50 animate-pulse" />
                             <div className="font-bold text-white text-[10px] tracking-widest text-center px-1">SCRATCH REVEAL</div>
                           </div>
@@ -135,19 +135,20 @@ export default function Rewards() {
                         
                         {/* Status Icon */}
                         {isUsed && !isExpired && (
-                          <div className="absolute top-2 right-2 bg-black/50 backdrop-blur-sm rounded-full text-white p-1">
+                          <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm rounded-full text-green-400 p-1">
                             <CheckCircle className="w-3 h-3" />
                           </div>
                         )}
                       </div>
 
-                      {/* Content Area - takes remaining 40% */}
-                      <div className="h-[40%] p-3 sm:p-4 flex flex-col justify-center">
-                        <h3 className="text-[13px] sm:text-[15px] font-bold truncate text-slate-800 dark:text-gray-100 mb-0.5">
-                          {isUsed ? card.title : "Mystery Reward"}
-                        </h3>
-                        {/* using description as the main offer text line on the card below the title */}
-                        <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-tight">
+                      {/* Content Area - takes remaining 35% */}
+                      <div className="h-[35%] p-3 flex flex-col justify-center bg-[#18181b]">
+                        <div className="flex justify-between items-center gap-2 mb-0.5">
+                           <h3 className="text-[14px] font-bold truncate text-white">
+                             {isUsed ? card.title : "Mystery Reward"}
+                           </h3>
+                        </div>
+                        <p className="text-[11px] text-[#a1a1aa] line-clamp-2 leading-tight">
                           {isUsed ? card.description : "Tap to view details and reveal your surprise!"}
                         </p>
                       </div>
@@ -204,15 +205,15 @@ export default function Rewards() {
 
                     <div className="flex-1 overflow-y-auto overflow-x-hidden">
                       {/* Banner Image Area */}
-                      <div className="h-[280px] w-full relative bg-slate-800 shrink-0">
+                      <div className="h-[240px] w-full relative bg-white border-b border-[#27272a] shrink-0 flex items-center justify-center p-6 mt-12 sm:mt-0">
                         {isUsed || isExpired ? (
                           <img 
                             src={card.image} 
                             alt={card.title} 
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-contain"
                           />
                         ) : (
-                          <div className="absolute inset-0 bg-gradient-to-br from-cyan-600 to-violet-700 flex flex-col items-center justify-center gap-3">
+                          <div className="absolute inset-0 bg-gradient-to-br from-[#8B5CF6] to-[#7C3AED] flex flex-col items-center justify-center gap-3">
                             <Sparkles className="w-12 h-12 text-white/30" />
                             <div className="font-black text-white text-xl tracking-[0.2em] text-center px-4 opacity-50">HIDDEN REWARD</div>
                           </div>
