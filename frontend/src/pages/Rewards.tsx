@@ -74,7 +74,7 @@ export default function Rewards() {
               <p className="text-sm">Wait for the admin to upload new weekly rewards!</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
               {rewards.map((reward, index) => {
                 const card = reward.scratchCardId;
                 const isExpired = new Date(reward.expiresAt) < new Date();
@@ -87,11 +87,11 @@ export default function Rewards() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
                   >
-                    <GlassCard className={`p-4 relative overflow-hidden h-full flex flex-col ${isExpired ? 'opacity-60 grayscale' : ''}`}>
+                    <GlassCard className={`p-3 relative overflow-hidden aspect-square flex flex-col ${isExpired ? 'opacity-60 grayscale' : ''}`}>
                       
                       {/* Image Thumbnail */}
                       <div 
-                        className={`mb-3 h-32 bg-white dark:bg-slate-800 rounded-xl overflow-hidden flex items-center justify-center relative border border-slate-100 dark:border-slate-700 ${isUsed && card.couponLink ? 'cursor-pointer hover:shadow-md transition-all scale-95 hover:scale-100' : ''}`}
+                        className={`mb-2 h-20 bg-white dark:bg-slate-800 rounded-lg overflow-hidden flex items-center justify-center relative border border-slate-100 dark:border-slate-700 shrink-0 ${isUsed && card.couponLink ? 'cursor-pointer hover:shadow-md transition-all scale-95 hover:scale-100' : ''}`}
                         onClick={() => {
                           if (isUsed && card.couponLink) {
                             window.open(card.couponLink, '_blank');
@@ -102,60 +102,60 @@ export default function Rewards() {
                           <img 
                             src={card.image} 
                             alt={card.title} 
-                            className="w-full h-full object-contain p-2"
+                            className="w-full h-full object-contain p-1"
                           />
                         ) : (
                           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500 to-violet-600 flex items-center justify-center">
-                            <Sparkles className="w-12 h-12 text-white/50" />
-                            <div className="absolute font-bold text-white text-xl tracking-widest text-center px-4">SCRATCH TO REVEAL</div>
+                            <Sparkles className="w-8 h-8 text-white/50" />
+                            <div className="absolute font-bold text-white text-[10px] tracking-widest text-center px-1 leading-tight">SCRATCH TO REVEAL</div>
                           </div>
                         )}
                       </div>
 
-                      <h3 className="text-lg font-bold mb-1">{isUsed ? card.title : "Mystery Reward"}</h3>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 flex-grow mb-3">
+                      <h3 className="text-sm font-bold mb-1 truncate shrink-0">{isUsed ? card.title : "Mystery Reward"}</h3>
+                      <p className="text-[10px] leading-tight text-slate-600 dark:text-slate-400 mb-2 overflow-hidden text-ellipsis line-clamp-2 shrink-0">
                         {isUsed ? card.description : "Reveal your coupon / picture now before it expires!"}
                       </p>
 
-                      <div className="mt-auto space-y-2">
+                      <div className="mt-auto space-y-1">
                         {isExpired ? (
-                          <div className="flex items-center justify-center gap-2 p-3 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-xl font-bold tracking-wider uppercase text-sm border border-red-200 dark:border-red-900/50">
-                            <Clock className="w-4 h-4" />
-                            Coupon Expired
+                          <div className="flex items-center justify-center gap-1 p-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg font-bold tracking-wider uppercase text-[10px] border border-red-200 dark:border-red-900/50">
+                            <Clock className="w-3 h-3" />
+                            Expired
                           </div>
                         ) : isUsed ? (
-                          <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-xl text-center cursor-pointer hover:bg-green-500/20 transition-colors"
+                          <div className="p-2 bg-green-500/10 border border-green-500/30 rounded-lg text-center cursor-pointer hover:bg-green-500/20 transition-colors"
                             onClick={() => {
                               navigator.clipboard.writeText(card.couponCode);
                               toast.success("Coupon code copied!");
                             }}
                           >
-                            <span className="block text-[10px] text-green-600 dark:text-green-400 font-semibold mb-1 uppercase tracking-wider">Coupon Code (Click to Copy)</span>
-                            <span className="block text-lg font-mono font-bold text-green-700 dark:text-green-300 tracking-wider">
+                            <span className="block text-[8px] text-green-600 dark:text-green-400 font-semibold uppercase tracking-wider">Coupon Code (Copy)</span>
+                            <span className="block text-xs font-mono font-bold text-green-700 dark:text-green-300 truncate">
                               {card.couponCode}
                             </span>
                           </div>
                         ) : (
                           <button
                             onClick={() => handleReveal(reward._id)}
-                            className="w-full p-2 text-sm bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-bold rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
+                            className="w-full p-1.5 text-xs bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-bold rounded-lg hover:shadow-lg hover:scale-[1.02] transition-all flex items-center justify-center gap-1"
                           >
-                            <Sparkles className="w-5 h-5" />
-                            Reveal Now
+                            <Sparkles className="w-3 h-3" />
+                            Reveal
                           </button>
                         )}
                         
                         {!isExpired && !isUsed && (
-                          <div className="text-xs text-center text-slate-400 flex justify-center items-center gap-1">
-                            <Clock className="w-3 h-3" />
+                          <div className="text-[9px] text-center text-slate-400 flex justify-center items-center gap-1">
+                            <Clock className="w-2.5 h-2.5" />
                             Expires: {new Date(reward.expiresAt).toLocaleDateString()}
                           </div>
                         )}
                       </div>
 
                       {isUsed && !isExpired && (
-                        <div className="absolute top-4 right-4 bg-green-500 rounded-full text-white p-1">
-                          <CheckCircle className="w-5 h-5" />
+                        <div className="absolute top-2 right-2 bg-green-500 rounded-full text-white p-0.5">
+                          <CheckCircle className="w-3 h-3" />
                         </div>
                       )}
 
