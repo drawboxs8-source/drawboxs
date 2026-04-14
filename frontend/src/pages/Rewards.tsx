@@ -74,7 +74,7 @@ export default function Rewards() {
               <p className="text-sm">Wait for the admin to upload new weekly rewards!</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {rewards.map((reward, index) => {
                 const card = reward.scratchCardId;
                 const isExpired = new Date(reward.expiresAt) < new Date();
@@ -87,11 +87,11 @@ export default function Rewards() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
                   >
-                    <GlassCard className={`p-6 relative overflow-hidden h-full flex flex-col ${isExpired ? 'opacity-60 grayscale' : ''}`}>
+                    <GlassCard className={`p-4 relative overflow-hidden h-full flex flex-col ${isExpired ? 'opacity-60 grayscale' : ''}`}>
                       
                       {/* Image Thumbnail */}
                       <div 
-                        className={`mb-4 h-40 bg-white dark:bg-slate-800 rounded-xl overflow-hidden flex items-center justify-center relative border border-slate-100 dark:border-slate-700 ${isUsed && card.couponLink ? 'cursor-pointer hover:shadow-md transition-all scale-95 hover:scale-100' : ''}`}
+                        className={`mb-3 h-32 bg-white dark:bg-slate-800 rounded-xl overflow-hidden flex items-center justify-center relative border border-slate-100 dark:border-slate-700 ${isUsed && card.couponLink ? 'cursor-pointer hover:shadow-md transition-all scale-95 hover:scale-100' : ''}`}
                         onClick={() => {
                           if (isUsed && card.couponLink) {
                             window.open(card.couponLink, '_blank');
@@ -112,12 +112,12 @@ export default function Rewards() {
                         )}
                       </div>
 
-                      <h3 className="text-xl font-bold mb-2">{isUsed ? card.title : "Mystery Reward"}</h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-400 flex-grow mb-4">
+                      <h3 className="text-lg font-bold mb-1">{isUsed ? card.title : "Mystery Reward"}</h3>
+                      <p className="text-xs text-slate-600 dark:text-slate-400 flex-grow mb-3">
                         {isUsed ? card.description : "Reveal your coupon / picture now before it expires!"}
                       </p>
 
-                      <div className="mt-auto space-y-3">
+                      <div className="mt-auto space-y-2">
                         {isExpired ? (
                           <div className="flex items-center justify-center gap-2 p-3 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-xl font-bold tracking-wider uppercase text-sm border border-red-200 dark:border-red-900/50">
                             <Clock className="w-4 h-4" />
@@ -130,15 +130,15 @@ export default function Rewards() {
                               toast.success("Coupon code copied!");
                             }}
                           >
-                            <span className="block text-xs text-green-600 dark:text-green-400 font-semibold mb-1 uppercase tracking-wider">Coupon Code (Click to Copy)</span>
-                            <span className="block text-xl font-mono font-bold text-green-700 dark:text-green-300 tracking-wider font-mono">
+                            <span className="block text-[10px] text-green-600 dark:text-green-400 font-semibold mb-1 uppercase tracking-wider">Coupon Code (Click to Copy)</span>
+                            <span className="block text-lg font-mono font-bold text-green-700 dark:text-green-300 tracking-wider">
                               {card.couponCode}
                             </span>
                           </div>
                         ) : (
                           <button
                             onClick={() => handleReveal(reward._id)}
-                            className="w-full p-3 bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-bold rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
+                            className="w-full p-2 text-sm bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-bold rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
                           >
                             <Sparkles className="w-5 h-5" />
                             Reveal Now
