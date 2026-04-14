@@ -42,4 +42,19 @@ router.post("/reveal/:id", auth, async (req, res) => {
   }
 });
 
+// DELETE /api/rewards/:id - Deletes a user reward card
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    const rewardId = req.params.id;
+    const reward = await UserReward.findOneAndDelete({ _id: rewardId, userId: req.user.id });
+
+    if (!reward) return res.status(404).json({ message: "Reward not found" });
+
+    res.json({ message: "Reward deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to delete reward" });
+  }
+});
+
 module.exports = router;
