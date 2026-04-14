@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Gift, Sparkles, CheckCircle, Clock, Trash2 } from 'lucide-react';
+import { Gift, Sparkles, CheckCircle, Clock, Trash2, X, ExternalLink, Copy } from 'lucide-react';
 import Header from '../components/Header';
 import GlassCard from '../components/GlassCard';
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 export default function Rewards() {
   const [rewards, setRewards] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedReward, setSelectedReward] = useState<any>(null);
 
   useEffect(() => {
     fetchRewards();
@@ -29,10 +30,15 @@ export default function Rewards() {
   const handleReveal = async (rewardId: string) => {
     const toastId = toast.loading("Revealing your reward...");
     try {
-      await API.post(`/rewards/reveal/${rewardId}`);
+      const res = await API.post(`/rewards/reveal/${rewardId}`);
       toast.dismiss(toastId);
       toast.success("Reward revealed!");
-      fetchRewards(); // refresh list
+      
+      // Update local state without fetching again to prevent modal from closing abruptly
+      setRewards(prev => prev.map(r => r._id === rewardId ? res.data.reward : r));
+      if (selectedReward && selectedReward._id === rewardId) {
+        setSelectedReward(res.data.reward);
+      }
     } catch (err: any) {
       toast.dismiss(toastId);
       toast.error(err.response?.data?.message || "Failed to reveal");
@@ -46,6 +52,7 @@ export default function Rewards() {
       await API.delete(`/rewards/${rewardId}`);
       toast.dismiss(toastId);
       toast.success("Reward deleted!");
+      setSelectedReward(null);
       fetchRewards();
     } catch (err: any) {
       toast.dismiss(toastId);
@@ -61,8 +68,17 @@ export default function Rewards() {
     );
   }
 
+  // Helper to determine if we should show the real info
+  const getCardInfo = (reward: any) => {
+    if (!reward) return null;
+    const card = reward.scratchCardId;
+    const isExpired = new Date(reward.expiresAt) < new Date();
+    const isUsed = reward.isUsed;
+    return { card, isExpired, isUsed };
+  };
+
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-20 dark:bg-slate-950">
       <Header />
 
       <div className="pt-8 px-6">
@@ -88,11 +104,9 @@ export default function Rewards() {
               <p className="text-sm">Wait for the admin to upload new weekly rewards!</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
               {rewards.map((reward, index) => {
-                const card = reward.scratchCardId;
-                const isExpired = new Date(reward.expiresAt) < new Date();
-                const isUsed = reward.isUsed;
+                const { card, isExpired, isUsed } = getCardInfo(reward)!;
 
                 return (
                   <motion.div
@@ -101,92 +115,56 @@ export default function Rewards() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
                   >
-                    <GlassCard className={`p-3 relative overflow-hidden aspect-square flex flex-col group ${isExpired ? 'opacity-60 grayscale' : ''}`}>
-                      
-                      {/* Delete Button (Visible on Hover/Always on mobile) */}
-                      <button 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDelete(reward._id);
-                        }}
-                        className="absolute top-2 left-2 z-10 bg-red-500/80 hover:bg-red-600 text-white p-1.5 rounded-full shadow-md opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity"
-                        title="Delete Reward"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-
-                      {/* Image Thumbnail */}
-                      <div 
-                        className={`mb-2 flex-grow min-h-0 bg-white dark:bg-slate-800 rounded-lg overflow-hidden flex items-center justify-center relative border border-slate-100 dark:border-slate-700 ${isUsed && card.couponLink ? 'cursor-pointer hover:shadow-md transition-all scale-95 hover:scale-100' : ''}`}
-                        onClick={() => {
-                          if (isUsed && card.couponLink) {
-                            window.open(card.couponLink, '_blank');
-                          }
-                        }}
-                      >
+                    <GlassCard 
+                      className={`p-0 overflow-hidden flex flex-col group cursor-pointer transition-all hover:-translate-y-1 hover:shadow-xl dark:bg-[#1a1a1e] ${isExpired ? 'opacity-60 grayscale' : ''}`}
+                      onClick={() => setSelectedReward(reward)}
+                    >
+                      {/* Image Area - edge to edge */}
+                      <div className="relative h-32 sm:h-40 w-full bg-slate-200 dark:bg-slate-800 shrink-0 border-b border-transparent">
                         {isUsed || isExpired ? (
                           <img 
                             src={card.image} 
                             alt={card.title} 
-                            className="w-full h-full object-contain p-0.5"
+                            className="w-full h-full object-cover"
                           />
                         ) : (
-                          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500 to-violet-600 flex flex-col items-center justify-center gap-1">
-                            <Sparkles className="w-8 h-8 text-white/50" />
-                            <div className="font-bold text-white text-[10px] tracking-widest text-center px-1 leading-tight">SCRATCH TO REVEAL</div>
+                          <div className="absolute inset-0 bg-gradient-to-br from-cyan-600 to-violet-700 flex flex-col items-center justify-center gap-2">
+                            <Sparkles className="w-8 h-8 text-white/50 animate-pulse" />
+                            <div className="font-bold text-white text-[12px] tracking-widest text-center px-1">SCRATCH TO REVEAL</div>
                           </div>
                         )}
+                        
+                        {/* Status Icon */}
+                        {isUsed && !isExpired && (
+                          <div className="absolute top-2 right-2 bg-green-500/90 backdrop-blur-sm rounded-full text-white p-1 shadow-lg">
+                            <CheckCircle className="w-4 h-4" />
+                          </div>
+                        )}
+                        
+                        {/* Delete Button (floating on hover) */}
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(reward._id);
+                          }}
+                          className="absolute top-2 left-2 z-10 bg-red-500/80 hover:bg-red-600 text-white p-1.5 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                          title="Delete Reward"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
                       </div>
 
-                      <div className="shrink-0">
-                        <h3 className="text-sm font-bold mb-1 truncate">{isUsed ? card.title : "Mystery Reward"}</h3>
-                        <p className="text-[10px] leading-tight text-slate-600 dark:text-slate-400 mb-2 overflow-hidden text-ellipsis line-clamp-2">
-                          {isUsed ? card.description : "Reveal your coupon / picture now before it expires!"}
-                        </p>
-
-                        <div className="mt-auto space-y-1">
-                          {isExpired ? (
-                            <div className="flex items-center justify-center gap-1 p-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg font-bold tracking-wider uppercase text-[10px] border border-red-200 dark:border-red-900/50">
-                              <Clock className="w-3 h-3" />
-                              Expired
-                            </div>
-                          ) : isUsed ? (
-                            <div className="p-2 bg-green-500/10 border border-green-500/30 rounded-lg text-center cursor-pointer hover:bg-green-500/20 transition-colors"
-                              onClick={() => {
-                                navigator.clipboard.writeText(card.couponCode);
-                                toast.success("Coupon code copied!");
-                              }}
-                            >
-                              <span className="block text-[8px] text-green-600 dark:text-green-400 font-semibold uppercase tracking-wider">Coupon Code (Copy)</span>
-                              <span className="block text-xs font-mono font-bold text-green-700 dark:text-green-300 truncate">
-                                {card.couponCode}
-                              </span>
-                            </div>
-                          ) : (
-                            <button
-                              onClick={() => handleReveal(reward._id)}
-                              className="w-full p-1.5 text-xs bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-bold rounded-lg hover:shadow-lg hover:scale-[1.02] transition-all flex items-center justify-center gap-1"
-                            >
-                              <Sparkles className="w-3 h-3" />
-                              Reveal
-                            </button>
-                          )}
-                          
-                          {!isExpired && !isUsed && (
-                            <div className="text-[9px] text-center text-slate-400 flex justify-center items-center gap-1 pt-1">
-                              <Clock className="w-2.5 h-2.5" />
-                              Expires: {new Date(reward.expiresAt).toLocaleDateString()}
-                            </div>
-                          )}
+                      {/* Content Area */}
+                      <div className="p-4 flex-grow flex flex-col justify-between bg-white dark:bg-[#161618]">
+                        <div>
+                          <h3 className="text-base font-bold mb-1 truncate dark:text-gray-100">
+                            {isUsed ? card.title : "Mystery Reward"}
+                          </h3>
+                          <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                            {isUsed ? card.description : "You have a hidden reward! Tap to view details and reveal."}
+                          </p>
                         </div>
                       </div>
-
-                      {isUsed && !isExpired && (
-                        <div className="absolute top-2 right-2 z-10 bg-green-500 rounded-full text-white p-0.5 shadow-md">
-                          <CheckCircle className="w-3 h-3" />
-                        </div>
-                      )}
-
                     </GlassCard>
                   </motion.div>
                 );
@@ -195,6 +173,167 @@ export default function Rewards() {
           )}
         </div>
       </div>
+
+      {/* Detail Modal */}
+      {selectedReward && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          onClick={() => setSelectedReward(null)}
+        >
+          <motion.div 
+            initial={{ scale: 0.95, opacity: 0, y: 10 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl relative flex flex-col max-h-[90vh]"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Modal Close Button */}
+            <button 
+              onClick={() => setSelectedReward(null)}
+              className="absolute top-3 right-3 z-20 bg-black/40 hover:bg-black/60 text-white rounded-full p-1.5 backdrop-blur-sm transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {(() => {
+              const { card, isExpired, isUsed } = getCardInfo(selectedReward)!;
+              
+              return (
+                <div className="overflow-y-auto">
+                  {/* Banner Image */}
+                  <div className="h-56 w-full relative bg-slate-200 dark:bg-slate-800 shrink-0">
+                    {isUsed || isExpired ? (
+                      <img 
+                        src={card.image} 
+                        alt={card.title} 
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-cyan-600 to-violet-700 flex flex-col items-center justify-center gap-3">
+                        <Sparkles className="w-12 h-12 text-white/30" />
+                        <div className="font-black text-white text-xl tracking-[0.2em] text-center px-4 opacity-50">HIDDEN FATE</div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="p-6">
+                    {/* Header Info */}
+                    <div className="mb-6 flex justify-between items-start gap-4">
+                      <div>
+                        <h2 className="text-2xl font-bold dark:text-white mb-1">
+                          {isUsed ? card.title : "Mystery Reward Box"}
+                        </h2>
+                        {isUsed && !isExpired && (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400">
+                            <CheckCircle className="w-3.5 h-3.5" />
+                            Revealed
+                          </span>
+                        )}
+                        {isExpired && (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400">
+                            <Clock className="w-3.5 h-3.5" />
+                            Expired
+                          </span>
+                        )}
+                      </div>
+                      
+                      {/* Delete Action inside Modal */}
+                      <button 
+                        onClick={() => handleDelete(selectedReward._id)}
+                        className="text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 p-2 rounded-full transition-colors shrink-0"
+                        title="Delete Reward"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    {/* Description Section */}
+                    {isUsed ? (
+                      <div className="mb-6">
+                        <h4 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Offer Details</h4>
+                        <p className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed">
+                          {card.description}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="mb-6 text-center py-6 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-dashed border-slate-200 dark:border-slate-700">
+                        <Gift className="w-10 h-10 mx-auto text-cyan-500 mb-3 opacity-80" />
+                        <p className="text-slate-600 dark:text-slate-400 px-4">
+                          Scratch and reveal to see your brand new offer! Discover exciting coupon codes and special links inside.
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Actions & Codes */}
+                    <div className="space-y-4">
+                      {isExpired ? (
+                        <div className="w-full p-4 bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/50 rounded-xl text-center text-red-600 dark:text-red-400 font-medium">
+                          This reward has expired on {new Date(selectedReward.expiresAt).toLocaleDateString()}
+                        </div>
+                      ) : !isUsed ? (
+                        <button
+                          onClick={() => handleReveal(selectedReward._id)}
+                          className="w-full py-4 px-6 bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-400 hover:to-violet-500 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 text-lg"
+                        >
+                          <Sparkles className="w-5 h-5" />
+                          Scratch & Reveal Now
+                        </button>
+                      ) : (
+                        <div className="space-y-3">
+                          {/* Coupon Code block */}
+                          {card.couponCode && card.couponCode !== "NO" && (
+                            <div className="bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30 rounded-xl p-4 flex items-center justify-between group">
+                              <div>
+                                <h4 className="text-[10px] font-bold text-green-600 dark:text-green-500 uppercase tracking-wider mb-1">Coupon Code</h4>
+                                <span className="font-mono text-xl font-bold text-green-800 dark:text-green-400 tracking-wide">
+                                  {card.couponCode}
+                                </span>
+                              </div>
+                              <button 
+                                onClick={() => {
+                                  navigator.clipboard.writeText(card.couponCode);
+                                  toast.success("Coupon code copied!");
+                                }}
+                                className="bg-green-100 dark:bg-green-500/20 hover:bg-green-200 dark:hover:bg-green-500/30 text-green-700 dark:text-green-400 p-2.5 rounded-lg transition-colors flex items-center gap-2 font-medium text-sm"
+                              >
+                                <Copy className="w-4 h-4" /> Copy
+                              </button>
+                            </div>
+                          )}
+
+                          {/* Action Button */}
+                          <button
+                            onClick={() => {
+                              if (card.couponLink) {
+                                window.open(card.couponLink, '_blank');
+                              } else {
+                                toast.success("Offer noted! Check your email or retailer for details.");
+                              }
+                            }}
+                            className="w-full py-3.5 px-6 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors flex items-center justify-center gap-2"
+                          >
+                            <span>Redeem Offer</span>
+                            <ExternalLink className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
+
+                      {!isExpired && (
+                        <div className="text-center mt-6 flex justify-center items-center gap-1.5 text-xs text-slate-400 font-medium">
+                          <Clock className="w-3.5 h-3.5" />
+                          Valid until {new Date(selectedReward.expiresAt).toLocaleDateString()}
+                        </div>
+                      )}
+                    </div>
+
+                  </div>
+                </div>
+              );
+            })()}
+
+          </motion.div>
+        </div>
+      )}
+
     </div>
   );
 }
