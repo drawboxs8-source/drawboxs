@@ -158,13 +158,13 @@ export default function Rewards() {
       {/* Detail Modal / Full Screen Mobile View */}
       <AnimatePresence>
         {selectedReward && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center dark:bg-black/70 bg-slate-900/30 backdrop-blur-sm">
+          <div className="fixed inset-0 z-[99999] flex items-center justify-center dark:bg-[#0a0a0c] bg-slate-50">
             <motion.div 
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-              className="w-full h-full sm:h-auto sm:max-h-[85vh] sm:max-w-md dark:bg-[#121212] bg-white sm:rounded-3xl overflow-hidden shadow-2xl relative flex flex-col dark:text-white text-slate-900"
+              className="w-full h-full max-w-md dark:bg-[#121212] bg-white shadow-2xl relative flex flex-col dark:text-white text-slate-900 border-x dark:border-[#27272a] border-slate-200"
             >
               {(() => {
                 const { card, isExpired, isUsed } = getCardInfo(selectedReward)!;
@@ -207,7 +207,7 @@ export default function Rewards() {
                             />
                           </div>
                           <div>
-                            <h2 className="text-[16px] sm:text-lg font-bold dark:text-white text-slate-900 leading-tight mb-1">
+                            <h2 className="text-[16px] sm:text-lg font-bold dark:text-white text-slate-900 leading-tight mb-1 line-clamp-3">
                               {card.description}
                             </h2>
                             <p className="dark:text-[#a1a1aa] text-slate-500 text-sm">
