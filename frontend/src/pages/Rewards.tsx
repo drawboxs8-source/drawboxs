@@ -120,18 +120,11 @@ export default function Rewards() {
                     >
                       {/* Image Area - takes up exactly 60% of the square */}
                       <div className="h-[65%] w-full relative bg-white shrink-0 p-2 border-b border-[#27272a]">
-                        {isUsed || isExpired ? (
-                          <img 
-                            src={card.image} 
-                            alt={card.title} 
-                            className="w-full h-full object-contain"
-                          />
-                        ) : (
-                          <div className="absolute inset-0 bg-gradient-to-br from-[#8B5CF6] to-[#7C3AED] flex flex-col items-center justify-center gap-2">
-                            <Sparkles className="w-8 h-8 text-white/50 animate-pulse" />
-                            <div className="font-bold text-white text-[10px] tracking-widest text-center px-1">SCRATCH REVEAL</div>
-                          </div>
-                        )}
+                        <img 
+                          src={card.image} 
+                          alt={card.title} 
+                          className="w-full h-full object-contain"
+                        />
                         
                         {/* Status Icon */}
                         {isUsed && !isExpired && (
@@ -145,11 +138,11 @@ export default function Rewards() {
                       <div className="h-[35%] p-3 flex flex-col justify-center bg-[#18181b]">
                         <div className="flex justify-between items-center gap-2 mb-0.5">
                            <h3 className="text-[14px] font-bold truncate text-white">
-                             {isUsed ? card.title : "Mystery Reward"}
+                             {card.title}
                            </h3>
                         </div>
                         <p className="text-[11px] text-[#a1a1aa] line-clamp-2 leading-tight">
-                          {isUsed ? card.description : "Tap to view details and reveal your surprise!"}
+                          {card.description}
                         </p>
                       </div>
 
@@ -206,28 +199,21 @@ export default function Rewards() {
                     <div className="flex-1 overflow-y-auto overflow-x-hidden">
                       {/* Banner Image Area */}
                       <div className="h-[240px] w-full relative bg-white border-b border-[#27272a] shrink-0 flex items-center justify-center p-6 mt-12 sm:mt-0">
-                        {isUsed || isExpired ? (
-                          <img 
-                            src={card.image} 
-                            alt={card.title} 
-                            className="w-full h-full object-contain"
-                          />
-                        ) : (
-                          <div className="absolute inset-0 bg-gradient-to-br from-[#8B5CF6] to-[#7C3AED] flex flex-col items-center justify-center gap-3">
-                            <Sparkles className="w-12 h-12 text-white/30" />
-                            <div className="font-black text-white text-xl tracking-[0.2em] text-center px-4 opacity-50">HIDDEN REWARD</div>
-                          </div>
-                        )}
+                        <img 
+                          src={card.image} 
+                          alt={card.title} 
+                          className="w-full h-full object-contain"
+                        />
                       </div>
 
                       <div className="p-5 flex flex-col gap-6">
                         {/* Title & Subtitle */}
                         <div>
                           <h2 className="text-2xl font-bold text-white leading-tight mb-2">
-                            {isUsed ? card.description : "Mystery Coupon Box"}
+                            {card.description}
                           </h2>
                           <p className="text-[#a1a1aa] text-sm">
-                            on {isUsed ? card.title : "Mystery App"} website/App
+                            on {card.title} website/App
                           </p>
                         </div>
 
@@ -238,12 +224,32 @@ export default function Rewards() {
                               This offer expired on {new Date(selectedReward.expiresAt).toLocaleDateString()}
                             </div>
                           ) : !isUsed ? (
-                            <button
-                              onClick={() => handleReveal(selectedReward._id)}
-                              className="w-full py-4 text-[15px] font-bold rounded-[14px] bg-[#8B5CF6] hover:bg-[#7C3AED] text-white transition-colors"
-                            >
-                              Unlock Reward Now
-                            </button>
+                            <div className="flex flex-col gap-4">
+                              <div className="border border-dashed border-[#404040] rounded-[14px] p-4 flex items-center justify-between font-mono bg-[#1a1a1a]">
+                                <div className="text-white text-sm flex gap-2">
+                                  <span className="text-[#a1a1aa]">Code:</span>
+                                  <span className="font-bold tracking-wider">********</span>
+                                </div>
+                                <button 
+                                  onClick={() => handleReveal(selectedReward._id)}
+                                  className="text-[#a78bfa] font-bold text-sm hover:text-[#c4b5fd]"
+                                >
+                                  Unlock
+                                </button>
+                              </div>
+                              <button
+                                onClick={() => {
+                                  if (card.couponLink) {
+                                    window.open(card.couponLink, '_blank');
+                                  } else {
+                                    toast.success("Offer noted! Check your email or retailer for details.");
+                                  }
+                                }}
+                                className="w-full py-4 text-[15px] font-bold rounded-[14px] bg-[#8B5CF6] hover:bg-[#7C3AED] text-white shadow-lg shadow-purple-500/20 transition-all active:scale-[0.98]"
+                              >
+                                BUY NOW
+                              </button>
+                            </div>
                           ) : (
                             <div className="flex flex-col gap-4">
                               {/* Dotted Coupon Code Box */}
@@ -304,7 +310,7 @@ export default function Rewards() {
                           <button className="w-full flex justify-between items-center py-3.5 hover:bg-white/5 px-2 rounded-xl transition-colors text-left group">
                             <div className="flex items-center gap-4">
                               <FileText className="w-5 h-5 text-[#a1a1aa]" />
-                              <span className="text-[15px] text-[#e4e4e7]">About {isUsed ? card.title : "Partner"}</span>
+                              <span className="text-[15px] text-[#e4e4e7]">About {card.title}</span>
                             </div>
                             <ChevronRight className="w-5 h-5 text-[#52525b] group-hover:text-white transition-colors" />
                           </button>
