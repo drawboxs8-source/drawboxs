@@ -88,7 +88,7 @@ export default function Rewards() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
           >
-            <h1 className="text-3xl font-bold mb-2 flex items-center gap-3 dark:text-white">
+            <h1 className="text-3xl font-bold mb-2 flex items-center gap-3 dark:text-white text-slate-900">
               <Gift className="w-8 h-8 text-cyan-500" /> My Rewards
             </h1>
             <p className="text-slate-600 dark:text-slate-400">
@@ -115,11 +115,11 @@ export default function Rewards() {
                     transition={{ delay: index * 0.05 }}
                   >
                     <div 
-                      className={`relative w-full aspect-square rounded-[16px] overflow-hidden flex flex-col group cursor-pointer shadow border border-[#27272a] bg-[#18181b] ${isExpired ? 'opacity-60 grayscale' : ''}`}
+                      className={`relative w-full aspect-square rounded-[16px] overflow-hidden flex flex-col group cursor-pointer shadow border dark:border-[#27272a] border-slate-200 dark:bg-[#18181b] bg-white ${isExpired ? 'opacity-60 grayscale' : ''}`}
                       onClick={() => setSelectedReward(reward)}
                     >
                       {/* Image Area - takes up exactly 60% of the square */}
-                      <div className="h-[65%] w-full relative bg-white shrink-0 p-2 border-b border-[#27272a]">
+                      <div className="h-[65%] w-full relative bg-transparent shrink-0 p-2 border-b dark:border-[#27272a] border-slate-200">
                         <img 
                           src={card.image} 
                           alt={card.title} 
@@ -135,13 +135,13 @@ export default function Rewards() {
                       </div>
 
                       {/* Content Area - takes remaining 35% */}
-                      <div className="h-[35%] p-3 flex flex-col justify-center bg-[#18181b]">
+                      <div className="h-[35%] p-3 flex flex-col justify-center dark:bg-[#18181b] bg-white">
                         <div className="flex justify-between items-center gap-2 mb-0.5">
-                           <h3 className="text-[14px] font-bold truncate text-white">
+                           <h3 className="text-[14px] font-bold truncate dark:text-white text-slate-900">
                              {card.title}
                            </h3>
                         </div>
-                        <p className="text-[11px] text-[#a1a1aa] line-clamp-2 leading-tight">
+                        <p className="text-[11px] dark:text-[#a1a1aa] text-slate-500 line-clamp-2 leading-tight">
                           {card.description}
                         </p>
                       </div>
@@ -164,7 +164,7 @@ export default function Rewards() {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-              className="w-full h-full sm:h-auto sm:max-h-[85vh] sm:max-w-md bg-[#121212] sm:rounded-3xl overflow-hidden shadow-2xl relative flex flex-col text-white"
+              className="w-full h-full sm:h-auto sm:max-h-[85vh] sm:max-w-md dark:bg-[#121212] bg-white sm:rounded-3xl overflow-hidden shadow-2xl relative flex flex-col dark:text-white text-slate-900"
             >
               {(() => {
                 const { card, isExpired, isUsed } = getCardInfo(selectedReward)!;
@@ -175,7 +175,7 @@ export default function Rewards() {
                     <div className="absolute top-0 left-0 w-full p-4 flex justify-between items-start z-10 pointer-events-none">
                       <button 
                         onClick={() => setSelectedReward(null)}
-                        className="pointer-events-auto bg-black/40 hover:bg-black/60 shadow-md backdrop-blur-md text-white rounded-full p-2 transition-colors"
+                        className="pointer-events-auto dark:bg-black/40 bg-white/80 hover:bg-slate-100 dark:hover:bg-black/60 shadow-md backdrop-blur-md dark:text-white text-slate-900 rounded-full p-2 transition-colors"
                       >
                         <ArrowLeft className="w-5 h-5" />
                       </button>
@@ -183,13 +183,13 @@ export default function Rewards() {
                       <div className="flex gap-2">
                         <button 
                           onClick={(e) => handleDelete(selectedReward._id, e)}
-                          className="pointer-events-auto bg-black/40 hover:bg-black/60 shadow-md backdrop-blur-md text-white rounded-full p-2 transition-colors"
+                          className="pointer-events-auto dark:bg-black/40 bg-white/80 hover:bg-slate-100 dark:hover:bg-black/60 shadow-md backdrop-blur-md dark:text-white text-slate-900 rounded-full p-2 transition-colors"
                         >
                           <Trash2 className="w-5 h-5" />
                         </button>
                         <button 
                           onClick={() => {}}
-                          className="pointer-events-auto bg-black/40 hover:bg-black/60 shadow-md backdrop-blur-md text-white rounded-full p-2 transition-colors"
+                          className="pointer-events-auto dark:bg-black/40 bg-white/80 hover:bg-slate-100 dark:hover:bg-black/60 shadow-md backdrop-blur-md dark:text-white text-slate-900 rounded-full p-2 transition-colors"
                         >
                           <HelpCircle className="w-5 h-5" />
                         </button>
@@ -198,7 +198,7 @@ export default function Rewards() {
 
                     <div className="flex-1 overflow-y-auto overflow-x-hidden">
                       {/* Banner Image Area */}
-                      <div className="h-[240px] w-full relative bg-white border-b border-[#27272a] shrink-0 flex items-center justify-center p-6 mt-12 sm:mt-0">
+                      <div className="h-[240px] w-full relative bg-transparent border-b dark:border-[#27272a] border-slate-200 shrink-0 flex items-center justify-center p-6 mt-12 sm:mt-0">
                         <img 
                           src={card.image} 
                           alt={card.title} 
@@ -209,10 +209,10 @@ export default function Rewards() {
                       <div className="p-5 flex flex-col gap-6">
                         {/* Title & Subtitle */}
                         <div>
-                          <h2 className="text-2xl font-bold text-white leading-tight mb-2">
+                          <h2 className="text-2xl font-bold dark:text-white text-slate-900 leading-tight mb-2">
                             {card.description}
                           </h2>
-                          <p className="text-[#a1a1aa] text-sm">
+                          <p className="dark:text-[#a1a1aa] text-slate-500 text-sm">
                             on {card.title} website/App
                           </p>
                         </div>
@@ -225,9 +225,9 @@ export default function Rewards() {
                             </div>
                           ) : !isUsed ? (
                             <div className="flex flex-col gap-4">
-                              <div className="border border-dashed border-[#404040] rounded-[14px] p-4 flex items-center justify-between font-mono bg-[#1a1a1a]">
-                                <div className="text-white text-sm flex gap-2">
-                                  <span className="text-[#a1a1aa]">Code:</span>
+                              <div className="border border-dashed dark:border-[#404040] border-slate-300 rounded-[14px] p-4 flex items-center justify-between font-mono dark:bg-[#1a1a1a] bg-slate-50">
+                                <div className="dark:text-white text-slate-900 text-sm flex gap-2">
+                                  <span className="dark:text-[#a1a1aa] text-slate-500">Code:</span>
                                   <span className="font-bold tracking-wider">********</span>
                                 </div>
                                 <button 
@@ -253,9 +253,9 @@ export default function Rewards() {
                           ) : (
                             <div className="flex flex-col gap-4">
                               {/* Dotted Coupon Code Box */}
-                              <div className="border border-dashed border-[#404040] rounded-[14px] p-4 flex items-center justify-between font-mono bg-[#1a1a1a]">
-                                <div className="text-white text-sm flex gap-2">
-                                  <span className="text-[#a1a1aa]">Code:</span>
+                              <div className="border border-dashed dark:border-[#404040] border-slate-300 rounded-[14px] p-4 flex items-center justify-between font-mono dark:bg-[#1a1a1a] bg-slate-50">
+                                <div className="dark:text-white text-slate-900 text-sm flex gap-2">
+                                  <span className="dark:text-[#a1a1aa] text-slate-500">Code:</span>
                                   <span className="font-bold tracking-wider">{card.couponCode && card.couponCode !== "NO" ? card.couponCode : "NO CODE NEEDED"}</span>
                                 </div>
                                 {card.couponCode && card.couponCode !== "NO" && (
@@ -289,30 +289,30 @@ export default function Rewards() {
                         </div>
 
                         {/* Info List */}
-                        <div className="flex flex-col border-t border-[#27272a] pt-4 gap-1">
-                          <button className="w-full flex items-center gap-4 py-3.5 hover:bg-white/5 px-2 rounded-xl transition-colors text-left group">
-                            <Clock className="w-5 h-5 text-[#a1a1aa]" />
-                            <span className="flex-1 text-[15px] text-[#e4e4e7]">
+                        <div className="flex flex-col border-t dark:border-[#27272a] border-slate-200 pt-4 gap-1">
+                          <button className="w-full flex items-center gap-4 py-3.5 dark:hover:bg-white/5 hover:bg-slate-50 px-2 rounded-xl transition-colors text-left group">
+                            <Clock className="w-5 h-5 dark:text-[#a1a1aa] text-slate-500" />
+                            <span className="flex-1 text-[15px] dark:text-[#e4e4e7] text-slate-700">
                               {isExpired ? 'Expired on' : 'Expires on'} {new Date(selectedReward.expiresAt).toLocaleDateString('en-GB', {
                                 day: 'numeric', month: 'short', year: 'numeric'
                               })}
                             </span>
                           </button>
                           
-                          <button className="w-full flex justify-between items-center py-3.5 hover:bg-white/5 px-2 rounded-xl transition-colors text-left group">
+                          <button className="w-full flex justify-between items-center py-3.5 dark:hover:bg-white/5 hover:bg-slate-50 px-2 rounded-xl transition-colors text-left group">
                             <div className="flex items-center gap-4">
-                              <FileText className="w-5 h-5 text-[#a1a1aa]" />
-                              <span className="text-[15px] text-[#e4e4e7]">Offer Details</span>
+                              <FileText className="w-5 h-5 dark:text-[#a1a1aa] text-slate-500" />
+                              <span className="text-[15px] dark:text-[#e4e4e7] text-slate-700">Offer Details</span>
                             </div>
-                            <ChevronRight className="w-5 h-5 text-[#52525b] group-hover:text-white transition-colors" />
+                            <ChevronRight className="w-5 h-5 dark:text-[#52525b] text-slate-400 dark:group-hover:text-white group-hover:text-slate-900 transition-colors" />
                           </button>
                           
-                          <button className="w-full flex justify-between items-center py-3.5 hover:bg-white/5 px-2 rounded-xl transition-colors text-left group">
+                          <button className="w-full flex justify-between items-center py-3.5 dark:hover:bg-white/5 hover:bg-slate-50 px-2 rounded-xl transition-colors text-left group">
                             <div className="flex items-center gap-4">
-                              <FileText className="w-5 h-5 text-[#a1a1aa]" />
-                              <span className="text-[15px] text-[#e4e4e7]">About {card.title}</span>
+                              <FileText className="w-5 h-5 dark:text-[#a1a1aa] text-slate-500" />
+                              <span className="text-[15px] dark:text-[#e4e4e7] text-slate-700">About {card.title}</span>
                             </div>
-                            <ChevronRight className="w-5 h-5 text-[#52525b] group-hover:text-white transition-colors" />
+                            <ChevronRight className="w-5 h-5 dark:text-[#52525b] text-slate-400 dark:group-hover:text-white group-hover:text-slate-900 transition-colors" />
                           </button>
                         </div>
 
