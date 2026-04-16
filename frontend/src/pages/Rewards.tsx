@@ -171,11 +171,11 @@ export default function Rewards() {
                 
                 return (
                   <>
-                    {/* Header Controls layer over image */}
-                    <div className="absolute top-0 left-0 w-full p-4 flex justify-between items-start z-10 pointer-events-none">
+                    {/* Header Controls */}
+                    <div className="w-full p-4 flex justify-between items-center border-b dark:border-[#27272a] border-slate-200 shrink-0 bg-white dark:bg-[#121212]">
                       <button 
                         onClick={() => setSelectedReward(null)}
-                        className="pointer-events-auto dark:bg-black/40 bg-white/80 hover:bg-slate-100 dark:hover:bg-black/60 shadow-md backdrop-blur-md dark:text-white text-slate-900 rounded-full p-2 transition-colors"
+                        className="dark:bg-[#1a1a1a] bg-slate-100 hover:bg-slate-200 dark:hover:bg-[#27272a] dark:text-white text-slate-900 rounded-full p-2 transition-colors"
                       >
                         <ArrowLeft className="w-5 h-5" />
                       </button>
@@ -183,13 +183,12 @@ export default function Rewards() {
                       <div className="flex gap-2">
                         <button 
                           onClick={(e) => handleDelete(selectedReward._id, e)}
-                          className="pointer-events-auto dark:bg-black/40 bg-white/80 hover:bg-slate-100 dark:hover:bg-black/60 shadow-md backdrop-blur-md dark:text-white text-slate-900 rounded-full p-2 transition-colors"
+                          className="dark:bg-[#1a1a1a] bg-slate-100 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/20 dark:text-white text-slate-900 transition-colors rounded-full p-2"
                         >
                           <Trash2 className="w-5 h-5" />
                         </button>
                         <button 
-                          onClick={() => {}}
-                          className="pointer-events-auto dark:bg-black/40 bg-white/80 hover:bg-slate-100 dark:hover:bg-black/60 shadow-md backdrop-blur-md dark:text-white text-slate-900 rounded-full p-2 transition-colors"
+                          className="dark:bg-[#1a1a1a] bg-slate-100 hover:bg-slate-200 dark:hover:bg-[#27272a] dark:text-white text-slate-900 rounded-full p-2 transition-colors"
                         >
                           <HelpCircle className="w-5 h-5" />
                         </button>
@@ -197,24 +196,24 @@ export default function Rewards() {
                     </div>
 
                     <div className="flex-1 overflow-y-auto overflow-x-hidden">
-                      {/* Banner Image Area */}
-                      <div className="h-[240px] w-full relative bg-transparent border-b dark:border-[#27272a] border-slate-200 shrink-0 flex items-center justify-center p-6 mt-12 sm:mt-0">
-                        <img 
-                          src={card.image} 
-                          alt={card.title} 
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-
                       <div className="p-5 flex flex-col gap-6">
-                        {/* Title & Subtitle */}
-                        <div>
-                          <h2 className="text-2xl font-bold dark:text-white text-slate-900 leading-tight mb-2">
-                            {card.description}
-                          </h2>
-                          <p className="dark:text-[#a1a1aa] text-slate-500 text-sm">
-                            on {card.title} website/App
-                          </p>
+                        {/* Compact Header with Image and Title */}
+                        <div className="flex items-center gap-4">
+                          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[12px] border dark:border-[#27272a] border-slate-200 bg-transparent flex items-center justify-center p-2 shrink-0">
+                            <img 
+                              src={card.image} 
+                              alt={card.title} 
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+                          <div>
+                            <h2 className="text-[16px] sm:text-lg font-bold dark:text-white text-slate-900 leading-tight mb-1">
+                              {card.description}
+                            </h2>
+                            <p className="dark:text-[#a1a1aa] text-slate-500 text-sm">
+                              on {card.title}
+                            </p>
+                          </div>
                         </div>
 
                         {/* Actions & Code Box */}
