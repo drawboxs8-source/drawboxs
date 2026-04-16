@@ -119,7 +119,7 @@ export default function Rewards() {
                       onClick={() => setSelectedReward(reward)}
                     >
                       {/* Image Area - takes up exactly 60% of the square */}
-                      <div className="h-[65%] w-full relative bg-transparent shrink-0 p-2 border-b dark:border-[#27272a] border-slate-200">
+                      <div className="h-[65%] w-full relative dark:bg-[#1a1a1a] bg-white shrink-0 p-2 border-b dark:border-[#27272a] border-slate-200">
                         <img 
                           src={card.image} 
                           alt={card.title} 
@@ -158,7 +158,7 @@ export default function Rewards() {
       {/* Detail Modal / Full Screen Mobile View */}
       <AnimatePresence>
         {selectedReward && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center dark:bg-black/70 bg-slate-900/30 backdrop-blur-sm">
             <motion.div 
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
@@ -199,7 +199,7 @@ export default function Rewards() {
                       <div className="p-5 flex flex-col gap-6">
                         {/* Compact Header with Image and Title */}
                         <div className="flex items-center gap-4">
-                          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[12px] border dark:border-[#27272a] border-slate-200 bg-transparent flex items-center justify-center p-2 shrink-0">
+                          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[12px] border dark:border-[#27272a] border-slate-200 dark:bg-[#1a1a1a] bg-white flex items-center justify-center p-2 shrink-0">
                             <img 
                               src={card.image} 
                               alt={card.title} 
