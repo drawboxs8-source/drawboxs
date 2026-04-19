@@ -118,6 +118,152 @@ export default function Rewards() {
     toast.success('Offer noted! Check your email or retailer for details.');
   };
 
+  if (selectedReward) {
+    const { card, isExpired, isUsed, hasCode, displayCode } = getCardInfo(selectedReward);
+
+    return (
+      <div className="min-h-screen bg-white text-slate-950 dark:bg-slate-950 dark:text-white">
+        <Header />
+
+        <main className="mx-auto max-w-6xl px-4 pb-12 pt-8 sm:px-6">
+          <div className="mb-5 flex items-center justify-between gap-3">
+            <button
+              onClick={() => setSelectedReward(null)}
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to rewards
+            </button>
+
+            <button
+              onClick={(e) => handleDelete(selectedReward._id, e)}
+              className="rounded-full border border-slate-200 bg-white p-2.5 text-slate-600 shadow-sm transition hover:border-red-200 hover:bg-red-50 hover:text-red-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-red-800 dark:hover:bg-red-950 dark:hover:text-red-300"
+            >
+              <Trash2 className="h-4 w-4" />
+            </button>
+          </div>
+
+          <section className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
+              <div className="rounded-[24px] border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-950">
+                {card.image ? (
+                  <img
+                    src={card.image}
+                    alt={card.title || 'Reward'}
+                    className="h-[220px] w-full rounded-[18px] object-contain sm:h-[320px] lg:h-[420px]"
+                  />
+                ) : (
+                  <div className="flex h-[220px] items-center justify-center rounded-[18px] bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-300 sm:h-[320px] lg:h-[420px]">
+                    <Gift className="h-12 w-12" />
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-950">
+                  <div className="text-[11px] uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">Status</div>
+                  <div className="mt-2 font-semibold text-slate-950 dark:text-white">
+                    {isExpired ? 'Expired' : isUsed ? 'Unlocked' : 'Ready to unlock'}
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-950">
+                  <div className="text-[11px] uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">Code Type</div>
+                  <div className="mt-2 font-semibold text-slate-950 dark:text-white">
+                    {hasCode ? 'Coupon code' : 'No code needed'}
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-950">
+                  <div className="text-[11px] uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">Expires</div>
+                  <div className="mt-2 font-semibold text-slate-950 dark:text-white">
+                    {formatRewardDate(selectedReward.expiresAt)}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6">
+              <div className="inline-flex rounded-full border border-cyan-200 bg-cyan-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-700 dark:border-cyan-900 dark:bg-cyan-950 dark:text-cyan-200">
+                Reward details
+              </div>
+              <h1 className="mt-4 text-2xl font-black leading-tight text-slate-950 dark:text-white sm:text-3xl">
+                {card.title || 'Untitled reward'}
+              </h1>
+              <p className="mt-3 text-sm leading-7 text-slate-700 dark:text-slate-200 sm:text-base">
+                {card.description || 'No detailed description has been added for this reward yet.'}
+              </p>
+
+              {isExpired ? (
+                <div className="mt-6 rounded-[24px] border border-red-200 bg-red-50 p-5 text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-200">
+                  This offer expired on {formatRewardDate(selectedReward.expiresAt)}.
+                </div>
+              ) : (
+                <div className="mt-6 rounded-[24px] border border-slate-200 bg-slate-50 p-5 dark:border-slate-700 dark:bg-slate-950">
+                  <div className="text-[11px] uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">Coupon code</div>
+                  <div className="mt-2 break-all text-2xl font-black tracking-[0.12em] text-slate-950 dark:text-white">
+                    {isUsed ? displayCode : '********'}
+                  </div>
+
+                  <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                    {!isUsed ? (
+                      <button
+                        onClick={() => handleReveal(selectedReward._id)}
+                        className="rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 px-5 py-4 text-sm font-bold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110"
+                      >
+                        Unlock Reward
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => openRewardLink(card.couponLink)}
+                        className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 px-5 py-4 text-sm font-bold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110"
+                      >
+                        Open Offer
+                        <ExternalLink className="h-4 w-4" />
+                      </button>
+                    )}
+
+                    {isUsed && hasCode ? (
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(displayCode || '');
+                          toast.success('Coupon code copied!');
+                        }}
+                        className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
+                      >
+                        <Copy className="h-4 w-4" />
+                        Copy Code
+                      </button>
+                    ) : null}
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-5 space-y-3">
+                <DetailRow icon={<Clock className="h-4 w-4" />} title={isExpired ? 'Expired on' : 'Expires on'}>
+                  {formatRewardDate(selectedReward.expiresAt)}
+                </DetailRow>
+                <DetailRow icon={<FileText className="h-4 w-4" />} title="Coupon description">
+                  {card.description || 'No extra offer details are available right now.'}
+                </DetailRow>
+                <DetailRow icon={<ExternalLink className="h-4 w-4" />} title="URL link">
+                  {card.couponLink ? (
+                    <button
+                      onClick={() => openRewardLink(card.couponLink)}
+                      className="break-all text-left font-semibold text-blue-700 underline-offset-4 hover:underline dark:text-cyan-300"
+                    >
+                      {card.couponLink}
+                    </button>
+                  ) : (
+                    'No URL was uploaded for this coupon.'
+                  )}
+                </DetailRow>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen pb-20 font-sans bg-[#f3f7fb] text-slate-950">
       <Header />
@@ -444,6 +590,26 @@ export default function Rewards() {
         );
       })()}
 
+    </div>
+  );
+}
+
+function DetailRow({
+  icon,
+  title,
+  children,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-950">
+      <div className="flex items-center gap-3 text-sm font-semibold text-slate-950 dark:text-white">
+        <span className="text-cyan-600 dark:text-cyan-300">{icon}</span>
+        {title}
+      </div>
+      <div className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{children}</div>
     </div>
   );
 }
