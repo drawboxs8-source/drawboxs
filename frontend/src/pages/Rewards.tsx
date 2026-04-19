@@ -262,9 +262,9 @@ export default function Rewards() {
         const { card, isExpired, isUsed, hasCode, displayCode } = getCardInfo(selectedReward);
         
         return (
-          <div className="fixed inset-0 z-[2147483600] flex items-end justify-center bg-slate-900/45 p-0 backdrop-blur-sm sm:items-center sm:p-6">
-            <div className="flex h-[92vh] w-full max-w-5xl flex-col overflow-hidden rounded-t-[32px] border border-slate-200 bg-white text-slate-950 shadow-[0_35px_120px_rgba(15,23,42,0.28)] sm:h-auto sm:max-h-[90vh] sm:rounded-[32px]">
-              <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-4 sm:px-6">
+          <div className="fixed inset-0 z-[2147483600] flex justify-center bg-white p-0 text-slate-950">
+            <div className="flex h-full min-h-0 w-full max-w-6xl flex-col overflow-hidden bg-white text-slate-950">
+              <div className="shrink-0 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-4 shadow-sm sm:px-6">
                 <button
                   onClick={() => setSelectedReward(null)}
                   className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
@@ -286,18 +286,18 @@ export default function Rewards() {
                 </div>
               </div>
 
-              <div className="grid flex-1 overflow-y-auto lg:grid-cols-[1.1fr_0.9fr]">
-                <div className="border-b border-slate-200 bg-slate-50 p-5 sm:p-6 lg:border-b-0 lg:border-r">
+              <div className="grid min-h-0 flex-1 overflow-y-auto bg-white lg:grid-cols-[1.05fr_0.95fr]">
+                <div className="border-b border-slate-200 bg-slate-50 p-4 sm:p-6 lg:border-b-0 lg:border-r">
                   <div className="overflow-hidden rounded-[28px] border border-slate-200 bg-white p-4 shadow-sm">
                     <div className="overflow-hidden rounded-[24px] bg-white p-4">
                       {card.image ? (
                         <img
                           src={card.image}
                           alt={card.title || 'Reward'}
-                          className="h-[220px] w-full rounded-[18px] object-contain sm:h-[300px]"
+                          className="h-[180px] w-full rounded-[18px] object-contain sm:h-[260px] lg:h-[320px]"
                         />
                       ) : (
-                        <div className="flex h-[220px] items-center justify-center rounded-[18px] bg-slate-100 text-slate-500 sm:h-[300px]">
+                        <div className="flex h-[180px] items-center justify-center rounded-[18px] bg-slate-100 text-slate-500 sm:h-[260px] lg:h-[320px]">
                           <Gift className="h-12 w-12" />
                         </div>
                       )}
@@ -326,7 +326,7 @@ export default function Rewards() {
                   </div>
                 </div>
 
-                <div className="flex flex-col p-5 sm:p-6">
+                <div className="flex flex-col p-4 sm:p-6">
                   <div className="mb-6">
                     <div className="inline-flex rounded-full border border-cyan-200 bg-cyan-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-700">
                       Reward details
