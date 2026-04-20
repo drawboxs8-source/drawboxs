@@ -17,7 +17,6 @@ export default function Header() {
   const userLinks = [
     { to: '/dashboard', label: 'Dashboard' },
     { to: '/rewards', label: 'Rewards' },
-    { to: '/spin', label: 'Spin' },
     { to: '/coins-history', label: 'History' },
     { to: '/withdrawal', label: 'Withdraw' },
     { to: '/pricing', label: 'Pricing' },

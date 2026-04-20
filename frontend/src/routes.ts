@@ -10,7 +10,6 @@ import Pricing from "./pages/Pricing";
 import PaymentUpload from "./pages/PaymentUpload";
 import AdminDashboard from "./pages/AdminDashboard";
 import Rewards from "./pages/Rewards";
-import SpinEarn from "./pages/SpinEarn";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -30,7 +29,6 @@ export const router = createBrowserRouter([
       { path: "dashboard", Component: Dashboard },
       { path: "coins-history", Component: CoinsHistory },
       { path: "rewards", Component: Rewards },
-      { path: "spin", Component: SpinEarn },
       { path: "withdrawal", Component: Withdrawal },
       { path: "pricing", Component: Pricing },
       { path: "payment-upload", Component: PaymentUpload },
