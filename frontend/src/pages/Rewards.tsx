@@ -277,9 +277,9 @@ export default function Rewards() {
                           type="button"
                           aria-label="Remove reward"
                           onClick={(event) => handleDelete(reward._id, event)}
-                          className="rounded-full bg-red-600 p-1.5 text-white shadow-md shadow-red-600/25 transition hover:bg-red-700"
+                          className="shrink-0 rounded-full bg-white p-1 text-red-600 transition hover:bg-red-50 hover:text-red-700"
                         >
-                          <X className="h-3.5 w-3.5" />
+                          <X className="h-5 w-5 stroke-[3]" />
                         </button>
                       </div>
 
