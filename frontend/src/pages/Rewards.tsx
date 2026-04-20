@@ -119,13 +119,13 @@ export default function Rewards() {
   };
 
   if (selectedReward) {
-    const { card, isExpired, isUsed, hasCode, displayCode } = getCardInfo(selectedReward);
+    const { card, isExpired } = getCardInfo(selectedReward);
 
     return (
       <div className="min-h-screen bg-white text-slate-950 dark:bg-slate-950 dark:text-white">
         <Header />
 
-        <main className="mx-auto max-w-6xl px-4 pb-12 pt-8 sm:px-6">
+        <main className="mx-auto max-w-xl px-4 pb-12 pt-6 sm:px-6">
           <div className="mb-5 flex items-center justify-between gap-3">
             <button
               onClick={() => setSelectedReward(null)}
@@ -134,129 +134,43 @@ export default function Rewards() {
               <ArrowLeft className="h-4 w-4" />
               Back to rewards
             </button>
-
-            <button
-              onClick={(e) => handleDelete(selectedReward._id, e)}
-              className="rounded-full border border-slate-200 bg-white p-2.5 text-slate-600 shadow-sm transition hover:border-red-200 hover:bg-red-50 hover:text-red-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-red-800 dark:hover:bg-red-950 dark:hover:text-red-300"
-            >
-              <Trash2 className="h-4 w-4" />
-            </button>
           </div>
 
-          <section className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
-              <div className="rounded-[24px] border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-950">
-                {card.image ? (
-                  <img
-                    src={card.image}
-                    alt={card.title || 'Reward'}
-                    className="h-[220px] w-full rounded-[18px] object-contain sm:h-[320px] lg:h-[420px]"
-                  />
-                ) : (
-                  <div className="flex h-[220px] items-center justify-center rounded-[18px] bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-300 sm:h-[320px] lg:h-[420px]">
-                    <Gift className="h-12 w-12" />
-                  </div>
-                )}
-              </div>
-
-              <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-950">
-                  <div className="text-[11px] uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">Status</div>
-                  <div className="mt-2 font-semibold text-slate-950 dark:text-white">
-                    {isExpired ? 'Expired' : isUsed ? 'Unlocked' : 'Ready to unlock'}
-                  </div>
-                </div>
-                <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-950">
-                  <div className="text-[11px] uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">Code Type</div>
-                  <div className="mt-2 font-semibold text-slate-950 dark:text-white">
-                    {hasCode ? 'Coupon code' : 'No code needed'}
-                  </div>
-                </div>
-                <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-950">
-                  <div className="text-[11px] uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">Expires</div>
-                  <div className="mt-2 font-semibold text-slate-950 dark:text-white">
-                    {formatRewardDate(selectedReward.expiresAt)}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6">
-              <div className="inline-flex rounded-full border border-cyan-200 bg-cyan-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-700 dark:border-cyan-900 dark:bg-cyan-950 dark:text-cyan-200">
-                Reward details
-              </div>
-              <h1 className="mt-4 text-2xl font-black leading-tight text-slate-950 dark:text-white sm:text-3xl">
-                {card.title || 'Untitled reward'}
-              </h1>
-              <p className="mt-3 text-sm leading-7 text-slate-700 dark:text-slate-200 sm:text-base">
-                {card.description || 'No detailed description has been added for this reward yet.'}
-              </p>
-
-              {isExpired ? (
-                <div className="mt-6 rounded-[24px] border border-red-200 bg-red-50 p-5 text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-200">
-                  This offer expired on {formatRewardDate(selectedReward.expiresAt)}.
-                </div>
+          <section className="space-y-5">
+            <button
+              type="button"
+              onClick={() => openRewardLink(card.couponLink)}
+              className="block w-full rounded-[26px] border border-slate-200 bg-white p-3 shadow-sm transition hover:border-cyan-300 dark:border-slate-700 dark:bg-slate-900"
+            >
+              {card.image ? (
+                <img
+                  src={card.image}
+                  alt={card.title || 'Reward'}
+                  className="h-[260px] w-full rounded-[18px] object-contain sm:h-[360px]"
+                />
               ) : (
-                <div className="mt-6 rounded-[24px] border border-slate-200 bg-slate-50 p-5 dark:border-slate-700 dark:bg-slate-950">
-                  <div className="text-[11px] uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">Coupon code</div>
-                  <div className="mt-2 break-all text-2xl font-black tracking-[0.12em] text-slate-950 dark:text-white">
-                    {isUsed ? displayCode : '********'}
-                  </div>
-
-                  <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                    {!isUsed ? (
-                      <button
-                        onClick={() => handleReveal(selectedReward._id)}
-                        className="rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 px-5 py-4 text-sm font-bold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110"
-                      >
-                        Unlock Reward
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => openRewardLink(card.couponLink)}
-                        className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 px-5 py-4 text-sm font-bold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110"
-                      >
-                        Open Offer
-                        <ExternalLink className="h-4 w-4" />
-                      </button>
-                    )}
-
-                    {isUsed && hasCode ? (
-                      <button
-                        onClick={() => {
-                          navigator.clipboard.writeText(displayCode || '');
-                          toast.success('Coupon code copied!');
-                        }}
-                        className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
-                      >
-                        <Copy className="h-4 w-4" />
-                        Copy Code
-                      </button>
-                    ) : null}
-                  </div>
+                <div className="flex h-[260px] items-center justify-center rounded-[18px] bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-300 sm:h-[360px]">
+                  <Gift className="h-12 w-12" />
                 </div>
               )}
+            </button>
 
-              <div className="mt-5 space-y-3">
-                <DetailRow icon={<Clock className="h-4 w-4" />} title={isExpired ? 'Expired on' : 'Expires on'}>
-                  {formatRewardDate(selectedReward.expiresAt)}
-                </DetailRow>
-                <DetailRow icon={<FileText className="h-4 w-4" />} title="Coupon description">
-                  {card.description || 'No extra offer details are available right now.'}
-                </DetailRow>
-                <DetailRow icon={<ExternalLink className="h-4 w-4" />} title="URL link">
-                  {card.couponLink ? (
-                    <button
-                      onClick={() => openRewardLink(card.couponLink)}
-                      className="break-all text-left font-semibold text-blue-700 underline-offset-4 hover:underline dark:text-cyan-300"
-                    >
-                      {card.couponLink}
-                    </button>
-                  ) : (
-                    'No URL was uploaded for this coupon.'
-                  )}
-                </DetailRow>
+            <div className="rounded-[24px] border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-slate-900">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
+                Description
               </div>
+              <p className="mt-3 text-base leading-7 text-slate-800 dark:text-slate-100">
+                {card.description || 'No description was uploaded for this coupon.'}
+              </p>
+            </div>
+
+            <div className="rounded-[24px] border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-slate-900">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
+                {isExpired ? 'Expired on' : 'Expires on'}
+              </div>
+              <p className="mt-3 text-base font-bold text-slate-950 dark:text-white">
+                {formatRewardDate(selectedReward.expiresAt)}
+              </p>
             </div>
           </section>
         </main>
@@ -320,7 +234,7 @@ export default function Rewards() {
               <p className="mt-2 text-sm text-slate-500">Wait for the admin to upload new weekly rewards.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
               {rewards.map((reward, index) => {
                 const { card, isExpired, isUsed, hasCode } = getCardInfo(reward);
 
@@ -332,17 +246,17 @@ export default function Rewards() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.04 }}
                     onClick={() => setSelectedReward(reward)}
-                    className={`group relative overflow-hidden rounded-[28px] border bg-white text-left shadow-[0_18px_45px_rgba(15,23,42,0.08)] transition-all duration-300 ${
+                    className={`group relative overflow-hidden rounded-[18px] border bg-white text-left shadow-[0_10px_28px_rgba(15,23,42,0.07)] transition-all duration-300 ${
                       isExpired
                         ? 'border-slate-200 opacity-65'
-                        : 'border-slate-200 hover:-translate-y-1 hover:border-cyan-300 hover:shadow-[0_24px_60px_rgba(8,145,178,0.16)]'
+                        : 'border-slate-200 hover:-translate-y-0.5 hover:border-cyan-300 hover:shadow-[0_16px_36px_rgba(8,145,178,0.14)]'
                     }`}
                   >
-                    <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-cyan-50 to-transparent opacity-80" />
+                    <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-cyan-50 to-transparent opacity-80" />
                     <div className="relative flex h-full flex-col">
-                      <div className="flex items-center justify-between px-4 pt-4">
+                      <div className="flex items-center justify-between px-2.5 pt-2.5 sm:px-3 sm:pt-3">
                         <span
-                          className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] ${
+                          className={`inline-flex rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.12em] sm:text-[10px] ${
                             isExpired
                               ? 'bg-red-50 text-red-700'
                               : isUsed
@@ -353,44 +267,44 @@ export default function Rewards() {
                           {isExpired ? 'Expired' : isUsed ? 'Unlocked' : 'Locked'}
                         </span>
                         {isUsed && !isExpired ? (
-                          <span className="rounded-full bg-emerald-50 p-2 text-emerald-700">
-                            <CheckCircle className="h-4 w-4" />
+                          <span className="rounded-full bg-emerald-50 p-1.5 text-emerald-700">
+                            <CheckCircle className="h-3.5 w-3.5" />
                           </span>
                         ) : null}
                       </div>
 
-                      <div className="px-4 pt-4">
-                        <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-inner">
+                      <div className="px-2.5 pt-2.5 sm:px-3 sm:pt-3">
+                        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-inner">
                           {card.image ? (
                             <img
                               src={card.image}
                               alt={card.title || 'Reward'}
-                              className="h-full w-full object-contain p-3 transition-transform duration-500 group-hover:scale-[1.03]"
+                              className="h-full w-full object-contain p-2 transition-transform duration-500 group-hover:scale-[1.03]"
                             />
                           ) : (
                             <div className="flex h-full items-center justify-center bg-slate-200 text-slate-500">
-                              <Gift className="h-10 w-10" />
+                              <Gift className="h-8 w-8" />
                             </div>
                           )}
                         </div>
                       </div>
 
-                      <div className="flex flex-1 flex-col px-4 pb-4 pt-4">
-                        <h3 className="line-clamp-2 text-lg font-bold leading-snug text-slate-950">
+                      <div className="flex flex-1 flex-col px-2.5 pb-3 pt-2.5 sm:px-3 sm:pb-3 sm:pt-3">
+                        <h3 className="line-clamp-2 text-[13px] font-bold leading-snug text-slate-950 sm:text-sm">
                           {card.title || 'Untitled reward'}
                         </h3>
-                        <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">
+                        <p className="mt-1.5 line-clamp-2 text-[11px] leading-4 text-slate-600 sm:text-xs">
                           {card.description || 'Reward details will appear here once the admin adds them.'}
                         </p>
 
-                        <div className="mt-4 flex items-center justify-between gap-3 border-t border-slate-100 pt-4">
+                        <div className="mt-3 flex items-center justify-between gap-2 border-t border-slate-100 pt-2.5">
                           <div>
-                            <div className="text-[11px] uppercase tracking-[0.18em] text-slate-400">Access</div>
-                            <div className="mt-1 text-sm font-semibold text-slate-900">
+                            <div className="text-[9px] uppercase tracking-[0.14em] text-slate-400">Access</div>
+                            <div className="mt-0.5 text-[11px] font-semibold text-slate-900 sm:text-xs">
                               {hasCode ? 'Coupon Code' : 'Direct Offer'}
                             </div>
                           </div>
-                          <div className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-700">
+                          <div className="shrink-0 rounded-full bg-slate-100 px-2 py-1 text-[10px] font-semibold text-slate-700 sm:text-[11px]">
                             {formatRewardDate(reward.expiresAt)}
                           </div>
                         </div>
