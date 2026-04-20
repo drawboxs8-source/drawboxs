@@ -1,7 +1,6 @@
 import { motion } from 'motion/react';
 import {
   ArrowLeft,
-  CheckCircle,
   Clock,
   Copy,
   ExternalLink,
@@ -261,16 +260,8 @@ export default function Rewards() {
                     }`}
                   >
                     <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-cyan-50 to-transparent opacity-80" />
-                    <button
-                      type="button"
-                      aria-label="Remove reward"
-                      onClick={(event) => handleDelete(reward._id, event)}
-                      className="absolute right-2 top-2 z-20 rounded-full bg-red-600 p-1.5 text-white shadow-lg shadow-red-600/25 transition hover:bg-red-700"
-                    >
-                      <X className="h-3.5 w-3.5" />
-                    </button>
                     <div className="relative flex h-full flex-col">
-                      <div className="flex items-center justify-between px-2.5 pt-2.5 pr-10 sm:px-3 sm:pt-3 sm:pr-10">
+                      <div className="flex items-center justify-between gap-2 px-2.5 pt-2.5 sm:px-3 sm:pt-3">
                         <span
                           className={`inline-flex rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.12em] sm:text-[10px] ${
                             isExpired
@@ -282,11 +273,14 @@ export default function Rewards() {
                         >
                           {isExpired ? 'Expired' : isUsed ? 'Unlocked' : 'Locked'}
                         </span>
-                        {isUsed && !isExpired ? (
-                          <span className="rounded-full bg-emerald-50 p-1.5 text-emerald-700">
-                            <CheckCircle className="h-3.5 w-3.5" />
-                          </span>
-                        ) : null}
+                        <button
+                          type="button"
+                          aria-label="Remove reward"
+                          onClick={(event) => handleDelete(reward._id, event)}
+                          className="rounded-full bg-red-600 p-1.5 text-white shadow-md shadow-red-600/25 transition hover:bg-red-700"
+                        >
+                          <X className="h-3.5 w-3.5" />
+                        </button>
                       </div>
 
                       <div className="px-2.5 pt-2.5 sm:px-3 sm:pt-3">
