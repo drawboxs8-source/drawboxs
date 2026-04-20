@@ -236,7 +236,7 @@ export default function Rewards() {
           ) : (
             <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
               {rewards.map((reward, index) => {
-                const { card, isExpired, isUsed, hasCode } = getCardInfo(reward);
+                const { card, isExpired, isUsed } = getCardInfo(reward);
 
                 return (
                   <motion.button
@@ -293,21 +293,6 @@ export default function Rewards() {
                         <h3 className="line-clamp-2 text-[13px] font-bold leading-snug text-slate-950 sm:text-sm">
                           {card.title || 'Untitled reward'}
                         </h3>
-                        <p className="mt-1.5 line-clamp-2 text-[11px] leading-4 text-slate-600 sm:text-xs">
-                          {card.description || 'Reward details will appear here once the admin adds them.'}
-                        </p>
-
-                        <div className="mt-3 flex items-center justify-between gap-2 border-t border-slate-100 pt-2.5">
-                          <div>
-                            <div className="text-[9px] uppercase tracking-[0.14em] text-slate-400">Access</div>
-                            <div className="mt-0.5 text-[11px] font-semibold text-slate-900 sm:text-xs">
-                              {hasCode ? 'Coupon Code' : 'Direct Offer'}
-                            </div>
-                          </div>
-                          <div className="shrink-0 rounded-full bg-slate-100 px-2 py-1 text-[10px] font-semibold text-slate-700 sm:text-[11px]">
-                            {formatRewardDate(reward.expiresAt)}
-                          </div>
-                        </div>
                       </div>
                     </div>
                   </motion.button>
