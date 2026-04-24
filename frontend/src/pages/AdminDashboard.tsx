@@ -427,11 +427,11 @@ export default function AdminDashboard() {
                                 <div className="font-bold text-lg">{user.name || 'N/A'}</div>
                                 <div className="text-sm text-slate-600 dark:text-slate-400">{user.phone || 'N/A'}</div>
                                 <div className="text-sm text-slate-500">{user.phone || 'N/A'}</div>
-                                {user.referredBy && (
-                                  <div className="text-sm text-violet-600 dark:text-violet-300">
-                                    Used referral: {user.referredBy.name || 'Unknown'} ({user.referredBy.phone || user.referredBy.referralCode || 'N/A'})
-                                  </div>
-                                )}
+                                <div className="text-sm text-violet-600 dark:text-violet-300">
+                                  Referral used: {user.referredBy
+                                    ? `${user.referredBy.name || 'Unknown'} (${user.referredBy.phone || user.referredBy.referralCode || 'N/A'})`
+                                    : 'None'}
+                                </div>
                               </div>
                             </div>
                             <div className="flex items-center gap-3 flex-wrap">
@@ -499,11 +499,11 @@ export default function AdminDashboard() {
                                 <div className="text-sm text-slate-500">
                                   Coins: {user.coins || 0} | Bills: {user.totalBillsUploaded || 0}
                                 </div>
-                                {user.referredBy && (
-                                  <div className="text-sm text-violet-600 dark:text-violet-300">
-                                    Used referral: {user.referredBy.name || 'Unknown'} ({user.referredBy.phone || user.referredBy.referralCode || 'N/A'})
-                                  </div>
-                                )}
+                                <div className="text-sm text-violet-600 dark:text-violet-300">
+                                  Referral used: {user.referredBy
+                                    ? `${user.referredBy.name || 'Unknown'} (${user.referredBy.phone || user.referredBy.referralCode || 'N/A'})`
+                                    : 'None'}
+                                </div>
                               </div>
                             </div>
                               <div className="flex items-center gap-3">
