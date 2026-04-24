@@ -17,6 +17,7 @@ router.get(
   async (req, res) => {
     try {
       const users = await User.find()
+        .populate('referredBy', 'name phone referralCode')
         .select('-password')  // Don't send passwords
         .sort({ createdAt: -1 });  // Latest first
       
