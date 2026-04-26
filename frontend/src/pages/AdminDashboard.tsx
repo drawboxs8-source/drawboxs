@@ -428,9 +428,7 @@ export default function AdminDashboard() {
                                 <div className="text-sm text-slate-600 dark:text-slate-400">{user.phone || 'N/A'}</div>
                                 <div className="text-sm text-slate-500">{user.phone || 'N/A'}</div>
                                 <div className="text-sm text-violet-600 dark:text-violet-300">
-                                  Referral used: {user.referredBy
-                                    ? `${user.referredBy.name || 'Unknown'} (${user.referredBy.phone || user.referredBy.referralCode || 'N/A'})`
-                                    : 'None'}
+                                  Entered referral code: {user.usedReferralCode?.trim() ? user.usedReferralCode : 'None'}
                                 </div>
                               </div>
                             </div>
@@ -500,9 +498,7 @@ export default function AdminDashboard() {
                                   Coins: {user.coins || 0} | Bills: {user.totalBillsUploaded || 0}
                                 </div>
                                 <div className="text-sm text-violet-600 dark:text-violet-300">
-                                  Referral used: {user.referredBy
-                                    ? `${user.referredBy.name || 'Unknown'} (${user.referredBy.phone || user.referredBy.referralCode || 'N/A'})`
-                                    : 'None'}
+                                  Entered referral code: {user.usedReferralCode?.trim() ? user.usedReferralCode : 'None'}
                                 </div>
                               </div>
                             </div>

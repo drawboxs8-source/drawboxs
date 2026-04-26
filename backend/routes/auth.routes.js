@@ -10,6 +10,7 @@ const nodemailer = require("nodemailer");
 router.post("/register", async (req, res) => {
   try {
     const { name, phone, password, referralCode } = req.body;
+    const enteredReferralCode = (referralCode || "").trim();
 
     // ✅ CHECK FOR DUPLICATE PHONE NUMBER
     const existingUser = await User.findOne({ phone });
@@ -23,8 +24,8 @@ router.post("/register", async (req, res) => {
     let referredBy = null;
     let startingCoins = 0;
 
-    if (referralCode) {
-      const referrer = await User.findOne({ referralCode });
+    if (enteredReferralCode) {
+      const referrer = await User.findOne({ referralCode: enteredReferralCode });
       if (referrer) {
         referredBy = referrer._id;
         await User.findByIdAndUpdate(referrer._id, { $inc: { coins: 100 } });
@@ -38,6 +39,7 @@ router.post("/register", async (req, res) => {
       password: hash,
       referralCode: newReferralCode,
       referredBy,
+      usedReferralCode: enteredReferralCode,
       coins: startingCoins
     });
 

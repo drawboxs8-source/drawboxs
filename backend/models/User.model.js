@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
+  usedReferralCode: {
+    type: String,
+    default: ""
+  },
 
   role: {
     type: String,
