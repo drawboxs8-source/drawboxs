@@ -2,11 +2,13 @@ const router = require("express").Router();
 const auth = require("../middleware/auth.middleware");
 const ScratchCard = require("../models/ScratchCard.model");
 const UserReward = require("../models/UserReward.model");
+const { cleanupExpiredRewards } = require("../utils/rewardCleanup");
 
 // GET /api/rewards/my-cards - Returns user's cards
 router.get("/my-cards", auth, async (req, res) => {
   try {
     const userId = req.user.id;
+    await cleanupExpiredRewards();
 
     // Fetch all rewards for the user
     // We populate the scratchCard details so frontend can display them.
@@ -22,6 +24,7 @@ router.get("/my-cards", auth, async (req, res) => {
 // POST /api/rewards/reveal/:id - Marks a card as used
 router.post("/reveal/:id", auth, async (req, res) => {
   try {
+    await cleanupExpiredRewards();
     const rewardId = req.params.id;
     const reward = await UserReward.findOne({ _id: rewardId, userId: req.user.id });
 
@@ -29,6 +32,7 @@ router.post("/reveal/:id", auth, async (req, res) => {
 
     // Ensure it hasn't expired
     if (new Date() > reward.expiresAt) {
+      await UserReward.deleteOne({ _id: reward._id });
       return res.status(400).json({ message: "Coupon Expired" });
     }
 

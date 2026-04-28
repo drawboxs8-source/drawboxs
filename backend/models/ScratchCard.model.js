@@ -22,6 +22,13 @@ const scratchCardSchema =
 
   image: String,
 
+  startDate: {
+   type: Date,
+   default: Date.now
+  },
+
+  expiryDate: Date,
+
   expiryDays: {
    type: Number,
    default: 7

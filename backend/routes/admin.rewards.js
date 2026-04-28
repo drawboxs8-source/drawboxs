@@ -11,10 +11,12 @@ const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 } // 5MB
 });
+const { cleanupExpiredRewards } = require("../utils/rewardCleanup");
 
 /// Admin adds weekly reward
 router.post("/add-reward", upload.single("image"), async (req, res) => {
   try {
+    await cleanupExpiredRewards();
     let imageUrl = req.body.image; // fallback if they just pass a string URL somehow, though unlikely with our form
 
     if (req.file) {
@@ -34,9 +36,18 @@ router.post("/add-reward", upload.single("image"), async (req, res) => {
       imageUrl = result.secure_url;
     }
 
+    const expiryDays = parseInt(req.body.expiryDays, 10) || 7;
+    const startDate = new Date();
+    const expiryDate = new Date(startDate);
+    expiryDate.setDate(expiryDate.getDate() + expiryDays);
+
     const rewardData = {
       ...req.body,
-      image: imageUrl
+      image: imageUrl,
+      expiryDays,
+      startDate,
+      expiryDate,
+      isActive: true
     };
 
     const reward = await ScratchCard.create(rewardData);

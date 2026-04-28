@@ -3,11 +3,21 @@ dotenv.config();
 
 const app = require("./app");
 const connectDB = require("./config/db");
-
-connectDB();
+const { runRewardCleanup, startRewardCleanupJob } = require("./jobs/rewardCleanup.job");
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+async function startServer() {
+  await connectDB();
+  startRewardCleanupJob();
+  await runRewardCleanup("startup");
+
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+startServer().catch((error) => {
+  console.error("Server startup failed", error);
+  process.exit(1);
 });

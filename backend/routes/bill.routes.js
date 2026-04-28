@@ -25,6 +25,7 @@ const ScratchCard =
 
 const UserReward =
  require("../models/UserReward.model");
+const { cleanupExpiredRewards } = require("../utils/rewardCleanup");
 
 
 /// SCRATCH REWARD
@@ -126,6 +127,7 @@ router.post(
   upload.single("bill"),
   async (req, res) => {
     try {
+      await cleanupExpiredRewards();
 
       if (!req.file)
         return res.json({ message: "No file uploaded" });
@@ -214,22 +216,23 @@ router.post(
       const ScratchCard = require("../models/ScratchCard.model");
       const UserReward = require("../models/UserReward.model");
       
-      const adminCards = await ScratchCard.find({ isActive: true }).sort({ createdAt: 1 });
+      const adminCards = await ScratchCard.find({
+        isActive: true,
+        startDate: { $lte: new Date() },
+        expiryDate: { $gte: new Date() }
+      }).sort({ createdAt: 1 });
       let assignedCard = null;
       if (adminCards.length > 0) {
         const prevUploads = user.totalBillsUploaded || 0;
         const rewardIndex = prevUploads % adminCards.length;
         assignedCard = adminCards[rewardIndex];
 
-        const expiresAt = new Date();
-        expiresAt.setDate(expiresAt.getDate() + (assignedCard.expiryDays || 7));
-
         await UserReward.create({
           userId: user._id,
           scratchCardId: assignedCard._id,
           isUsed: false,
           assignedAt: new Date(),
-          expiresAt
+          expiresAt: assignedCard.expiryDate
         });
       }
 
