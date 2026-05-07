@@ -49,6 +49,58 @@ const razorpay =
     : null;
 
 router.post(
+  "/create-order",
+  async (req, res) => {
+    try {
+      const duration =
+        Number(req.body.planDuration);
+
+      const plan =
+        planCatalog[duration];
+
+      if (!plan) {
+        return res.status(400).json({
+          message: "Invalid plan selected"
+        });
+      }
+
+      if (!razorpay) {
+        return res.status(500).json({
+          message:
+            "Razorpay is not configured on the server"
+        });
+      }
+
+      const order =
+        await razorpay.orders.create({
+          amount: plan.amount * 100,
+          currency: "INR",
+          receipt:
+            `drawboxs_${duration}_${Date.now()}`,
+          notes: {
+            planName: plan.name,
+            planDuration: String(duration)
+          }
+        });
+
+      return res.json({
+        key: razorpayKeyId,
+        orderId: order.id,
+        amount: order.amount,
+        currency: order.currency,
+        planName: plan.name,
+        planDuration: duration
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        message: "Failed to create payment order"
+      });
+    }
+  }
+);
+
+router.post(
   "/create-link",
   async (req, res) => {
     try {
