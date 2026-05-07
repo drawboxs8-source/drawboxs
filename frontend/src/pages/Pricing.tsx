@@ -93,15 +93,9 @@ export default function Pricing() {
 
       window.location.href = paymentLink;
     } catch (error: any) {
-      const status = error?.response?.status;
-
-      if (status === 401 || status === 400) {
-        toast.error('Please login again and retry payment');
-      } else {
-        toast.error(
-          error?.response?.data?.message || 'Failed to create a new payment link'
-        );
-      }
+      toast.error(
+        error?.response?.data?.message || 'Failed to create a new payment link'
+      );
     } finally {
       setCreatingPaymentFor(null);
     }

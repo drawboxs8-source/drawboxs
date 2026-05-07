@@ -12,9 +12,6 @@ const Payment =
 const auth =
   require("../middleware/auth.middleware");
 
-const User =
-  require("../models/User.model");
-
 /// Memory storage
 const storage =
   multer.memoryStorage();
@@ -53,7 +50,6 @@ const razorpay =
 
 router.post(
   "/create-link",
-  auth,
   async (req, res) => {
     try {
       const duration =
@@ -75,16 +71,6 @@ router.post(
         });
       }
 
-      const user =
-        await User.findById(req.user.id)
-          .select("name email phone");
-
-      if (!user) {
-        return res.status(404).json({
-          message: "User not found"
-        });
-      }
-
       const link =
         await razorpay.paymentLink.create({
           amount: plan.amount * 100,
@@ -93,19 +79,9 @@ router.post(
           description:
             `${plan.name} plan activation for Drawboxs`,
           reference_id:
-            `drawboxs_${req.user.id}_${duration}_${Date.now()}`,
-          customer: {
-            name: user.name || "Drawboxs User",
-            email: user.email || undefined,
-            contact: user.phone || undefined
-          },
-          notify: {
-            sms: Boolean(user.phone),
-            email: Boolean(user.email)
-          },
+            `drawboxs_${duration}_${Date.now()}`,
           reminder_enable: false,
           notes: {
-            userId: String(req.user.id),
             planName: plan.name,
             planDuration: String(duration)
           }
