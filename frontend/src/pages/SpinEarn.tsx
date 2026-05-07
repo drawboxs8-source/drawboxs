@@ -45,7 +45,7 @@ function WheelLabel({ slice }: { slice: WheelSlice }) {
       style={{ pointerEvents: 'none' }}
     >
       <div
-        className={`absolute w-[88px] -translate-x-1/2 -translate-y-1/2 text-center font-black leading-tight sm:w-[108px] ${toneClasses[slice.tone]}`}
+        className={`absolute w-[88px] text-center font-black leading-tight sm:w-[108px] ${toneClasses[slice.tone]}`}
         style={{
           left: `${x}%`,
           top: `${y}%`,
@@ -76,7 +76,7 @@ function SpinWheel({ rotation }: { rotation: number }) {
       <div className="absolute inset-[8px] rounded-full border-[3px] border-[#cfe0f7] bg-white sm:inset-[12px] sm:border-[4px]" />
 
       <div
-        className="absolute inset-[18px] rounded-full border-[4px] border-[#b9d1f2] transition-transform ease-[cubic-bezier(0.16,0.86,0.24,1)] sm:inset-[22px]"
+        className="absolute inset-[18px] overflow-hidden rounded-full border-[4px] border-[#b9d1f2] transition-transform ease-[cubic-bezier(0.16,0.86,0.24,1)] sm:inset-[22px]"
         style={{
           background:
             'conic-gradient(from -22.5deg, #ef4444 0deg 45deg, #f8fbff 45deg 90deg, #176ee6 90deg 135deg, #f8fbff 135deg 180deg, #7a3ff0 180deg 225deg, #ff8a18 225deg 270deg, #f8fbff 270deg 315deg, #5a31d3 315deg 360deg)',
@@ -90,11 +90,21 @@ function SpinWheel({ rotation }: { rotation: number }) {
           ))}
         </div>
 
-        <div className="absolute inset-[74px] rounded-full border-[10px] border-[#fff3b4] bg-[radial-gradient(circle,_#ffd645_0%,_#ffb523_60%,_#f97b18_100%)] shadow-[inset_0_8px_18px_rgba(255,255,255,0.25)] sm:inset-[104px]" />
+        <div
+          className="absolute inset-[74px] rounded-full border-[10px] border-[#fff3b4] shadow-[inset_0_8px_18px_rgba(255,255,255,0.25)] sm:inset-[104px]"
+          style={{
+            background: 'radial-gradient(circle, #ffd645 0%, #ffb523 60%, #f97b18 100%)',
+          }}
+        />
         <div className="absolute left-1/2 top-1/2 z-20 h-6 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-[#d5e1f4] bg-white shadow-md sm:h-8 sm:w-8" />
       </div>
 
-      <div className="absolute right-0 top-[54px] z-30 rounded-[28px] border border-[#9f78ff] bg-[radial-gradient(circle_at_top,_#a56aff_0%,_#6d3be3_58%,_#4b27b2_100%)] px-3 py-2 text-center text-white shadow-[0_16px_26px_rgba(109,59,227,0.35)] sm:right-1 sm:top-[72px] sm:px-4 sm:py-3">
+      <div
+        className="absolute right-0 top-[54px] z-30 rounded-[28px] border border-[#9f78ff] px-3 py-2 text-center text-white shadow-[0_16px_26px_rgba(109,59,227,0.35)] sm:right-1 sm:top-[72px] sm:px-4 sm:py-3"
+        style={{
+          background: 'radial-gradient(circle at top, #a56aff 0%, #6d3be3 58%, #4b27b2 100%)',
+        }}
+      >
         <div className="flex justify-center">
           <Coins className="h-8 w-8 text-[#ffd54a] sm:h-10 sm:w-10" />
         </div>
@@ -191,7 +201,10 @@ export default function SpinEarn() {
             <button
               onClick={handleSpin}
               disabled={spinning || !planPurchased}
-              className="mt-8 w-full rounded-full bg-[linear-gradient(180deg,#27b5ff_0%,#204bff_100%)] px-6 py-4 text-xl font-black text-white shadow-[inset_0_3px_0_rgba(255,255,255,0.42),0_6px_0_#163cc4,0_16px_30px_rgba(37,99,235,0.28)] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-65 sm:text-[22px]"
+              className="mt-8 w-full rounded-full px-6 py-4 text-xl font-black text-white shadow-[inset_0_3px_0_rgba(255,255,255,0.42),0_6px_0_#163cc4,0_16px_30px_rgba(37,99,235,0.28)] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-65 sm:text-[22px]"
+              style={{
+                background: 'linear-gradient(180deg, #27b5ff 0%, #204bff 100%)',
+              }}
             >
               <span className="inline-flex items-center gap-3">
                 <RotateCw className={`h-6 w-6 ${spinning ? 'animate-spin' : ''}`} />
