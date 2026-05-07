@@ -17,6 +17,7 @@ type Plan = {
   uploads: string;
   color: string;
   popular?: boolean;
+  fallbackLink: string;
   features: string[];
 };
 
@@ -32,6 +33,7 @@ export default function Pricing() {
       duration: 3,
       uploads: '3 bills/day',
       color: 'from-cyan-400 to-blue-600',
+      fallbackLink: 'https://rzp.io/rzp/JJ11TXZ',
       features: [
         '3 uploads per day',
         'Scratch cards enabled',
@@ -48,6 +50,7 @@ export default function Pricing() {
       uploads: '3 bills/day',
       color: 'from-yellow-400 to-orange-500',
       popular: true,
+      fallbackLink: 'https://rzp.io/rzp/OoBrREt',
       features: [
         '3 uploads per day',
         'Scratch cards enabled',
@@ -63,6 +66,7 @@ export default function Pricing() {
       duration: 12,
       uploads: '3 bills/day',
       color: 'from-purple-400 to-pink-600',
+      fallbackLink: 'https://rzp.io/rzp/mUmctex',
       features: [
         '3 uploads per day',
         'Scratch cards enabled',
@@ -93,9 +97,18 @@ export default function Pricing() {
 
       window.location.href = paymentLink;
     } catch (error: any) {
-      toast.error(
-        error?.response?.data?.message || 'Failed to create a new payment link'
-      );
+      const fallbackLink = plan.fallbackLink;
+      const message =
+        error?.response?.data?.message || 'Fresh payment link failed, opening saved plan link';
+
+      toast(message, { icon: 'ℹ️' });
+
+      if (fallbackLink) {
+        window.location.href = fallbackLink;
+        return;
+      }
+
+      toast.error('Failed to open payment link');
     } finally {
       setCreatingPaymentFor(null);
     }
