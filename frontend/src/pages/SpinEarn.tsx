@@ -17,6 +17,7 @@ const SVG_SIZE = 460;
 const CENTER = SVG_SIZE / 2;
 const RADIUS = 202;
 const SLICE_ANGLE = 45;
+const BETTER_LUCK_TARGET_ROTATION = 180;
 
 const slices: Slice[] = [
   { fill: '#ff3d38', title: '2500', subtitle: 'Coins', textColor: '#ffffff' },
@@ -189,12 +190,19 @@ export default function SpinEarn() {
     }
 
     setSpinning(true);
+    setHasSpun(false);
+    setResult('');
 
     try {
       const res = await API.post('/spin/play');
       setCoins(res.data.coins ?? 0);
-      // Always stop on a Better Luck slice.
-      setRotation((prev) => prev + 360 * 5 - 22.5);
+      setRotation((prev) => {
+        const currentMod = prev % 360;
+        const deltaToTarget =
+          (BETTER_LUCK_TARGET_ROTATION - currentMod + 360) % 360;
+
+        return prev + 360 * 5 + deltaToTarget;
+      });
 
       window.setTimeout(() => {
         setResult(res.data.result || 'Better luck next time');
@@ -322,7 +330,7 @@ export default function SpinEarn() {
             </div>
           ) : null}
 
-          {hasSpun ? (
+          {hasSpun && !spinning ? (
             <div
               style={{
                 maxWidth: 760,
