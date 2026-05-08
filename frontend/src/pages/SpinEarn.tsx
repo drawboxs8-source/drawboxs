@@ -13,20 +13,20 @@ type Slice = {
 };
 
 const SPIN_DURATION_MS = 3200;
-const SVG_SIZE = 420;
+const SVG_SIZE = 460;
 const CENTER = SVG_SIZE / 2;
-const RADIUS = 182;
+const RADIUS = 202;
 const SLICE_ANGLE = 45;
 
 const slices: Slice[] = [
-  { fill: '#f93d37', title: '2500', subtitle: 'Coins', textColor: '#ffffff' },
-  { fill: '#ffffff', title: 'Better Luck', textColor: '#8a9dba', textAngle: 28 },
-  { fill: '#156fe6', title: '1000', subtitle: 'Coins', textColor: '#ffffff' },
-  { fill: '#ffffff', title: 'Better Luck', textColor: '#8a9dba', textAngle: -28 },
-  { fill: '#6a38e6', title: 'Better Luck', textColor: '#ffffff' },
-  { fill: '#ff880f', title: '3500', subtitle: 'Coins', textColor: '#ffffff' },
-  { fill: '#ffffff', title: 'Better Luck', textColor: '#8a9dba', textAngle: -28 },
-  { fill: '#5a2fd4', title: '5000', subtitle: 'Coins', textColor: '#ffffff' },
+  { fill: '#ff3d38', title: '2500', subtitle: 'Coins', textColor: '#ffffff' },
+  { fill: '#ffffff', title: 'Better Luck', textColor: '#8598b7', textAngle: 28 },
+  { fill: '#106be2', title: '1000', subtitle: 'Coins', textColor: '#ffffff' },
+  { fill: '#ffffff', title: 'Better Luck', textColor: '#8598b7', textAngle: -28 },
+  { fill: '#7b44ea', title: 'Better Luck', textColor: '#ffffff' },
+  { fill: '#ff870e', title: '3500', subtitle: 'Coins', textColor: '#ffffff' },
+  { fill: '#ffffff', title: 'Better Luck', textColor: '#8598b7', textAngle: -28 },
+  { fill: '#5f35d7', title: '5000', subtitle: 'Coins', textColor: '#ffffff' },
 ];
 
 function polarPoint(radius: number, angleDeg: number) {
@@ -43,72 +43,94 @@ function slicePath(startAngle: number, endAngle: number) {
   return `M ${CENTER} ${CENTER} L ${start.x} ${start.y} A ${RADIUS} ${RADIUS} 0 0 0 ${end.x} ${end.y} Z`;
 }
 
+function CoinStack() {
+  return (
+    <div style={{ position: 'relative', width: 100, height: 50, margin: '0 auto 4px' }}>
+      {[
+        { left: 4, top: 8, size: 34 },
+        { left: 34, top: 0, size: 42 },
+        { left: 66, top: 10, size: 34 },
+      ].map((coin, index) => (
+        <div
+          key={index}
+          style={{
+            position: 'absolute',
+            left: coin.left,
+            top: coin.top,
+            width: coin.size,
+            height: coin.size,
+            borderRadius: '50%',
+            background: 'radial-gradient(circle at 30% 30%, #ffe98d 0%, #ffcc28 45%, #f59e0b 100%)',
+            border: '2px solid rgba(255,229,120,0.9)',
+            boxShadow: 'inset 0 2px 0 rgba(255,255,255,0.55), 0 8px 14px rgba(245,158,11,0.25)',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              inset: 6,
+              borderRadius: '50%',
+              border: '2px solid rgba(255,190,30,0.95)',
+            }}
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function Wheel({ rotation }: { rotation: number }) {
   return (
     <div
       style={{
         position: 'relative',
         width: '100%',
-        maxWidth: 500,
+        maxWidth: 650,
+        height: 650,
         margin: '0 auto',
-        height: 470,
       }}
     >
       <div
         style={{
           position: 'absolute',
           left: '50%',
-          top: 6,
+          top: 8,
           transform: 'translateX(-50%)',
           width: 0,
           height: 0,
-          borderLeft: '24px solid transparent',
-          borderRight: '24px solid transparent',
-          borderTop: '52px solid #f4c434',
-          filter: 'drop-shadow(0 8px 12px rgba(214,153,18,0.35))',
-          zIndex: 3,
+          borderLeft: '26px solid transparent',
+          borderRight: '26px solid transparent',
+          borderTop: '58px solid #f7c531',
+          filter: 'drop-shadow(0 10px 14px rgba(214,153,18,0.34))',
+          zIndex: 4,
         }}
       />
 
       <div
         style={{
           position: 'absolute',
-          right: 20,
-          top: 98,
-          zIndex: 3,
-          borderRadius: 28,
-          padding: '14px 18px',
-          textAlign: 'center',
-          color: '#fff',
-          background: 'radial-gradient(circle at top, #b86dff 0%, #6f36e8 58%, #4725b4 100%)',
-          boxShadow: '0 18px 28px rgba(111,54,232,0.30)',
-        }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Coins size={38} color="#ffd54d" />
-        </div>
-        <div style={{ marginTop: 4, fontSize: 30, lineHeight: 1, fontWeight: 900 }}>10,000</div>
-        <div style={{ fontSize: 14, fontWeight: 800 }}>Coins</div>
-      </div>
-
-      <div
-        style={{
-          position: 'absolute',
-          inset: '18px 46px 0 46px',
-          borderRadius: '999px',
+          left: '50%',
+          top: 36,
+          transform: 'translateX(-50%)',
+          width: 560,
+          height: 560,
+          borderRadius: '50%',
           background: '#edf4ff',
-          boxShadow: '0 18px 42px rgba(59,130,246,0.18)',
+          boxShadow: '0 22px 48px rgba(59,130,246,0.14)',
         }}
       />
 
       <div
         style={{
           position: 'absolute',
-          inset: '28px 56px 10px 56px',
+          left: '50%',
+          top: 52,
+          transform: `translateX(-50%) rotate(${rotation}deg)`,
+          width: 528,
+          height: 528,
           borderRadius: '50%',
           border: '8px solid #c8daf3',
-          background: '#fff',
-          transform: `rotate(${rotation}deg)`,
+          background: '#ffffff',
           transition: `transform ${SPIN_DURATION_MS}ms cubic-bezier(0.16,0.84,0.24,1)`,
           overflow: 'hidden',
         }}
@@ -116,8 +138,8 @@ function Wheel({ rotation }: { rotation: number }) {
         <svg viewBox={`0 0 ${SVG_SIZE} ${SVG_SIZE}`} style={{ width: '100%', height: '100%' }}>
           <defs>
             <radialGradient id="spin-core" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#ffe689" />
-              <stop offset="58%" stopColor="#ffb320" />
+              <stop offset="0%" stopColor="#ffe98d" />
+              <stop offset="58%" stopColor="#ffb322" />
               <stop offset="100%" stopColor="#ff7c19" />
             </radialGradient>
           </defs>
@@ -126,12 +148,12 @@ function Wheel({ rotation }: { rotation: number }) {
             const startAngle = index * SLICE_ANGLE - 22.5;
             const endAngle = startAngle + SLICE_ANGLE;
             const midAngle = startAngle + SLICE_ANGLE / 2;
-            const point = polarPoint(118, midAngle);
+            const point = polarPoint(132, midAngle);
             const isBetter = slice.title === 'Better Luck';
 
             return (
               <g key={`${slice.title}-${index}`}>
-                <path d={slicePath(startAngle, endAngle)} fill={slice.fill} stroke="#d6e4f6" strokeWidth="3" />
+                <path d={slicePath(startAngle, endAngle)} fill={slice.fill} stroke="#d9e6f8" strokeWidth="3" />
                 <text
                   x={point.x}
                   y={point.y}
@@ -158,9 +180,28 @@ function Wheel({ rotation }: { rotation: number }) {
             );
           })}
 
-          <circle cx={CENTER} cy={CENTER} r="96" fill="url(#spin-core)" />
-          <circle cx={CENTER} cy={CENTER} r="26" fill="#ffffff" stroke="#dbe8f8" strokeWidth="6" />
+          <circle cx={CENTER} cy={CENTER} r="104" fill="url(#spin-core)" />
+          <circle cx={CENTER} cy={CENTER} r="28" fill="#ffffff" stroke="#dce8f8" strokeWidth="6" />
         </svg>
+      </div>
+
+      <div
+        style={{
+          position: 'absolute',
+          right: 8,
+          top: 142,
+          zIndex: 4,
+          borderRadius: 28,
+          padding: '12px 20px 14px',
+          textAlign: 'center',
+          color: '#ffffff',
+          background: 'radial-gradient(circle at top, #bb73ff 0%, #7037ea 58%, #4b27b7 100%)',
+          boxShadow: '0 20px 34px rgba(111,54,232,0.28)',
+        }}
+      >
+        <CoinStack />
+        <div style={{ fontSize: 38, lineHeight: 0.95, fontWeight: 900 }}>10,000</div>
+        <div style={{ fontSize: 16, fontWeight: 800 }}>Coins</div>
       </div>
     </div>
   );
@@ -240,134 +281,132 @@ export default function SpinEarn() {
     <div style={{ minHeight: '100vh', background: '#eef5ff', paddingBottom: 64 }}>
       <Header />
 
-      <main style={{ padding: '32px 16px 0' }}>
+      <main style={{ padding: '36px 16px 0' }}>
         <section
           style={{
-            maxWidth: 980,
+            maxWidth: 860,
             margin: '0 auto',
             background: '#ffffff',
-            borderRadius: 46,
-            boxShadow: '0 30px 80px rgba(30,64,175,0.14)',
-            padding: '36px 28px 42px',
+            borderRadius: 54,
+            boxShadow: '0 34px 80px rgba(30,64,175,0.12)',
+            padding: '42px 26px 52px',
           }}
         >
-          <div style={{ maxWidth: 720, margin: '0 auto' }}>
+          <div
+            style={{
+              maxWidth: 540,
+              margin: '0 auto',
+              borderRadius: 999,
+              border: '1px solid #d5e3f7',
+              background: '#d9e9fe',
+              padding: '18px 24px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.65)',
+            }}
+          >
+            <span style={{ fontSize: 28, fontWeight: 900, color: '#214f8f' }}>
+              Your Coins: {coins}
+            </span>
+            <Coins size={38} color="#ffbe1a" style={{ marginLeft: 12 }} />
+          </div>
+
+          <div style={{ marginTop: 18 }}>
+            <Wheel rotation={rotation} />
+          </div>
+
+          <button
+            onClick={handleSpin}
+            disabled={spinning || !planPurchased}
+            style={{
+              display: 'block',
+              width: '100%',
+              maxWidth: 640,
+              margin: '-12px auto 0',
+              border: 'none',
+              borderRadius: 999,
+              padding: '22px 28px',
+              fontSize: 30,
+              fontWeight: 900,
+              color: '#ffffff',
+              background: 'linear-gradient(180deg, #31beff 0%, #2244ff 100%)',
+              boxShadow: 'inset 0 4px 0 rgba(255,255,255,0.36), 0 8px 0 #173fd0, 0 18px 24px rgba(37,99,235,0.22)',
+              cursor: spinning || !planPurchased ? 'not-allowed' : 'pointer',
+              opacity: spinning || !planPurchased ? 0.65 : 1,
+            }}
+          >
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12 }}>
+              <RotateCw size={30} className={spinning ? 'animate-spin' : ''} />
+              {spinning ? 'Spinning...' : `Start Spin - ${spinCost} Coins`}
+            </span>
+          </button>
+
+          <p
+            style={{
+              marginTop: 26,
+              textAlign: 'center',
+              fontSize: 18,
+              fontWeight: 500,
+              color: '#687b9c',
+            }}
+          >
+            Every spin costs {spinCost} coins. Results are final.
+          </p>
+
+          {!planPurchased ? (
             <div
               style={{
-                maxWidth: 520,
-                margin: '0 auto',
-                borderRadius: 999,
-                border: '1px solid #cfdef3',
-                background: '#ddecff',
-                padding: '18px 24px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 2px 8px rgba(15,23,42,0.05)',
-              }}
-            >
-              <span style={{ fontSize: 24, fontWeight: 900, color: '#2b5b97' }}>
-                Your Coins: {coins}
-              </span>
-              <Coins size={34} color="#ffbe1a" style={{ marginLeft: 14 }} />
-            </div>
-
-            <div style={{ marginTop: 24 }}>
-              <Wheel rotation={rotation} />
-            </div>
-
-            <button
-              onClick={handleSpin}
-              disabled={spinning || !planPurchased}
-              style={{
-                display: 'block',
-                width: '100%',
-                maxWidth: 600,
-                margin: '-4px auto 0',
-                border: 'none',
-                borderRadius: 999,
-                padding: '18px 24px',
-                fontSize: 24,
-                fontWeight: 900,
-                color: '#ffffff',
-                background: 'linear-gradient(180deg, #28b8ff 0%, #1f43ff 100%)',
-                boxShadow: 'inset 0 4px 0 rgba(255,255,255,0.38), 0 7px 0 #173fca, 0 18px 28px rgba(37,99,235,0.24)',
-                cursor: spinning || !planPurchased ? 'not-allowed' : 'pointer',
-                opacity: spinning || !planPurchased ? 0.65 : 1,
-              }}
-            >
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12 }}>
-                <RotateCw size={28} className={spinning ? 'animate-spin' : ''} />
-                {spinning ? 'Spinning...' : `Start Spin - ${spinCost} Coins`}
-              </span>
-            </button>
-
-            <p
-              style={{
-                marginTop: 22,
+                maxWidth: 640,
+                margin: '16px auto 0',
+                borderRadius: 18,
+                border: '1px solid #fcd34d',
+                background: '#fef3c7',
+                color: '#92400e',
                 textAlign: 'center',
-                fontSize: 16,
-                fontWeight: 500,
-                color: '#64789a',
+                padding: '12px 16px',
+                fontWeight: 700,
               }}
             >
-              Every spin costs {spinCost} coins. Results are final.
-            </p>
+              Buy a plan first to unlock Spin & Earn.
+            </div>
+          ) : null}
 
-            {!planPurchased ? (
-              <div
-                style={{
-                  maxWidth: 620,
-                  margin: '16px auto 0',
-                  borderRadius: 18,
-                  border: '1px solid #fcd34d',
-                  background: '#fef3c7',
-                  color: '#92400e',
-                  textAlign: 'center',
-                  padding: '12px 16px',
-                  fontWeight: 700,
-                }}
-              >
-                Buy a plan first to unlock Spin & Earn.
-              </div>
-            ) : null}
-
+          <div
+            style={{
+              maxWidth: 760,
+              margin: '34px auto 0',
+              borderTop: '1px solid #e6edf8',
+              paddingTop: 28,
+            }}
+          >
             <div
               style={{
-                maxWidth: 720,
-                margin: '28px auto 0',
-                borderTop: '1px solid #e5edf8',
-                paddingTop: 24,
+                borderRadius: 32,
+                border: '1px solid #e3eaf4',
+                background: '#ffffff',
+                padding: '22px 34px',
+                boxShadow: '0 16px 24px rgba(15,23,42,0.08)',
               }}
             >
-              <div
-                style={{
-                  borderRadius: 30,
-                  border: '1px solid #e0e8f3',
-                  background: '#ffffff',
-                  padding: '20px 26px',
-                  boxShadow: '0 14px 26px rgba(15,23,42,0.08)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-                  <div
-                    style={{
-                      width: 66,
-                      height: 66,
-                      borderRadius: '50%',
-                      background: '#e9eff7',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#70829d',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <Frown size={36} />
-                  </div>
-                  <div style={{ fontSize: 24, fontWeight: 900, color: '#314764' }}>
-                    {result}
-                  </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+                <div
+                  style={{
+                    width: 70,
+                    height: 70,
+                    borderRadius: '50%',
+                    background: '#e8eef7',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#70829d',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Frown size={40} />
+                </div>
+                <div style={{ fontSize: 26, fontWeight: 900, color: '#304764' }}>
+                  {result}
                 </div>
               </div>
             </div>
