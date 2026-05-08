@@ -9,27 +9,27 @@ type Slice = {
   title: string;
   subtitle?: string;
   textColor: string;
-  rotate?: number;
+  textAngle?: number;
 };
 
 const SPIN_DURATION_MS = 3200;
-const SIZE = 420;
-const CENTER = SIZE / 2;
+const SVG_SIZE = 420;
+const CENTER = SVG_SIZE / 2;
 const RADIUS = 182;
 const SLICE_ANGLE = 45;
 
 const slices: Slice[] = [
   { fill: '#f93d37', title: '2500', subtitle: 'Coins', textColor: '#ffffff' },
-  { fill: '#ffffff', title: 'Better Luck', textColor: '#8da0bb', rotate: 26 },
+  { fill: '#ffffff', title: 'Better Luck', textColor: '#8a9dba', textAngle: 28 },
   { fill: '#156fe6', title: '1000', subtitle: 'Coins', textColor: '#ffffff' },
-  { fill: '#ffffff', title: 'Better Luck', textColor: '#8da0bb', rotate: -24 },
-  { fill: '#6c39e6', title: 'Better Luck', textColor: '#ffffff' },
+  { fill: '#ffffff', title: 'Better Luck', textColor: '#8a9dba', textAngle: -28 },
+  { fill: '#6a38e6', title: 'Better Luck', textColor: '#ffffff' },
   { fill: '#ff880f', title: '3500', subtitle: 'Coins', textColor: '#ffffff' },
-  { fill: '#ffffff', title: 'Better Luck', textColor: '#8da0bb', rotate: -28 },
-  { fill: '#5a2ed1', title: '5000', subtitle: 'Coins', textColor: '#ffffff' },
+  { fill: '#ffffff', title: 'Better Luck', textColor: '#8a9dba', textAngle: -28 },
+  { fill: '#5a2fd4', title: '5000', subtitle: 'Coins', textColor: '#ffffff' },
 ];
 
-function polarToCartesian(radius: number, angleDeg: number) {
+function polarPoint(radius: number, angleDeg: number) {
   const angleRad = ((angleDeg - 90) * Math.PI) / 180;
   return {
     x: CENTER + radius * Math.cos(angleRad),
@@ -37,99 +37,130 @@ function polarToCartesian(radius: number, angleDeg: number) {
   };
 }
 
-function buildSlicePath(startAngle: number, endAngle: number) {
-  const start = polarToCartesian(RADIUS, endAngle);
-  const end = polarToCartesian(RADIUS, startAngle);
-  const largeArcFlag = endAngle - startAngle <= 180 ? '0' : '1';
-
-  return `M ${CENTER} ${CENTER} L ${start.x} ${start.y} A ${RADIUS} ${RADIUS} 0 ${largeArcFlag} 0 ${end.x} ${end.y} Z`;
+function slicePath(startAngle: number, endAngle: number) {
+  const start = polarPoint(RADIUS, endAngle);
+  const end = polarPoint(RADIUS, startAngle);
+  return `M ${CENTER} ${CENTER} L ${start.x} ${start.y} A ${RADIUS} ${RADIUS} 0 0 0 ${end.x} ${end.y} Z`;
 }
 
-function SpinWheel({ rotation }: { rotation: number }) {
+function Wheel({ rotation }: { rotation: number }) {
   return (
-    <div className="relative mx-auto w-full max-w-[460px]">
-      <div className="pointer-events-none absolute left-1/2 top-[8px] z-20 -translate-x-1/2">
-        <div
-          className="h-0 w-0 border-l-[22px] border-r-[22px] border-t-[48px] border-l-transparent border-r-transparent border-t-[#f6c02c] drop-shadow-[0_10px_18px_rgba(214,153,18,0.42)]"
-        />
+    <div
+      style={{
+        position: 'relative',
+        width: '100%',
+        maxWidth: 520,
+        margin: '0 auto',
+        height: 500,
+      }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: 6,
+          transform: 'translateX(-50%)',
+          width: 0,
+          height: 0,
+          borderLeft: '24px solid transparent',
+          borderRight: '24px solid transparent',
+          borderTop: '54px solid #f4c434',
+          filter: 'drop-shadow(0 8px 12px rgba(214,153,18,0.35))',
+          zIndex: 3,
+        }}
+      />
+
+      <div
+        style={{
+          position: 'absolute',
+          right: 12,
+          top: 92,
+          zIndex: 3,
+          borderRadius: 28,
+          padding: '12px 16px',
+          textAlign: 'center',
+          color: '#fff',
+          background: 'radial-gradient(circle at top, #b86dff 0%, #6f36e8 58%, #4725b4 100%)',
+          boxShadow: '0 18px 28px rgba(111,54,232,0.30)',
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Coins size={38} color="#ffd54d" />
+        </div>
+        <div style={{ marginTop: 4, fontSize: 30, lineHeight: 1, fontWeight: 900 }}>10,000</div>
+        <div style={{ fontSize: 14, fontWeight: 800 }}>Coins</div>
       </div>
 
       <div
-        className="absolute right-[-8px] top-[66px] z-20 rounded-[28px] px-4 py-3 text-center text-white shadow-[0_18px_30px_rgba(113,63,194,0.35)]"
-        style={{ background: 'radial-gradient(circle at top, #b86dff 0%, #6f36e8 55%, #4925b6 100%)' }}
+        style={{
+          position: 'absolute',
+          inset: '18px 50px 0 50px',
+          borderRadius: '999px',
+          background: '#edf4ff',
+          boxShadow: '0 18px 42px rgba(59,130,246,0.18)',
+        }}
+      />
+
+      <div
+        style={{
+          position: 'absolute',
+          inset: '28px 60px 10px 60px',
+          borderRadius: '50%',
+          border: '8px solid #c8daf3',
+          background: '#fff',
+          transform: `rotate(${rotation}deg)`,
+          transition: `transform ${SPIN_DURATION_MS}ms cubic-bezier(0.16,0.84,0.24,1)`,
+          overflow: 'hidden',
+        }}
       >
-        <div className="flex justify-center">
-          <Coins className="h-10 w-10 text-[#ffd64d]" />
-        </div>
-        <div className="mt-1 text-[30px] font-black leading-none">10,000</div>
-        <div className="text-sm font-bold">Coins</div>
-      </div>
+        <svg viewBox={`0 0 ${SVG_SIZE} ${SVG_SIZE}`} style={{ width: '100%', height: '100%' }}>
+          <defs>
+            <radialGradient id="spin-core" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#ffe689" />
+              <stop offset="58%" stopColor="#ffb320" />
+              <stop offset="100%" stopColor="#ff7c19" />
+            </radialGradient>
+          </defs>
 
-      <div className="relative h-[460px]">
-        <div className="absolute inset-x-0 top-0 mx-auto h-[420px] w-[420px] rounded-full bg-[#edf4ff] shadow-[0_18px_48px_rgba(59,130,246,0.18)]" />
+          {slices.map((slice, index) => {
+            const startAngle = index * SLICE_ANGLE - 22.5;
+            const endAngle = startAngle + SLICE_ANGLE;
+            const midAngle = startAngle + SLICE_ANGLE / 2;
+            const point = polarPoint(118, midAngle);
+            const isBetter = slice.title === 'Better Luck';
 
-        <div
-          className="absolute inset-x-0 top-[10px] mx-auto h-[400px] w-[400px] rounded-full border-[6px] border-[#c7daf5] bg-white"
-          style={{
-            transform: `rotate(${rotation}deg)`,
-            transition: `transform ${SPIN_DURATION_MS}ms cubic-bezier(0.16,0.84,0.24,1)`,
-          }}
-        >
-          <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="h-full w-full rounded-full">
-            <defs>
-              <radialGradient id="spin-gold" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#ffe688" />
-                <stop offset="58%" stopColor="#ffb31f" />
-                <stop offset="100%" stopColor="#ff7e18" />
-              </radialGradient>
-            </defs>
+            return (
+              <g key={`${slice.title}-${index}`}>
+                <path d={slicePath(startAngle, endAngle)} fill={slice.fill} stroke="#d6e4f6" strokeWidth="3" />
+                <text
+                  x={point.x}
+                  y={point.y}
+                  fill={slice.textColor}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fontWeight="800"
+                  fontSize={isBetter ? '20' : '30'}
+                  transform={slice.textAngle ? `rotate(${slice.textAngle} ${point.x} ${point.y})` : undefined}
+                >
+                  {isBetter ? (
+                    <>
+                      <tspan x={point.x} dy="-8">Better</tspan>
+                      <tspan x={point.x} dy="24">Luck</tspan>
+                    </>
+                  ) : (
+                    <>
+                      <tspan x={point.x} dy="-6">{slice.title}</tspan>
+                      <tspan x={point.x} dy="28">{slice.subtitle}</tspan>
+                    </>
+                  )}
+                </text>
+              </g>
+            );
+          })}
 
-            {slices.map((slice, index) => {
-              const startAngle = index * SLICE_ANGLE - 22.5;
-              const endAngle = startAngle + SLICE_ANGLE;
-              const midAngle = startAngle + SLICE_ANGLE / 2;
-              const point = polarToCartesian(120, midAngle);
-              const textRotate = slice.rotate ?? 0;
-              const isBetter = slice.title === 'Better Luck';
-
-              return (
-                <g key={`${slice.title}-${index}`}>
-                  <path
-                    d={buildSlicePath(startAngle, endAngle)}
-                    fill={slice.fill}
-                    stroke="#d7e5f8"
-                    strokeWidth="3"
-                  />
-                  <text
-                    x={point.x}
-                    y={point.y}
-                    fill={slice.textColor}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fontWeight="800"
-                    fontSize={isBetter ? '20' : '30'}
-                    transform={textRotate ? `rotate(${textRotate} ${point.x} ${point.y})` : undefined}
-                  >
-                    {isBetter ? (
-                      <>
-                        <tspan x={point.x} dy="-8">Better</tspan>
-                        <tspan x={point.x} dy="24">Luck</tspan>
-                      </>
-                    ) : (
-                      <>
-                        <tspan x={point.x} dy="-6">{slice.title}</tspan>
-                        <tspan x={point.x} dy="28">{slice.subtitle}</tspan>
-                      </>
-                    )}
-                  </text>
-                </g>
-              );
-            })}
-
-            <circle cx={CENTER} cy={CENTER} r="94" fill="url(#spin-gold)" opacity="0.96" />
-            <circle cx={CENTER} cy={CENTER} r="26" fill="#ffffff" stroke="#dce8f8" strokeWidth="6" />
-          </svg>
-        </div>
+          <circle cx={CENTER} cy={CENTER} r="96" fill="url(#spin-core)" />
+          <circle cx={CENTER} cy={CENTER} r="26" fill="#ffffff" stroke="#dbe8f8" strokeWidth="6" />
+        </svg>
       </div>
     </div>
   );
@@ -187,62 +218,154 @@ export default function SpinEarn() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#eef5ff]">
+      <div style={{ minHeight: '100vh', background: '#eef5ff' }}>
         <Header />
-        <div className="flex min-h-[75vh] items-center justify-center">
-          <div className="h-14 w-14 animate-spin rounded-full border-4 border-cyan-500 border-t-transparent" />
+        <div style={{ minHeight: '75vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div
+            style={{
+              width: 56,
+              height: 56,
+              borderRadius: '50%',
+              border: '4px solid #06b6d4',
+              borderTopColor: 'transparent',
+              animation: 'spin 1s linear infinite',
+            }}
+          />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#eef5ff] pb-16 text-slate-900 dark:bg-[#0b1020] dark:text-white">
+    <div style={{ minHeight: '100vh', background: '#eef5ff', paddingBottom: 64 }}>
       <Header />
 
-      <main className="px-4 pt-8 sm:px-6">
-        <section className="mx-auto max-w-[940px] rounded-[46px] bg-white px-4 py-8 shadow-[0_30px_80px_rgba(30,64,175,0.14)] dark:bg-[#0f172a] sm:px-10 sm:py-10">
-          <div className="mx-auto max-w-[760px]">
-            <div className="mx-auto flex max-w-[520px] items-center justify-center rounded-full border border-[#cfe0f5] bg-[#ddecff] px-6 py-4 shadow-sm dark:border-slate-700 dark:bg-[#182744]">
-              <span className="text-[18px] font-black text-[#2b5b97] dark:text-[#a8d0ff] sm:text-[24px]">
+      <main style={{ padding: '32px 16px 0' }}>
+        <section
+          style={{
+            maxWidth: 940,
+            margin: '0 auto',
+            background: '#ffffff',
+            borderRadius: 46,
+            boxShadow: '0 30px 80px rgba(30,64,175,0.14)',
+            padding: '34px 24px 40px',
+          }}
+        >
+          <div style={{ maxWidth: 760, margin: '0 auto' }}>
+            <div
+              style={{
+                maxWidth: 520,
+                margin: '0 auto',
+                borderRadius: 999,
+                border: '1px solid #cfdef3',
+                background: '#ddecff',
+                padding: '16px 24px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 2px 8px rgba(15,23,42,0.05)',
+              }}
+            >
+              <span style={{ fontSize: 24, fontWeight: 900, color: '#2b5b97' }}>
                 Your Coins: {coins}
               </span>
-              <Coins className="ml-3 h-8 w-8 text-[#ffbe1a]" />
+              <Coins size={34} color="#ffbe1a" style={{ marginLeft: 12 }} />
             </div>
 
-            <div className="mt-8">
-              <SpinWheel rotation={rotation} />
+            <div style={{ marginTop: 26 }}>
+              <Wheel rotation={rotation} />
             </div>
 
             <button
               onClick={handleSpin}
               disabled={spinning || !planPurchased}
-              className="mx-auto mt-2 block w-full max-w-[620px] rounded-full px-6 py-5 text-[28px] font-black text-white shadow-[inset_0_4px_0_rgba(255,255,255,0.38),0_7px_0_#173fca,0_18px_28px_rgba(37,99,235,0.24)] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-65"
-              style={{ background: 'linear-gradient(180deg, #28b8ff 0%, #1f43ff 100%)' }}
+              style={{
+                display: 'block',
+                width: '100%',
+                maxWidth: 620,
+                margin: '0 auto',
+                border: 'none',
+                borderRadius: 999,
+                padding: '20px 24px',
+                fontSize: 28,
+                fontWeight: 900,
+                color: '#ffffff',
+                background: 'linear-gradient(180deg, #28b8ff 0%, #1f43ff 100%)',
+                boxShadow: 'inset 0 4px 0 rgba(255,255,255,0.38), 0 7px 0 #173fca, 0 18px 28px rgba(37,99,235,0.24)',
+                cursor: spinning || !planPurchased ? 'not-allowed' : 'pointer',
+                opacity: spinning || !planPurchased ? 0.65 : 1,
+              }}
             >
-              <span className="inline-flex items-center gap-3">
-                <RotateCw className={`h-7 w-7 ${spinning ? 'animate-spin' : ''}`} />
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12 }}>
+                <RotateCw size={28} className={spinning ? 'animate-spin' : ''} />
                 {spinning ? 'Spinning...' : `Start Spin - ${spinCost} Coins`}
               </span>
             </button>
 
-            <p className="mt-5 text-center text-[18px] font-medium text-[#64789a] dark:text-slate-400">
+            <p
+              style={{
+                marginTop: 24,
+                textAlign: 'center',
+                fontSize: 18,
+                fontWeight: 500,
+                color: '#64789a',
+              }}
+            >
               Every spin costs {spinCost} coins. Results are final.
             </p>
 
             {!planPurchased ? (
-              <div className="mx-auto mt-4 max-w-[620px] rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-center text-sm font-semibold text-amber-800 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200">
+              <div
+                style={{
+                  maxWidth: 620,
+                  margin: '16px auto 0',
+                  borderRadius: 18,
+                  border: '1px solid #fcd34d',
+                  background: '#fef3c7',
+                  color: '#92400e',
+                  textAlign: 'center',
+                  padding: '12px 16px',
+                  fontWeight: 700,
+                }}
+              >
                 Buy a plan first to unlock Spin & Earn.
               </div>
             ) : null}
 
-            <div className="mx-auto mt-8 max-w-[760px] border-t border-[#e5edf8] pt-8 dark:border-slate-800">
-              <div className="rounded-[30px] border border-[#e0e8f3] bg-white px-8 py-6 shadow-[0_14px_26px_rgba(15,23,42,0.08)] dark:border-slate-700 dark:bg-[#10192c]">
-                <div className="flex items-center gap-5">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#e9eff7] text-[#70829d] dark:bg-slate-800 dark:text-slate-300">
-                    <Frown className="h-9 w-9" />
+            <div
+              style={{
+                maxWidth: 760,
+                margin: '32px auto 0',
+                borderTop: '1px solid #e5edf8',
+                paddingTop: 28,
+              }}
+            >
+              <div
+                style={{
+                  borderRadius: 30,
+                  border: '1px solid #e0e8f3',
+                  background: '#ffffff',
+                  padding: '22px 28px',
+                  boxShadow: '0 14px 26px rgba(15,23,42,0.08)',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
+                  <div
+                    style={{
+                      width: 66,
+                      height: 66,
+                      borderRadius: '50%',
+                      background: '#e9eff7',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#70829d',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <Frown size={38} />
                   </div>
-                  <div className="text-[26px] font-black text-[#314764] dark:text-white">
+                  <div style={{ fontSize: 26, fontWeight: 900, color: '#314764' }}>
                     {result}
                   </div>
                 </div>
