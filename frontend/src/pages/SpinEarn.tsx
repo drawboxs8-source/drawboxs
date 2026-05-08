@@ -20,12 +20,12 @@ const SLICE_ANGLE = 45;
 
 const slices: Slice[] = [
   { fill: '#ff3d38', title: '2500', subtitle: 'Coins', textColor: '#ffffff' },
-  { fill: '#ffffff', title: 'Better Luck', textColor: '#6d82a5', textAngle: 28 },
+  { fill: '#ffffff', title: 'Better Luck', textColor: '#5d749b', textAngle: 28 },
   { fill: '#106be2', title: '1000', subtitle: 'Coins', textColor: '#ffffff' },
-  { fill: '#ffffff', title: 'Better Luck', textColor: '#6d82a5', textAngle: -28 },
+  { fill: '#ffffff', title: 'Better Luck', textColor: '#5d749b', textAngle: -28 },
   { fill: '#7b44ea', title: 'Better Luck', textColor: '#ffffff' },
   { fill: '#ff870e', title: '3500', subtitle: 'Coins', textColor: '#ffffff' },
-  { fill: '#ffffff', title: 'Better Luck', textColor: '#6d82a5', textAngle: -28 },
+  { fill: '#ffffff', title: 'Better Luck', textColor: '#5d749b', textAngle: -28 },
   { fill: '#5f35d7', title: '5000', subtitle: 'Coins', textColor: '#ffffff' },
 ];
 
@@ -148,7 +148,7 @@ function Wheel({ rotation }: { rotation: number }) {
             const startAngle = index * SLICE_ANGLE - 22.5;
             const endAngle = startAngle + SLICE_ANGLE;
             const midAngle = startAngle + SLICE_ANGLE / 2;
-            const point = polarPoint(132, midAngle);
+            const point = polarPoint(156, midAngle);
             const isBetter = slice.title === 'Better Luck';
 
             return (
@@ -161,18 +161,19 @@ function Wheel({ rotation }: { rotation: number }) {
                   textAnchor="middle"
                   dominantBaseline="middle"
                   fontWeight="800"
-                  fontSize={isBetter ? '22' : '34'}
+                  fontSize={isBetter ? '18' : '28'}
+                  style={{ paintOrder: 'stroke', stroke: 'rgba(255,255,255,0.12)', strokeWidth: 1 }}
                   transform={slice.textAngle ? `rotate(${slice.textAngle} ${point.x} ${point.y})` : undefined}
                 >
                   {isBetter ? (
                     <>
-                      <tspan x={point.x} dy="-8">Better</tspan>
-                      <tspan x={point.x} dy="26">Luck</tspan>
+                      <tspan x={point.x} dy="-6">Better</tspan>
+                      <tspan x={point.x} dy="20">Luck</tspan>
                     </>
                   ) : (
                     <>
-                      <tspan x={point.x} dy="-8">{slice.title}</tspan>
-                      <tspan x={point.x} dy="30">{slice.subtitle}</tspan>
+                      <tspan x={point.x} dy="-5">{slice.title}</tspan>
+                      <tspan x={point.x} dy="24">{slice.subtitle}</tspan>
                     </>
                   )}
                 </text>
@@ -180,7 +181,7 @@ function Wheel({ rotation }: { rotation: number }) {
             );
           })}
 
-          <circle cx={CENTER} cy={CENTER} r="104" fill="url(#spin-core)" />
+          <circle cx={CENTER} cy={CENTER} r="82" fill="url(#spin-core)" />
           <circle cx={CENTER} cy={CENTER} r="28" fill="#ffffff" stroke="#dce8f8" strokeWidth="6" />
         </svg>
       </div>
@@ -200,8 +201,8 @@ function Wheel({ rotation }: { rotation: number }) {
         }}
       >
         <CoinStack />
-        <div style={{ fontSize: 38, lineHeight: 0.95, fontWeight: 900 }}>10,000</div>
-        <div style={{ fontSize: 16, fontWeight: 800 }}>Coins</div>
+        <div style={{ fontSize: 40, lineHeight: 0.95, fontWeight: 900 }}>10,000</div>
+        <div style={{ fontSize: 18, fontWeight: 800 }}>Coins</div>
       </div>
     </div>
   );
@@ -346,9 +347,9 @@ export default function SpinEarn() {
             style={{
               marginTop: 26,
               textAlign: 'center',
-              fontSize: 16,
-              fontWeight: 600,
-              color: '#637a9d',
+              fontSize: 18,
+              fontWeight: 700,
+              color: '#506b94',
             }}
           >
             Every spin costs {spinCost} coins. Results are final.
@@ -405,7 +406,7 @@ export default function SpinEarn() {
                 >
                   <Frown size={40} />
                 </div>
-                  <div style={{ fontSize: 22, fontWeight: 900, color: '#304764' }}>
+                  <div style={{ fontSize: 28, fontWeight: 900, color: '#304764' }}>
                     {result}
                   </div>
                 </div>
