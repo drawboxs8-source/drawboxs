@@ -49,9 +49,9 @@ function Wheel({ rotation }: { rotation: number }) {
       style={{
         position: 'relative',
         width: '100%',
-        maxWidth: 520,
+        maxWidth: 500,
         margin: '0 auto',
-        height: 500,
+        height: 470,
       }}
     >
       <div
@@ -64,7 +64,7 @@ function Wheel({ rotation }: { rotation: number }) {
           height: 0,
           borderLeft: '24px solid transparent',
           borderRight: '24px solid transparent',
-          borderTop: '54px solid #f4c434',
+          borderTop: '52px solid #f4c434',
           filter: 'drop-shadow(0 8px 12px rgba(214,153,18,0.35))',
           zIndex: 3,
         }}
@@ -73,11 +73,11 @@ function Wheel({ rotation }: { rotation: number }) {
       <div
         style={{
           position: 'absolute',
-          right: 12,
-          top: 92,
+          right: 20,
+          top: 98,
           zIndex: 3,
           borderRadius: 28,
-          padding: '12px 16px',
+          padding: '14px 18px',
           textAlign: 'center',
           color: '#fff',
           background: 'radial-gradient(circle at top, #b86dff 0%, #6f36e8 58%, #4725b4 100%)',
@@ -94,7 +94,7 @@ function Wheel({ rotation }: { rotation: number }) {
       <div
         style={{
           position: 'absolute',
-          inset: '18px 50px 0 50px',
+          inset: '18px 46px 0 46px',
           borderRadius: '999px',
           background: '#edf4ff',
           boxShadow: '0 18px 42px rgba(59,130,246,0.18)',
@@ -104,7 +104,7 @@ function Wheel({ rotation }: { rotation: number }) {
       <div
         style={{
           position: 'absolute',
-          inset: '28px 60px 10px 60px',
+          inset: '28px 56px 10px 56px',
           borderRadius: '50%',
           border: '8px solid #c8daf3',
           background: '#fff',
@@ -243,15 +243,15 @@ export default function SpinEarn() {
       <main style={{ padding: '32px 16px 0' }}>
         <section
           style={{
-            maxWidth: 940,
+            maxWidth: 980,
             margin: '0 auto',
             background: '#ffffff',
             borderRadius: 46,
             boxShadow: '0 30px 80px rgba(30,64,175,0.14)',
-            padding: '34px 24px 40px',
+            padding: '36px 28px 42px',
           }}
         >
-          <div style={{ maxWidth: 760, margin: '0 auto' }}>
+          <div style={{ maxWidth: 720, margin: '0 auto' }}>
             <div
               style={{
                 maxWidth: 520,
@@ -259,7 +259,7 @@ export default function SpinEarn() {
                 borderRadius: 999,
                 border: '1px solid #cfdef3',
                 background: '#ddecff',
-                padding: '16px 24px',
+                padding: '18px 24px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -269,10 +269,10 @@ export default function SpinEarn() {
               <span style={{ fontSize: 24, fontWeight: 900, color: '#2b5b97' }}>
                 Your Coins: {coins}
               </span>
-              <Coins size={34} color="#ffbe1a" style={{ marginLeft: 12 }} />
+              <Coins size={34} color="#ffbe1a" style={{ marginLeft: 14 }} />
             </div>
 
-            <div style={{ marginTop: 26 }}>
+            <div style={{ marginTop: 24 }}>
               <Wheel rotation={rotation} />
             </div>
 
@@ -282,12 +282,12 @@ export default function SpinEarn() {
               style={{
                 display: 'block',
                 width: '100%',
-                maxWidth: 620,
-                margin: '0 auto',
+                maxWidth: 600,
+                margin: '-4px auto 0',
                 border: 'none',
                 borderRadius: 999,
-                padding: '20px 24px',
-                fontSize: 28,
+                padding: '18px 24px',
+                fontSize: 24,
                 fontWeight: 900,
                 color: '#ffffff',
                 background: 'linear-gradient(180deg, #28b8ff 0%, #1f43ff 100%)',
@@ -304,9 +304,9 @@ export default function SpinEarn() {
 
             <p
               style={{
-                marginTop: 24,
+                marginTop: 22,
                 textAlign: 'center',
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: 500,
                 color: '#64789a',
               }}
@@ -334,10 +334,10 @@ export default function SpinEarn() {
 
             <div
               style={{
-                maxWidth: 760,
-                margin: '32px auto 0',
+                maxWidth: 720,
+                margin: '28px auto 0',
                 borderTop: '1px solid #e5edf8',
-                paddingTop: 28,
+                paddingTop: 24,
               }}
             >
               <div
@@ -345,7 +345,7 @@ export default function SpinEarn() {
                   borderRadius: 30,
                   border: '1px solid #e0e8f3',
                   background: '#ffffff',
-                  padding: '22px 28px',
+                  padding: '20px 26px',
                   boxShadow: '0 14px 26px rgba(15,23,42,0.08)',
                 }}
               >
@@ -363,9 +363,9 @@ export default function SpinEarn() {
                       flexShrink: 0,
                     }}
                   >
-                    <Frown size={38} />
+                    <Frown size={36} />
                   </div>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: '#314764' }}>
+                  <div style={{ fontSize: 24, fontWeight: 900, color: '#314764' }}>
                     {result}
                   </div>
                 </div>
