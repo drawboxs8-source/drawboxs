@@ -17,7 +17,7 @@ const SVG_SIZE = 460;
 const CENTER = SVG_SIZE / 2;
 const RADIUS = 202;
 const SLICE_ANGLE = 45;
-const BETTER_LUCK_TARGET_ROTATION = 180;
+const BETTER_LUCK_TARGET_ROTATION = 90;
 
 const slices: Slice[] = [
   { fill: '#ff3d38', title: '2500', subtitle: 'Coins', textColor: '#ffffff' },
@@ -208,7 +208,7 @@ export default function SpinEarn() {
         setResult(res.data.result || 'Better luck next time');
         setHasSpun(true);
         setSpinning(false);
-      }, SPIN_DURATION_MS);
+      }, SPIN_DURATION_MS + 120);
     } catch (error: any) {
       setSpinning(false);
       toast.error(error.response?.data?.message || 'Spin failed');
