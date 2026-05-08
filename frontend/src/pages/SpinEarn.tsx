@@ -43,42 +43,6 @@ function slicePath(startAngle: number, endAngle: number) {
   return `M ${CENTER} ${CENTER} L ${start.x} ${start.y} A ${RADIUS} ${RADIUS} 0 0 0 ${end.x} ${end.y} Z`;
 }
 
-function CoinStack() {
-  return (
-    <div style={{ position: 'relative', width: 100, height: 50, margin: '0 auto 4px' }}>
-      {[
-        { left: 4, top: 8, size: 34 },
-        { left: 34, top: 0, size: 42 },
-        { left: 66, top: 10, size: 34 },
-      ].map((coin, index) => (
-        <div
-          key={index}
-          style={{
-            position: 'absolute',
-            left: coin.left,
-            top: coin.top,
-            width: coin.size,
-            height: coin.size,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle at 30% 30%, #ffe98d 0%, #ffcc28 45%, #f59e0b 100%)',
-            border: '2px solid rgba(255,229,120,0.9)',
-            boxShadow: 'inset 0 2px 0 rgba(255,255,255,0.55), 0 8px 14px rgba(245,158,11,0.25)',
-          }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              inset: 6,
-              borderRadius: '50%',
-              border: '2px solid rgba(255,190,30,0.95)',
-            }}
-          />
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function Wheel({ rotation }: { rotation: number }) {
   return (
     <div
@@ -186,24 +150,6 @@ function Wheel({ rotation }: { rotation: number }) {
         </svg>
       </div>
 
-      <div
-        style={{
-          position: 'absolute',
-          right: 8,
-          top: 142,
-          zIndex: 4,
-          borderRadius: 28,
-          padding: '12px 20px 14px',
-          textAlign: 'center',
-          color: '#ffffff',
-          background: 'radial-gradient(circle at top, #bb73ff 0%, #7037ea 58%, #4b27b7 100%)',
-          boxShadow: '0 20px 34px rgba(111,54,232,0.28)',
-        }}
-      >
-        <CoinStack />
-        <div style={{ fontSize: 40, lineHeight: 0.95, fontWeight: 900 }}>10,000</div>
-        <div style={{ fontSize: 18, fontWeight: 800 }}>Coins</div>
-      </div>
     </div>
   );
 }
@@ -214,7 +160,8 @@ export default function SpinEarn() {
   const [planPurchased, setPlanPurchased] = useState(false);
   const [loading, setLoading] = useState(true);
   const [spinning, setSpinning] = useState(false);
-  const [result, setResult] = useState('Better luck next time');
+  const [result, setResult] = useState('');
+  const [hasSpun, setHasSpun] = useState(false);
   const [rotation, setRotation] = useState(0);
 
   useEffect(() => {
@@ -246,10 +193,12 @@ export default function SpinEarn() {
     try {
       const res = await API.post('/spin/play');
       setCoins(res.data.coins ?? 0);
-      setRotation((prev) => prev + 360 * 5 + 22.5);
+      // Always stop on a Better Luck slice.
+      setRotation((prev) => prev + 360 * 5 - 22.5);
 
       window.setTimeout(() => {
         setResult(res.data.result || 'Better luck next time');
+        setHasSpun(true);
         setSpinning(false);
       }, SPIN_DURATION_MS);
     } catch (error: any) {
@@ -373,45 +322,47 @@ export default function SpinEarn() {
             </div>
           ) : null}
 
-          <div
-            style={{
-              maxWidth: 760,
-              margin: '34px auto 0',
-              borderTop: '1px solid #e6edf8',
-              paddingTop: 28,
-            }}
-          >
+          {hasSpun ? (
             <div
               style={{
-                borderRadius: 32,
-                border: '1px solid #e3eaf4',
-                background: '#ffffff',
-                padding: '22px 34px',
-                boxShadow: '0 16px 24px rgba(15,23,42,0.08)',
+                maxWidth: 760,
+                margin: '34px auto 0',
+                borderTop: '1px solid #e6edf8',
+                paddingTop: 28,
               }}
             >
+              <div
+                style={{
+                  borderRadius: 32,
+                  border: '1px solid #e3eaf4',
+                  background: '#ffffff',
+                  padding: '22px 34px',
+                  boxShadow: '0 16px 24px rgba(15,23,42,0.08)',
+                }}
+              >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-                <div
-                  style={{
-                    width: 70,
-                    height: 70,
-                    borderRadius: '50%',
-                    background: '#e8eef7',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#70829d',
-                    flexShrink: 0,
-                  }}
-                >
-                  <Frown size={40} />
-                </div>
+                  <div
+                    style={{
+                      width: 70,
+                      height: 70,
+                      borderRadius: '50%',
+                      background: '#e8eef7',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#70829d',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <Frown size={40} />
+                  </div>
                   <div style={{ fontSize: 28, fontWeight: 900, color: '#304764' }}>
                     {result}
                   </div>
                 </div>
+              </div>
             </div>
-          </div>
+          ) : null}
         </section>
       </main>
     </div>
