@@ -164,9 +164,18 @@ export default function SpinEarn() {
   const [result, setResult] = useState('');
   const [hasSpun, setHasSpun] = useState(false);
   const [rotation, setRotation] = useState(0);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth < 640 : false
+  );
 
   useEffect(() => {
     void fetchStatus();
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const fetchStatus = async () => {
@@ -235,43 +244,184 @@ export default function SpinEarn() {
     );
   }
 
+  const cardMaxWidth = isMobile ? 680 : 860;
+  const cardPadding = isMobile ? '30px 18px 36px' : '42px 26px 52px';
+  const pillMaxWidth = isMobile ? 520 : 540;
+  const pillPadding = isMobile ? '16px 18px' : '18px 24px';
+  const coinFontSize = isMobile ? 24 : 28;
+  const wheelWrapMaxWidth = isMobile ? 360 : 650;
+  const wheelWrapHeight = isMobile ? 390 : 650;
+  const wheelOuterSize = isMobile ? 360 : 560;
+  const wheelInnerSize = isMobile ? 336 : 528;
+  const wheelOuterTop = isMobile ? 30 : 36;
+  const wheelInnerTop = isMobile ? 44 : 52;
+  const wheelInsetSide = isMobile ? 12 : 0;
+  const pointerTop = isMobile ? 10 : 8;
+  const pointerSide = isMobile ? 18 : 26;
+  const pointerHeight = isMobile ? 40 : 58;
+  const badgeTop = isMobile ? 98 : 142;
+  const badgeRight = isMobile ? -2 : 8;
+  const badgePadding = isMobile ? '10px 14px 12px' : '12px 20px 14px';
+  const badgeMainText = isMobile ? 28 : 40;
+  const badgeSubText = isMobile ? 14 : 18;
+  const buttonMaxWidth = isMobile ? 520 : 640;
+  const buttonFontSize = isMobile ? 20 : 28;
+  const buttonPadding = isMobile ? '18px 22px' : '22px 28px';
+  const buttonMarginTop = isMobile ? '-4px' : '-12px';
+  const helperTextSize = isMobile ? 14 : 18;
+  const resultFontSize = isMobile ? 18 : 28;
+  const resultIconSize = isMobile ? 32 : 40;
+  const resultBoxPadding = isMobile ? '18px 22px' : '22px 34px';
+  const resultGap = isMobile ? 14 : 20;
+  const resultCircleSize = isMobile ? 58 : 70;
+
   return (
     <div style={{ minHeight: '100vh', background: '#eef5ff', paddingBottom: 64 }}>
       <Header />
 
-      <main style={{ padding: '36px 16px 0' }}>
+      <main style={{ padding: isMobile ? '24px 10px 0' : '36px 16px 0' }}>
         <section
           style={{
-            maxWidth: 860,
+            maxWidth: cardMaxWidth,
             margin: '0 auto',
             background: '#ffffff',
-            borderRadius: 54,
+            borderRadius: isMobile ? 36 : 54,
             boxShadow: '0 34px 80px rgba(30,64,175,0.12)',
-            padding: '42px 26px 52px',
+            padding: cardPadding,
           }}
         >
           <div
             style={{
-              maxWidth: 540,
+              maxWidth: pillMaxWidth,
               margin: '0 auto',
               borderRadius: 999,
               border: '1px solid #d5e3f7',
               background: '#d9e9fe',
-              padding: '18px 24px',
+              padding: pillPadding,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.65)',
             }}
           >
-            <span style={{ fontSize: 28, fontWeight: 900, color: '#214f8f' }}>
+            <span style={{ fontSize: coinFontSize, fontWeight: 900, color: '#214f8f' }}>
               Your Coins: {coins}
             </span>
-            <Coins size={38} color="#ffbe1a" style={{ marginLeft: 12 }} />
+            <Coins size={isMobile ? 30 : 38} color="#ffbe1a" style={{ marginLeft: 12 }} />
           </div>
 
-          <div style={{ marginTop: 18 }}>
-            <Wheel rotation={rotation} />
+          <div
+            style={{
+              marginTop: isMobile ? 12 : 18,
+              maxWidth: wheelWrapMaxWidth,
+              marginInline: 'auto',
+            }}
+          >
+            <div
+              style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: wheelWrapMaxWidth,
+                height: wheelWrapHeight,
+                margin: '0 auto',
+              }}
+            >
+              <div
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: pointerTop,
+                  transform: 'translateX(-50%)',
+                  width: 0,
+                  height: 0,
+                  borderLeft: `${pointerSide}px solid transparent`,
+                  borderRight: `${pointerSide}px solid transparent`,
+                  borderTop: `${pointerHeight}px solid #f7c531`,
+                  filter: 'drop-shadow(0 10px 14px rgba(214,153,18,0.34))',
+                  zIndex: 4,
+                }}
+              />
+
+              <div
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: wheelOuterTop,
+                  transform: 'translateX(-50%)',
+                  width: wheelOuterSize,
+                  height: wheelOuterSize,
+                  borderRadius: '50%',
+                  background: '#edf4ff',
+                  boxShadow: '0 22px 48px rgba(59,130,246,0.14)',
+                }}
+              />
+
+              <div
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: wheelInnerTop,
+                  transform: `translateX(-50%) rotate(${rotation}deg)`,
+                  width: wheelInnerSize,
+                  height: wheelInnerSize,
+                  borderRadius: '50%',
+                  border: isMobile ? '6px solid #c8daf3' : '8px solid #c8daf3',
+                  background: '#ffffff',
+                  transition: `transform ${SPIN_DURATION_MS}ms cubic-bezier(0.16,0.84,0.24,1)`,
+                  overflow: 'hidden',
+                }}
+              >
+                <svg viewBox={`0 0 ${SVG_SIZE} ${SVG_SIZE}`} style={{ width: '100%', height: '100%' }}>
+                  <defs>
+                    <radialGradient id="spin-core" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stopColor="#ffe98d" />
+                      <stop offset="58%" stopColor="#ffb322" />
+                      <stop offset="100%" stopColor="#ff7c19" />
+                    </radialGradient>
+                  </defs>
+
+                  {slices.map((slice, index) => {
+                    const startAngle = index * SLICE_ANGLE - 22.5;
+                    const endAngle = startAngle + SLICE_ANGLE;
+                    const midAngle = startAngle + SLICE_ANGLE / 2;
+                    const point = polarPoint(isMobile ? 156 : 156, midAngle);
+                    const isBetter = slice.title === 'Better Luck';
+
+                    return (
+                      <g key={`${slice.title}-${index}`}>
+                        <path d={slicePath(startAngle, endAngle)} fill={slice.fill} stroke="#d9e6f8" strokeWidth="3" />
+                        <text
+                          x={point.x}
+                          y={point.y}
+                          fill={slice.textColor}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fontWeight="800"
+                          fontSize={isBetter ? (isMobile ? '16' : '18') : (isMobile ? '26' : '28')}
+                          style={{ paintOrder: 'stroke', stroke: 'rgba(255,255,255,0.12)', strokeWidth: 1 }}
+                          transform={slice.textAngle ? `rotate(${slice.textAngle} ${point.x} ${point.y})` : undefined}
+                        >
+                          {isBetter ? (
+                            <>
+                              <tspan x={point.x} dy="-6">Better</tspan>
+                              <tspan x={point.x} dy="20">Luck</tspan>
+                            </>
+                          ) : (
+                            <>
+                              <tspan x={point.x} dy="-5">{slice.title}</tspan>
+                              <tspan x={point.x} dy="24">{slice.subtitle}</tspan>
+                            </>
+                          )}
+                        </text>
+                      </g>
+                    );
+                  })}
+
+                  <circle cx={CENTER} cy={CENTER} r={isMobile ? 72 : 82} fill="url(#spin-core)" />
+                  <circle cx={CENTER} cy={CENTER} r={isMobile ? 24 : 28} fill="#ffffff" stroke="#dce8f8" strokeWidth="6" />
+                </svg>
+              </div>
+            </div>
           </div>
 
           <button
@@ -280,12 +430,12 @@ export default function SpinEarn() {
             style={{
               display: 'block',
               width: '100%',
-              maxWidth: 640,
-              margin: '-12px auto 0',
+              maxWidth: buttonMaxWidth,
+              margin: `${buttonMarginTop} auto 0`,
               border: 'none',
               borderRadius: 999,
-              padding: '22px 28px',
-              fontSize: 28,
+              padding: buttonPadding,
+              fontSize: buttonFontSize,
               fontWeight: 900,
               color: '#ffffff',
               background: 'linear-gradient(180deg, #31beff 0%, #2244ff 100%)',
@@ -295,18 +445,19 @@ export default function SpinEarn() {
             }}
           >
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12 }}>
-              <RotateCw size={30} className={spinning ? 'animate-spin' : ''} />
+              <RotateCw size={isMobile ? 24 : 30} className={spinning ? 'animate-spin' : ''} />
               {spinning ? 'Spinning...' : `Start Spin - ${spinCost} Coins`}
             </span>
           </button>
 
           <p
             style={{
-              marginTop: 26,
+              marginTop: isMobile ? 18 : 26,
               textAlign: 'center',
-              fontSize: 18,
+              fontSize: helperTextSize,
               fontWeight: 700,
               color: '#506b94',
+              paddingInline: isMobile ? 12 : 0,
             }}
           >
             Every spin costs {spinCost} coins. Results are final.
@@ -334,25 +485,25 @@ export default function SpinEarn() {
             <div
               style={{
                 maxWidth: 760,
-                margin: '34px auto 0',
+                margin: isMobile ? '24px auto 0' : '34px auto 0',
                 borderTop: '1px solid #e6edf8',
-                paddingTop: 28,
+                paddingTop: isMobile ? 20 : 28,
               }}
             >
               <div
                 style={{
-                  borderRadius: 32,
+                  borderRadius: isMobile ? 24 : 32,
                   border: '1px solid #e3eaf4',
                   background: '#ffffff',
-                  padding: '22px 34px',
+                  padding: resultBoxPadding,
                   boxShadow: '0 16px 24px rgba(15,23,42,0.08)',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: resultGap }}>
                   <div
                     style={{
-                      width: 70,
-                      height: 70,
+                      width: resultCircleSize,
+                      height: resultCircleSize,
                       borderRadius: '50%',
                       background: '#e8eef7',
                       display: 'flex',
@@ -362,9 +513,9 @@ export default function SpinEarn() {
                       flexShrink: 0,
                     }}
                   >
-                    <Frown size={40} />
+                    <Frown size={resultIconSize} />
                   </div>
-                  <div style={{ fontSize: 28, fontWeight: 900, color: '#304764' }}>
+                  <div style={{ fontSize: resultFontSize, fontWeight: 900, color: '#304764' }}>
                     {result}
                   </div>
                 </div>
