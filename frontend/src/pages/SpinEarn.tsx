@@ -20,12 +20,12 @@ const SLICE_ANGLE = 45;
 
 const slices: Slice[] = [
   { fill: '#ff3d38', title: '2500', subtitle: 'Coins', textColor: '#ffffff' },
-  { fill: '#ffffff', title: 'Better Luck', textColor: '#8598b7', textAngle: 28 },
+  { fill: '#ffffff', title: 'Better Luck', textColor: '#6d82a5', textAngle: 28 },
   { fill: '#106be2', title: '1000', subtitle: 'Coins', textColor: '#ffffff' },
-  { fill: '#ffffff', title: 'Better Luck', textColor: '#8598b7', textAngle: -28 },
+  { fill: '#ffffff', title: 'Better Luck', textColor: '#6d82a5', textAngle: -28 },
   { fill: '#7b44ea', title: 'Better Luck', textColor: '#ffffff' },
   { fill: '#ff870e', title: '3500', subtitle: 'Coins', textColor: '#ffffff' },
-  { fill: '#ffffff', title: 'Better Luck', textColor: '#8598b7', textAngle: -28 },
+  { fill: '#ffffff', title: 'Better Luck', textColor: '#6d82a5', textAngle: -28 },
   { fill: '#5f35d7', title: '5000', subtitle: 'Coins', textColor: '#ffffff' },
 ];
 
@@ -161,18 +161,18 @@ function Wheel({ rotation }: { rotation: number }) {
                   textAnchor="middle"
                   dominantBaseline="middle"
                   fontWeight="800"
-                  fontSize={isBetter ? '20' : '30'}
+                  fontSize={isBetter ? '22' : '34'}
                   transform={slice.textAngle ? `rotate(${slice.textAngle} ${point.x} ${point.y})` : undefined}
                 >
                   {isBetter ? (
                     <>
                       <tspan x={point.x} dy="-8">Better</tspan>
-                      <tspan x={point.x} dy="24">Luck</tspan>
+                      <tspan x={point.x} dy="26">Luck</tspan>
                     </>
                   ) : (
                     <>
-                      <tspan x={point.x} dy="-6">{slice.title}</tspan>
-                      <tspan x={point.x} dy="28">{slice.subtitle}</tspan>
+                      <tspan x={point.x} dy="-8">{slice.title}</tspan>
+                      <tspan x={point.x} dy="30">{slice.subtitle}</tspan>
                     </>
                   )}
                 </text>
@@ -327,7 +327,7 @@ export default function SpinEarn() {
               border: 'none',
               borderRadius: 999,
               padding: '22px 28px',
-              fontSize: 30,
+              fontSize: 28,
               fontWeight: 900,
               color: '#ffffff',
               background: 'linear-gradient(180deg, #31beff 0%, #2244ff 100%)',
@@ -346,9 +346,9 @@ export default function SpinEarn() {
             style={{
               marginTop: 26,
               textAlign: 'center',
-              fontSize: 18,
-              fontWeight: 500,
-              color: '#687b9c',
+              fontSize: 16,
+              fontWeight: 600,
+              color: '#637a9d',
             }}
           >
             Every spin costs {spinCost} coins. Results are final.
@@ -389,7 +389,7 @@ export default function SpinEarn() {
                 boxShadow: '0 16px 24px rgba(15,23,42,0.08)',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
                 <div
                   style={{
                     width: 70,
@@ -405,10 +405,10 @@ export default function SpinEarn() {
                 >
                   <Frown size={40} />
                 </div>
-                <div style={{ fontSize: 26, fontWeight: 900, color: '#304764' }}>
-                  {result}
+                  <div style={{ fontSize: 22, fontWeight: 900, color: '#304764' }}>
+                    {result}
+                  </div>
                 </div>
-              </div>
             </div>
           </div>
         </section>
