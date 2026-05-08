@@ -46,15 +46,15 @@ function describeSlice(startAngle: number, endAngle: number) {
 
 function WheelSvg({ rotation }: { rotation: number }) {
   return (
-    <div className="relative mx-auto h-[320px] w-[320px] sm:h-[500px] sm:w-[500px]">
+    <div className="relative mx-auto h-[340px] w-[340px] sm:h-[560px] sm:w-[560px]">
       <div className="absolute left-1/2 top-0 z-20 -translate-x-1/2">
         <div className="h-0 w-0 border-l-[20px] border-r-[20px] border-t-[44px] border-l-transparent border-r-transparent border-t-[#f8c52f] drop-shadow-[0_8px_12px_rgba(245,158,11,0.35)] sm:border-l-[24px] sm:border-r-[24px] sm:border-t-[54px]" />
       </div>
 
-      <div className="absolute inset-[16px] rounded-full bg-[#edf5ff] shadow-[0_18px_44px_rgba(37,99,235,0.22)] sm:inset-[20px]" />
+      <div className="absolute inset-[18px] rounded-full bg-[#edf5ff] shadow-[0_18px_44px_rgba(37,99,235,0.22)] sm:inset-[32px]" />
 
       <motion.div
-        className="absolute inset-[24px] rounded-full border-[6px] border-[#c3d8f4] bg-white sm:inset-[30px] sm:border-[8px]"
+        className="absolute inset-[30px] rounded-full border-[6px] border-[#c3d8f4] bg-white sm:inset-[42px] sm:border-[8px]"
         animate={{ rotate: rotation }}
         transition={{
           duration: SPIN_DURATION_MS / 1000,
@@ -111,7 +111,7 @@ function WheelSvg({ rotation }: { rotation: number }) {
         </svg>
       </motion.div>
 
-      <div className="absolute right-[6px] top-[56px] z-20 rounded-[28px] border border-[#9d77ff] px-3 py-3 text-center text-white shadow-[0_14px_28px_rgba(109,59,227,0.35)] sm:right-[30px] sm:top-[96px] sm:px-4 sm:py-4"
+      <div className="absolute right-[-2px] top-[78px] z-20 rounded-[28px] border border-[#9d77ff] px-3 py-3 text-center text-white shadow-[0_14px_28px_rgba(109,59,227,0.35)] sm:right-[24px] sm:top-[122px] sm:px-4 sm:py-4"
         style={{ background: 'radial-gradient(circle at top, #a56aff 0%, #6d3be3 58%, #4924b5 100%)' }}
       >
         <div className="flex justify-center">
@@ -203,14 +203,14 @@ export default function SpinEarn() {
               <Coins className="ml-2 h-7 w-7 text-[#ffbf1f]" />
             </div>
 
-            <div className="mt-8 sm:mt-10">
+            <div className="mt-8 flex justify-center sm:mt-10">
               <WheelSvg rotation={rotation} />
             </div>
 
             <button
               onClick={handleSpin}
               disabled={spinning || !planPurchased}
-              className="mx-auto mt-3 block w-full max-w-[620px] rounded-full px-6 py-4 text-xl font-black text-white shadow-[inset_0_3px_0_rgba(255,255,255,0.42),0_6px_0_#163cc4,0_16px_30px_rgba(37,99,235,0.28)] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-65 sm:text-[22px]"
+              className="mx-auto -mt-2 block w-full max-w-[620px] rounded-full px-6 py-4 text-xl font-black text-white shadow-[inset_0_3px_0_rgba(255,255,255,0.42),0_6px_0_#163cc4,0_16px_30px_rgba(37,99,235,0.28)] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-65 sm:mt-0 sm:text-[22px]"
               style={{ background: 'linear-gradient(180deg, #27b5ff 0%, #204bff 100%)' }}
             >
               <span className="inline-flex items-center gap-3">
