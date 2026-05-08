@@ -46,15 +46,15 @@ function describeSlice(startAngle: number, endAngle: number) {
 
 function WheelSvg({ rotation }: { rotation: number }) {
   return (
-    <div className="relative mx-auto h-[310px] w-[310px] sm:h-[440px] sm:w-[440px]">
+    <div className="relative mx-auto h-[320px] w-[320px] sm:h-[500px] sm:w-[500px]">
       <div className="absolute left-1/2 top-0 z-20 -translate-x-1/2">
-        <div className="h-0 w-0 border-l-[18px] border-r-[18px] border-t-[40px] border-l-transparent border-r-transparent border-t-[#f8c52f] sm:border-l-[22px] sm:border-r-[22px] sm:border-t-[48px]" />
+        <div className="h-0 w-0 border-l-[20px] border-r-[20px] border-t-[44px] border-l-transparent border-r-transparent border-t-[#f8c52f] drop-shadow-[0_8px_12px_rgba(245,158,11,0.35)] sm:border-l-[24px] sm:border-r-[24px] sm:border-t-[54px]" />
       </div>
 
-      <div className="absolute inset-0 rounded-full bg-[#eaf3ff] shadow-[0_16px_40px_rgba(37,99,235,0.22)]" />
+      <div className="absolute inset-[16px] rounded-full bg-[#edf5ff] shadow-[0_18px_44px_rgba(37,99,235,0.22)] sm:inset-[20px]" />
 
       <motion.div
-        className="absolute inset-[10px] rounded-full border-[6px] border-[#bdd4f1] bg-white sm:inset-[14px] sm:border-[8px]"
+        className="absolute inset-[24px] rounded-full border-[6px] border-[#c3d8f4] bg-white sm:inset-[30px] sm:border-[8px]"
         animate={{ rotate: rotation }}
         transition={{
           duration: SPIN_DURATION_MS / 1000,
@@ -111,7 +111,7 @@ function WheelSvg({ rotation }: { rotation: number }) {
         </svg>
       </motion.div>
 
-      <div className="absolute right-[-6px] top-[60px] z-20 rounded-[26px] border border-[#9d77ff] px-3 py-3 text-center text-white shadow-[0_14px_28px_rgba(109,59,227,0.35)] sm:right-0 sm:top-[78px] sm:px-4"
+      <div className="absolute right-[6px] top-[56px] z-20 rounded-[28px] border border-[#9d77ff] px-3 py-3 text-center text-white shadow-[0_14px_28px_rgba(109,59,227,0.35)] sm:right-[30px] sm:top-[96px] sm:px-4 sm:py-4"
         style={{ background: 'radial-gradient(circle at top, #a56aff 0%, #6d3be3 58%, #4924b5 100%)' }}
       >
         <div className="flex justify-center">
@@ -189,28 +189,28 @@ export default function SpinEarn() {
     <div className="min-h-screen bg-[#eef5ff] pb-16 text-slate-900 dark:bg-[#0b1020] dark:text-white">
       <Header />
 
-      <main className="mx-auto max-w-4xl px-4 pt-8 sm:px-6">
+      <main className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
         <motion.section
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-[36px] bg-white px-4 py-6 shadow-[0_24px_80px_rgba(30,64,175,0.14)] dark:bg-[#0f172a] sm:px-8 sm:py-8"
+          className="rounded-[40px] bg-white px-4 py-6 shadow-[0_24px_80px_rgba(30,64,175,0.14)] dark:bg-[#0f172a] sm:px-8 sm:py-8"
         >
-          <div className="mx-auto max-w-[650px] rounded-[42px] bg-[#fcfdff] px-4 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] dark:bg-[#111c34] sm:px-8 sm:py-10">
-            <div className="mx-auto flex max-w-[430px] items-center justify-center rounded-full border border-[#cfddf1] bg-[#e6f0fd] px-5 py-3 shadow-sm dark:border-slate-700 dark:bg-[#162844]">
+          <div className="mx-auto max-w-[860px] rounded-[44px] bg-[#fcfdff] px-4 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] dark:bg-[#111c34] sm:px-10 sm:py-10">
+            <div className="mx-auto flex max-w-[460px] items-center justify-center rounded-full border border-[#cfddf1] bg-[#dcebff] px-5 py-4 shadow-sm dark:border-slate-700 dark:bg-[#162844]">
               <span className="text-[18px] font-black text-[#27538e] dark:text-[#9dccff] sm:text-[20px]">
                 Your Coins: {coins}
               </span>
               <Coins className="ml-2 h-7 w-7 text-[#ffbf1f]" />
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 sm:mt-10">
               <WheelSvg rotation={rotation} />
             </div>
 
             <button
               onClick={handleSpin}
               disabled={spinning || !planPurchased}
-              className="mt-8 w-full rounded-full px-6 py-4 text-xl font-black text-white shadow-[inset_0_3px_0_rgba(255,255,255,0.42),0_6px_0_#163cc4,0_16px_30px_rgba(37,99,235,0.28)] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-65 sm:text-[22px]"
+              className="mx-auto mt-3 block w-full max-w-[620px] rounded-full px-6 py-4 text-xl font-black text-white shadow-[inset_0_3px_0_rgba(255,255,255,0.42),0_6px_0_#163cc4,0_16px_30px_rgba(37,99,235,0.28)] transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-65 sm:text-[22px]"
               style={{ background: 'linear-gradient(180deg, #27b5ff 0%, #204bff 100%)' }}
             >
               <span className="inline-flex items-center gap-3">
@@ -219,7 +219,7 @@ export default function SpinEarn() {
               </span>
             </button>
 
-            <p className="mt-5 text-center text-sm font-medium text-[#687a96] dark:text-slate-400 sm:text-base">
+            <p className="mt-5 text-center text-sm font-medium text-[#687a96] dark:text-slate-400 sm:text-[18px]">
               Every spin costs {spinCost} coins. Results are final.
             </p>
 
@@ -229,13 +229,13 @@ export default function SpinEarn() {
               </div>
             ) : null}
 
-            <div className="mt-6 border-t border-[#e5edf8] pt-6 dark:border-slate-800">
-              <div className="rounded-[24px] border border-[#dde7f4] bg-white px-5 py-5 shadow-[0_8px_18px_rgba(15,23,42,0.08)] dark:border-slate-700 dark:bg-[#0f172a]">
+            <div className="mx-auto mt-8 max-w-[700px] border-t border-[#e5edf8] pt-6 dark:border-slate-800">
+              <div className="rounded-[28px] border border-[#dde7f4] bg-white px-5 py-5 shadow-[0_12px_24px_rgba(15,23,42,0.08)] dark:border-slate-700 dark:bg-[#0f172a] sm:px-8 sm:py-6">
                 <div className="flex items-center gap-4">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#edf2f8] text-[#7385a1] dark:bg-slate-800 dark:text-slate-300">
-                    <Frown className="h-8 w-8" />
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#edf2f8] text-[#7385a1] dark:bg-slate-800 dark:text-slate-300">
+                    <Frown className="h-9 w-9" />
                   </div>
-                  <div className="text-[22px] font-black text-[#334a68] dark:text-white sm:text-[24px]">
+                  <div className="text-[22px] font-black text-[#334a68] dark:text-white sm:text-[28px]">
                     {result}
                   </div>
                 </div>
