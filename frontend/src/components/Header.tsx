@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router';
 import { Moon, Sun, Menu, X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import  toast  from 'react-hot-toast';
 
@@ -9,10 +9,26 @@ export default function Header() {
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => Boolean(localStorage.getItem('token')));
 
   const isLanding = location.pathname === '/';
   const isAuth = location.pathname === '/login' || location.pathname === '/register';
   const isAdmin = location.pathname === '/admin';
+  const isPublicPricing = location.pathname === '/pricing' && !isLoggedIn;
+  const isPublicPage = isLanding || isAuth || isPublicPricing;
+
+  useEffect(() => {
+    const syncAuthState = () => {
+      setIsLoggedIn(Boolean(localStorage.getItem('token')));
+    };
+
+    syncAuthState();
+    window.addEventListener('storage', syncAuthState);
+
+    return () => {
+      window.removeEventListener('storage', syncAuthState);
+    };
+  }, [location.pathname]);
 
   const userLinks = [
     { to: '/dashboard', label: 'Dashboard' },
@@ -25,10 +41,11 @@ export default function Header() {
 // Add logout handler
 const handleLogout = () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("role");
   toast.success("Logged out successfully");
   window.location.href = "/login";
 };
-  if (isLanding || isAuth) {
+  if (isPublicPage) {
     return (
       <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4">
         <nav className="max-w-7xl mx-auto backdrop-blur-xl bg-white/60 dark:bg-slate-900/40 rounded-2xl border border-white/20 dark:border-slate-700/50 shadow-lg px-6 py-3">
@@ -43,7 +60,7 @@ const handleLogout = () => {
             </Link>
 
             <div className="flex items-center gap-2 sm:gap-4">
-              {isLanding && (
+              {(isLanding || isPublicPricing) && (
                 <div className="hidden sm:flex items-center gap-4">
                   <Link
                     to="/login"
@@ -67,7 +84,7 @@ const handleLogout = () => {
                 {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
               </button>
               
-              {isLanding && (
+              {(isLanding || isPublicPricing) && (
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                   className="sm:hidden p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
@@ -80,7 +97,7 @@ const handleLogout = () => {
           
           {/* Mobile Navigation for Landing */}
           <AnimatePresence>
-            {mobileMenuOpen && isLanding && (
+            {mobileMenuOpen && (isLanding || isPublicPricing) && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
