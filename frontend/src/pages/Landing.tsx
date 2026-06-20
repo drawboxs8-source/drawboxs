@@ -20,6 +20,7 @@ import Header from '../components/Header';
 import GlassCard from '../components/GlassCard';
 import GlowButton from '../components/GlowButton';
 import { useState, FormEvent } from 'react';
+import axios from 'axios';
 import toast from 'react-hot-toast';
 import { API } from '../services/api';
 
@@ -48,9 +49,12 @@ export default function Landing() {
       toast.dismiss(toastId);
       toast.success("Message sent successfully!");
       setContactData({ name: '', email: '', subject: '', message: '' });
-    } catch {
+    } catch (error) {
       toast.dismiss(toastId);
-      toast.error("Failed to send message. Please try again later.");
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.message || "Failed to send message. Please try again later."
+        : "Failed to send message. Please try again later.";
+      toast.error(message);
     } finally {
       setSendingMessage(false);
     }
