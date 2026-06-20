@@ -581,7 +581,7 @@ export default function Landing() {
                         href="mailto:drawboxs8@gmail.com"
                         className="font-medium text-slate-800 transition-colors hover:text-cyan-600 dark:text-slate-200 dark:hover:text-cyan-400"
                       >
-                        drawboxs8@gmail.com
+                        support@drawboxs.in
                       </a>
                     </div>
                   </div>
